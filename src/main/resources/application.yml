@@ -7,6 +7,12 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     table-prefix: sjt_
 
+  mvc:
+    static-path-pattern: /static/**
+
+  resources:
+    static-locations: classpath:/static/
+
   jpa:
     show-sql: true
     hibernate:
