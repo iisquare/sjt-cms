@@ -32,6 +32,10 @@ let routes = [{
   children: [
 
   ]
+}, {
+  path: '*',
+  name: 'Others',
+  redirect: '/error/404'
 }]
 
 const router = new Router({ routes })

@@ -10,6 +10,8 @@ import router from './router'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
+store.dispatch('user/init')
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
