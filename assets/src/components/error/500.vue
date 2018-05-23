@@ -1,5 +1,5 @@
 <template>
-  <span>login page</span>
+  <span>500 page</span>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <span>login page</span>
+  <span>main page</span>
 </template>
 
 <script>
