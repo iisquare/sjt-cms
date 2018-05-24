@@ -20,7 +20,7 @@ export default {
   },
   watch: {
     ready (newValue, oldValue) {
-      if (!newValue) this.completed()
+      if (newValue) this.completed()
     }
   },
   mounted () {

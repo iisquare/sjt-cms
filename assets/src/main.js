@@ -7,16 +7,11 @@ import store from './store'
 import App from './App'
 import router from './router'
 import 'font-awesome/css/font-awesome.min.css'
-import axios from 'axios'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-let $axios = axios.create({
-  baseURL: process.env.apiURL
-})
-
-store.dispatch('user/init', {$axios})
+store.dispatch('user/init')
 
 /* eslint-disable no-new */
 new Vue({

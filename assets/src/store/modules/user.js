@@ -1,3 +1,5 @@
+import userService from '@/service/user'
+
 // initial state
 const state = {
   ready: false,
@@ -11,19 +13,11 @@ const getters = {
 
 // actions
 const actions = {
-  init ({ commit }, {$axios}) {
-    $axios.get('/user/info').then(function (response) {
+  init ({ commit }) {
+    userService.info().then((response) => {
       commit('ready')
-      console.log(response)
-      commit('setInfo', {
-        name: 'admin'
-      })
-    }).catch(function (error) {
-      console.log(error)
+      commit('setInfo', response.data)
     })
-  },
-  destroy ({ commit }) {
-    commit('setInfo', null)
   }
 }
 
