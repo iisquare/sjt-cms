@@ -1,4 +1,4 @@
-import base from '@/service/base'
+import base from '@/core/ServiceBase'
 
 export default {
   info () {

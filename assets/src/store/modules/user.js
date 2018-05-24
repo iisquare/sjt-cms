@@ -1,4 +1,5 @@
 import userService from '@/service/user'
+import wrapper from '@/core/RequestWrapper'
 
 // initial state
 const state = {
@@ -14,9 +15,11 @@ const getters = {
 // actions
 const actions = {
   init ({ commit }) {
-    userService.info().then((response) => {
-      commit('ready')
-      commit('setInfo', response.data)
+    wrapper.tips(userService.info()).then((response) => {
+      if (response.code === 0) {
+        commit('ready')
+        commit('setInfo', response.data)
+      }
     })
   }
 }
