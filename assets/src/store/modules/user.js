@@ -4,21 +4,21 @@ import wrapper from '@/core/RequestWrapper'
 // initial state
 const state = {
   ready: false,
-  info: null
+  data: null
 }
 
 // getters
 const getters = {
-  info: state => state.info
+
 }
 
 // actions
 const actions = {
-  init ({ commit }) {
-    wrapper.tips(userService.info()).then((response) => {
+  loadConfig ({ commit }) {
+    wrapper.tips(userService.config()).then((response) => {
       if (response.code === 0) {
         commit('ready')
-        commit('setInfo', response.data)
+        commit('data', response.data)
       }
     })
   }
@@ -29,8 +29,8 @@ const mutations = {
   ready () {
     state.ready = true
   },
-  setInfo (state, info) {
-    state.info = info
+  data (state, data) {
+    state.data = data
   }
 }
 

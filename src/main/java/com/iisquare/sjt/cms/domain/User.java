@@ -20,13 +20,13 @@ public class User implements Serializable {
     @GeneratedValue
     private Integer id;
     @Column
-    private String serial;
+    private String serial; // 账号（唯一约束）
     @Column
-    private String name;
+    private String name; // 昵称（唯一约束）
     @Column
     private String password;
     @Column
-    private Integer salt;
+    private Integer salt; // 密码盐
     @Column
     private Integer sort;
     @Column

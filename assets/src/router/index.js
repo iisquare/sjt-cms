@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
         query: { redirect: to.fullPath }
       })
     }
-  } else if (DataUtil.empty(user.info)) { // 用户未登陆
+  } else if (DataUtil.empty(user.data)) { // 用户未登陆
     if (to.path === '/user/login') {
       next()
     } else {

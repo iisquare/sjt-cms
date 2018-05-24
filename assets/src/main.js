@@ -11,7 +11,7 @@ import 'font-awesome/css/font-awesome.min.css'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-store.dispatch('user/init')
+store.dispatch('user/loadConfig')
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,7 +1,10 @@
 import base from '@/core/ServiceBase'
 
 export default {
-  info () {
-    return base.request('/user/info')
+  config () {
+    return base.get('/user/config')
+  },
+  login () {
+    return base.post('/user/login')
   }
 }
