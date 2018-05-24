@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
-@IdClass(RelationIdClass.class)
+@IdClass(Relation.IdClass.class)
 public class Relation implements Serializable {
 
     @Id
@@ -22,14 +22,12 @@ public class Relation implements Serializable {
     @Id
     private Integer bid;
 
-}
+    @Data
+    public class IdClass implements Serializable {
 
-@Data
-class RelationIdClass implements Serializable {
+        private Integer aid;
+        private Integer bid;
 
-    @Id
-    private Integer aid;
-    @Id
-    private Integer bid;
+    }
 
 }
