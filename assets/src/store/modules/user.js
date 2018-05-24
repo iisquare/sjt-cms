@@ -1,5 +1,6 @@
 // initial state
 const state = {
+  ready: false,
   info: null
 }
 
@@ -10,9 +11,15 @@ const getters = {
 
 // actions
 const actions = {
-  init ({ commit }) {
-    commit('setInfo', {
-      name: 'admin'
+  init ({ commit }, {$axios}) {
+    $axios.get('/user/info').then(function (response) {
+      commit('ready')
+      console.log(response)
+      commit('setInfo', {
+        name: 'admin'
+      })
+    }).catch(function (error) {
+      console.log(error)
     })
   },
   destroy ({ commit }) {
@@ -22,6 +29,9 @@ const actions = {
 
 // mutations
 const mutations = {
+  ready () {
+    state.ready = true
+  },
   setInfo (state, info) {
     state.info = info
   }
