@@ -6,5 +6,8 @@ export default {
   },
   login () {
     return base.post('/user/login')
+  },
+  logout () {
+    return base.post('/user/logout')
   }
 }

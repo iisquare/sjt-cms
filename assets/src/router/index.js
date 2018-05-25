@@ -28,9 +28,11 @@ let routes = [{
   path: '/',
   name: 'LayoutMain',
   component: () => import(/* webpackChunkName: 'main' */ '@/components/layout/main'),
-  children: [
-
-  ]
+  children: [{
+    path: '/',
+    name: 'Welcome',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/layout/welcome')
+  }]
 }, {
   path: '*',
   name: 'Others',
