@@ -32,8 +32,8 @@ public class Settings implements Serializable {
     @Column
     private String description;
     @Column
-    private Long updated_time;
+    private Long updatedTime;
     @Column
-    private Integer updated_uid;
+    private Integer updatedUid;
 
 }

@@ -36,12 +36,12 @@ public class Menu implements Serializable {
     @Column
     private String description;
     @Column
-    private Long created_time;
+    private Long createdTime;
     @Column
-    private Integer created_uid;
+    private Integer createdUid;
     @Column
-    private Long updated_time;
+    private Long updatedTime;
     @Column
-    private Integer updated_uid;
+    private Integer updatedUid;
 
 }

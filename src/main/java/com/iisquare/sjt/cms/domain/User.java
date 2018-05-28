@@ -34,20 +34,20 @@ public class User implements Serializable {
     @Column
     private String description;
     @Column
-    private Long created_time;
+    private Long createdTime;
     @Column
-    private Integer created_uid;
+    private Integer createdUid;
     @Column
-    private String created_ip;
+    private String createdIp;
     @Column
-    private Long updated_time;
+    private Long updatedTime;
     @Column
-    private Integer updated_uid;
+    private Integer updatedUid;
     @Column
-    private Long logined_time; // 最后登录时间
+    private Long loginedTime; // 最后登录时间
     @Column
-    private String logined_ip; // 最后登录IP
+    private String loginedIp; // 最后登录IP
     @Column
-    private Long locked_time;
+    private Long lockedTime;
 
 }
