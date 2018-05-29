@@ -1,6 +1,6 @@
 <template>
   <section>
-    <!--工具条-->
+    <!--顶部工具条-->
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
@@ -14,29 +14,51 @@
         </el-form-item>
       </el-form>
     </el-col>
-
     <!--列表-->
     <el-table :data="rows" highlight-current-row v-loading="loading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" sortable=""></el-table-column>
       <el-table-column prop="name" label="名称" sortable></el-table-column>
       <el-table-column prop="sort" label="排序" sortable></el-table-column>
-      <el-table-column prop="status" label="状态" sortable></el-table-column>
-      <el-table-column prop="updatedTime" label="更新时间" sortable></el-table-column>
+      <el-table-column prop="statusText" label="状态" sortable></el-table-column>
+      <el-table-column prop="updatedUidName" label="更新者" sortable></el-table-column>
+      <el-table-column prop="updatedTime" label="更新时间" :formatter="date" sortable></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
+          <el-button type="info" size="small" @click="edit(scope.$id, scope.row)">查看</el-button>
           <el-button size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="delete(scope.$id, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <!--工具条-->
+    <!--底部工具条-->
     <el-col :span="24" class="toolbar">
       <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
       <el-pagination layout="prev, pager, next" @current-change="pageChange" :current-page="filters.page" :page-size="filters.pageSize" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
+    <!--编辑界面-->
+    <el-dialog :title="form.id ? ('修改[' + form.id + ']') : '新增'" :visible.sync="formVisible" :close-on-click-modal="false">
+      <el-form :model="form" label-width="80px" :rules="rules" ref="form">
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="排序">
+          <el-input-number v-model="form.sort" :min="0" :max="200"></el-input-number>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-select v-model="form.status" placeholder="请选择">
+            <el-option v-for="(value, key) in config.status" :key="key" :label="value" :value="key"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input type="textarea" v-model="form.description"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="formVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="submit" :loading="formLoading">提交</el-button>
+      </div>
+    </el-dialog>
   </section>
 </template>
 <script>
@@ -53,10 +75,24 @@ export default {
       rows: [],
       total: 0,
       loading: false,
-      sels: [] // 列表选中列
+      sels: [], // 列表选中列
+      formVisible: false,
+      formLoading: false,
+      config: {
+        ready: false,
+        status: []
+      },
+      form: {},
+      rules: {
+        name: [{required: true, message: '请输入名称', trigger: 'blur'}],
+        status: [{required: true, message: '请选择状态', trigger: 'blur'}]
+      }
     }
   },
   methods: {
+    date (row, column) {
+      console.log(row, column)
+    },
     search () {
       this.loading = true
       wrapper.tips(roleService.list(this.filters)).then((response) => {
@@ -85,8 +121,39 @@ export default {
         })
       }).catch(() => {})
     },
-    add () {},
-    edit () {}
+    submit () {
+      this.$refs.form.validate((valid) => {
+        if (!valid || this.formLoading) return false
+        this.formLoading = true
+        wrapper.tips(roleService.save(this.form)).then(response => {
+          if (response.code === 0) {
+            this.formVisible = false
+            this.search()
+          }
+          this.formLoading = false
+        })
+      })
+    },
+    add () {
+      this.edit(0, {
+        name: '',
+        sort: '',
+        status: '',
+        description: ''
+      })
+    },
+    edit (id, row) {
+      this.form = Object.assign({}, row)
+      this.formVisible = true
+      if (!this.config.ready) {
+        this.config.ready = true
+        wrapper.tips(roleService.config()).then((response) => {
+          if (response.code === 0) {
+            Object.assign(this.config, response.data)
+          }
+        })
+      }
+    }
   },
   mounted () {
     this.search()

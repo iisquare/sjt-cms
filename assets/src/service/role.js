@@ -6,5 +6,11 @@ export default {
   },
   delete (ids) {
     return base.post('/role/delete', {ids})
+  },
+  config () {
+    return base.post('/role/config')
+  },
+  save (param) {
+    return base.post('/role/save', param)
   }
 }

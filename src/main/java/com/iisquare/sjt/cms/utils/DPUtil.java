@@ -622,6 +622,14 @@ public class DPUtil {
 		return map;
 	}
 
+	public static Map<Object, Object> buildMap(Object ...kvs) {
+		Map<Object, Object> map = new HashMap<>();
+		for(int i = 0; i < kvs.length; i += 2) {
+			map.put(kvs[i], kvs[i + 1]);
+		}
+		return map;
+	}
+
 	public static String stringify(Object object) {
 		try {
 			return mapper.writeValueAsString(object);

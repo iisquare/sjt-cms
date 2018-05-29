@@ -4,10 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -21,7 +18,7 @@ import java.io.Serializable;
 public class Role implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column
     private String name;
@@ -29,15 +26,21 @@ public class Role implements Serializable {
     private Integer sort;
     @Column
     private Integer status;
+    @Transient
+    private String statusText;
     @Column
     private String description;
     @Column
     private Long createdTime;
     @Column
     private Integer createdUid;
+    @Transient
+    private String createdUidName;
     @Column
     private Long updatedTime;
     @Column
     private Integer updatedUid;
+    @Transient
+    private String updatedUidName;
 
 }
