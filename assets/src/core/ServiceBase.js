@@ -26,6 +26,6 @@ export default {
     return this.request(Object.assign(config, {method: 'get', url}))
   },
   post (url, data = null, config = {}) {
-    return this.request(Object.assign(config, {method: 'get', url, data}))
+    return this.request(Object.assign(config, {method: 'post', url, data}))
   }
 }

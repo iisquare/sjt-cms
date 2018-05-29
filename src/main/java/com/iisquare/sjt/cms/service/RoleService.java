@@ -14,10 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class RoleService extends ServiceBase {
@@ -33,6 +30,7 @@ public class RoleService extends ServiceBase {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.notEqual(root.get("status"), -1));
                 String name = DPUtil.trim(DPUtil.parseString(param.get("name")));
                 if(!DPUtil.empty(name)) {
                     predicates.add(cb.like(root.get("name"), "%" + name + "%"));
@@ -45,6 +43,22 @@ public class RoleService extends ServiceBase {
         result.put("total", data.getTotalElements());
         result.put("rows", data.getContent());
         return result;
+    }
+
+    public boolean remove(List<Integer> ids) {
+        if(null == ids || ids.size() < 1) return false;
+        roleDao.deleteInBatch(roleDao.findAllById(ids));
+        return true;
+    }
+
+    public boolean delete(List<Integer> ids) {
+        if(null == ids || ids.size() < 1) return false;
+        List<Role> list = roleDao.findAllById(ids);
+        for (Role item : list) {
+            item.setStatus(-1);
+        }
+        roleDao.saveAll(list);
+        return true;
     }
 
 }

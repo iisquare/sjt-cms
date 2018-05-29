@@ -1,7 +1,10 @@
 import base from '@/core/ServiceBase'
 
 export default {
-  list () {
-    return base.get('/role/list')
+  list (param) {
+    return base.post('/role/list', param)
+  },
+  delete (ids) {
+    return base.post('/role/delete', {ids})
   }
 }

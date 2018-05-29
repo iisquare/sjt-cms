@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-05-24 15:30:47
+Date: 2018-05-29 13:37:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,9 +45,11 @@ CREATE TABLE `sjt_menu` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sjt_relation`;
 CREATE TABLE `sjt_relation` (
+  `id` varchar(64) NOT NULL,
+  `type` varchar(32) NOT NULL DEFAULT '',
   `aid` int(11) NOT NULL DEFAULT '0',
   `bid` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`aid`,`bid`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -94,11 +96,13 @@ CREATE TABLE `sjt_role` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_role
 -- ----------------------------
+INSERT INTO `sjt_role` VALUES ('1', '超级管理员', '0', '1', '', '0', '0', '0', '0');
+INSERT INTO `sjt_role` VALUES ('2', '普通用户', '0', '1', '', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for sjt_settings
@@ -121,7 +125,7 @@ CREATE TABLE `sjt_settings` (
 -- Records of sjt_settings
 -- ----------------------------
 INSERT INTO `sjt_settings` VALUES ('1', 'defaultPassword', 'system', 'password', '0', '1', '', '0', '0');
-INSERT INTO `sjt_settings` VALUES ('2', 'siteName', 'system', '未命名', '0', '1', '', '0', '0');
+INSERT INTO `sjt_settings` VALUES ('2', 'siteName', 'system', '未命名站点', '0', '1', '', '0', '0');
 
 -- ----------------------------
 -- Table structure for sjt_user
@@ -144,9 +148,13 @@ CREATE TABLE `sjt_user` (
   `logined_time` bigint(20) NOT NULL DEFAULT '0',
   `logined_ip` varchar(16) NOT NULL DEFAULT '',
   `locked_time` bigint(20) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `unq_serial` (`serial`),
+  KEY `unq_name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
+INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '', '0', '0', '1', '', '0', '', '0', '0', '0', '0', '', '0');
+INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '', '0', '0', '1', '', '0', '', '0', '0', '0', '0', '', '0');

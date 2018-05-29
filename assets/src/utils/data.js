@@ -1,7 +1,7 @@
 const DataUtil = {
   trim (str, charlist = ' ') {
     if (str == null) return ''
-    if (!(str instanceof String)) return ''
+    if (Object.prototype.toString.call(str) !== '[object String]') return ''
     str = str.replace(new RegExp('^[' + charlist + ']+'), '')
     str = str.replace(new RegExp('[' + charlist + ']+$'), '')
     return str

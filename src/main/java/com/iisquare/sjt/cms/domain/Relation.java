@@ -2,6 +2,7 @@ package com.iisquare.sjt.cms.domain;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
@@ -13,20 +14,15 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(Relation.IdClass.class)
 public class Relation implements Serializable {
 
     @Id
+    private String id;
+    @Column
+    private String type;
+    @Column
     private Integer aid;
-    @Id
+    @Column
     private Integer bid;
-
-    @Data
-    public class IdClass implements Serializable {
-
-        private Integer aid;
-        private Integer bid;
-
-    }
 
 }

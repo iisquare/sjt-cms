@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -22,6 +23,7 @@ public class CorsConfig extends WebMvcConfigurationSupport {
         StringHttpMessageConverter convert = new StringHttpMessageConverter(Charset.forName(charset));
         convert.setWriteAcceptCharset(false);
         converters.add(convert);
+        converters.add(new MappingJackson2HttpMessageConverter());
     }
 
     @Override

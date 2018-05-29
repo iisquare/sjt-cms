@@ -107,6 +107,15 @@ public class DPUtil {
 	public static int parseInt(Object object) {
 		return (int) parseDouble(object);
 	}
+
+	public static List<Integer> parseIntList(List<?> list) {
+		List<Integer> result = new ArrayList<>();
+		if(null == list) return result;
+		for (Object item : list) {
+			result.add(parseInt(item));
+		}
+		return result;
+	}
 	
 	/**
 	 * 转换为long类型
