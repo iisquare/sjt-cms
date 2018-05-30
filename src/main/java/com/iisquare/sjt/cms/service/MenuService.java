@@ -92,7 +92,7 @@ public class MenuService extends ServiceBase {
                     predicates.add(cb.like(root.get("name"), "%" + name + "%"));
                 }
                 int parentId = DPUtil.parseInt(param.get("parentId"));
-                if(parentId > 0) {
+                if(!"".equals(DPUtil.parseString(param.get("parentId")))) {
                     predicates.add(cb.equal(root.get("parentId"), parentId));
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
