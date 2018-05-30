@@ -9,6 +9,15 @@ import java.util.*;
  */
 public class ServiceUtil {
 
+	public static void fillFields(List<Map<String, Object>> list, String[] froms, String[] tos, Map<?, ?> ...maps) {
+		if(null == list) return;
+		for (Map<String, Object> item : list) {
+			for (int i = 0; i < froms.length; i++) {
+				item.put(tos[i], maps[i].get(item.get(froms[i])));
+			}
+		}
+	}
+
 	public static void fillProperties(List<?> list, String[] froms, String[] tos, Map<?, ?> ...maps) {
 		if(null == list) return;
 		for (Object item : list) {
@@ -28,6 +37,18 @@ public class ServiceUtil {
 		for (Object object : list) {
 			for (String property : properties) {
 				Object value = ReflectUtil.getPropertyValue(object, property);
+				if(null == value) continue;
+				valueList.add(value);
+			}
+		}
+		return valueList;
+	}
+
+	public static Set<?> getFieldValues(List<Map<String, Object>> list, String... fields) {
+		Set<Object> valueList = new HashSet<>();
+		for (Map<String, Object> item : list) {
+			for (String field : fields) {
+				Object value = item.get(field);
 				if(null == value) continue;
 				valueList.add(value);
 			}
@@ -55,6 +76,35 @@ public class ServiceUtil {
 			Object key = ReflectUtil.getPropertyValue(item, property);
 			if(null == key) continue;
 			List<Object> subList = map.get(key);
+			if(null == subList) {
+				subList = new ArrayList<>();
+			}
+			subList.add(item);
+			map.put(key, subList);
+		}
+		return map;
+	}
+
+	/**
+	 * 将List数据格式化为以对应字段值为下标的Map
+	 */
+	public static Map<?, ?> indexMapList(List<Map<String, Object>> list, String field) {
+		Map<Object, Map<String, Object>> map = new HashMap<>();
+		for (Map<String, Object> item : list) {
+			map.put(map.get(field), item);
+		}
+		return map;
+	}
+
+	/**
+	 * 将List数据格式化为以对应字段值为下标的Map
+	 */
+	public static Map<?, ?> indexesMapList(List<Map<String, Object>> list, String field) {
+		Map<Object, List<Map<String, Object>>> map = new HashMap<>();
+		for (Map<String, Object> item : list) {
+			Object key = item.get(field);
+			if(null == key) continue;
+			List<Map<String, Object>> subList = map.get(key);
 			if(null == subList) {
 				subList = new ArrayList<>();
 			}
