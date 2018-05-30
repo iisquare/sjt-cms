@@ -45,7 +45,7 @@
         <el-form-item label="排序">
           <el-input-number v-model="form.sort" :min="0" :max="200"></el-input-number>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="状态" prop="status">
           <el-select v-model="form.status" placeholder="请选择">
             <el-option v-for="(value, key) in config.status" :key="key" :label="value" :value="key"></el-option>
           </el-select>
