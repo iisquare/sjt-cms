@@ -59,7 +59,7 @@
         <el-button type="primary" @click.native="submit" :loading="formLoading">提交</el-button>
       </div>
     </el-dialog>
-    <!--编辑界面-->
+    <!--展示界面-->
     <el-dialog title="查看" :visible.sync="infoVisible" :close-on-click-modal="false">
       <el-form :model="form" label-width="80px" :loading="infoLoading">
         <el-form-item label="名称">{{form.name}}</el-form-item>

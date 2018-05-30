@@ -32,25 +32,25 @@ public class ServiceUtil {
 	/**
 	 * 获取对应字段的值列表
 	 */
-	public static Set<?> getPropertyValues(List<?> list, String... properties) {
-		Set<Object> valueList = new HashSet<>();
+	public static <T> Set<T> getPropertyValues(List<?> list, Class<T> requiredType, String... properties) {
+		Set<T> valueList = new HashSet<>();
 		for (Object object : list) {
 			for (String property : properties) {
 				Object value = ReflectUtil.getPropertyValue(object, property);
 				if(null == value) continue;
-				valueList.add(value);
+				valueList.add((T) value);
 			}
 		}
 		return valueList;
 	}
 
-	public static Set<?> getFieldValues(List<Map<String, Object>> list, String... fields) {
-		Set<Object> valueList = new HashSet<>();
+	public static <T> Set<T> getFieldValues(List<Map<String, Object>> list, Class<T> requiredType, String... fields) {
+		Set<T> valueList = new HashSet<>();
 		for (Map<String, Object> item : list) {
 			for (String field : fields) {
 				Object value = item.get(field);
 				if(null == value) continue;
-				valueList.add(value);
+				valueList.add((T) value);
 			}
 		}
 		return valueList;
@@ -59,10 +59,10 @@ public class ServiceUtil {
 	/**
 	 * 将List数据格式化为以对应字段值为下标的Map
 	 */
-	public static Map<?, ?> indexObjectList(List<?> list, String property) {
-		Map<Object, Object> map = new HashMap<>();
+	public static <K, V> Map<K, V> indexObjectList(List<?> list, Class<K> kType, Class<V> vType, String property) {
+		Map<K, V> map = new HashMap<>();
 		for (Object item : list) {
-			map.put(ReflectUtil.getPropertyValue(item, property), item);
+			map.put((K) ReflectUtil.getPropertyValue(item, property), (V) item);
 		}
 		return map;
 	}

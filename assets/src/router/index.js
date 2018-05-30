@@ -43,6 +43,10 @@ let routes = [{
     path: '/role/index',
     name: 'RoleIndex',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/role/index')
+  }, {
+    path: '/menu/index',
+    name: 'MenuIndex',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/menu/index')
   }]
 }, {
   path: '*',

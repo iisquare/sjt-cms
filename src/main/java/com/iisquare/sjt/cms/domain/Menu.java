@@ -23,7 +23,9 @@ public class Menu implements Serializable {
     @Column
     private String name;
     @Column
-    private Integer parent;
+    private Integer parentId;
+    @Transient
+    private String parentIdName;
     @Column
     private String icon; // 图标
     @Column
@@ -34,15 +36,21 @@ public class Menu implements Serializable {
     private Integer sort;
     @Column
     private Integer status;
+    @Transient
+    private String statusText;
     @Column
     private String description;
     @Column
     private Long createdTime;
     @Column
     private Integer createdUid;
+    @Transient
+    private String createdUidName;
     @Column
     private Long updatedTime;
     @Column
     private Integer updatedUid;
+    @Transient
+    private String updatedUidName;
 
 }

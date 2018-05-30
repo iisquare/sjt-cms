@@ -21,5 +21,6 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.46'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
     compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
+    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.6.RELEASE'
 
 }
