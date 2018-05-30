@@ -86,7 +86,7 @@ export default {
       form: {},
       rules: {
         name: [{required: true, message: '请输入名称', trigger: 'blur'}],
-        status: [{required: true, message: '请选择状态', trigger: 'blur'}]
+        status: [{required: true, message: '请选择状态', trigger: 'change'}]
       }
     }
   },
