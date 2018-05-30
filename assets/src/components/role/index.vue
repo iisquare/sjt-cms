@@ -21,8 +21,8 @@
       <el-table-column prop="name" label="名称" sortable></el-table-column>
       <el-table-column prop="sort" label="排序" sortable></el-table-column>
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
-      <el-table-column prop="updatedUidName" label="更新者" sortable></el-table-column>
-      <el-table-column prop="updatedTime" label="更新时间" width="150" :formatter="date" sortable></el-table-column>
+      <el-table-column prop="updatedUidName" label="操作者" sortable></el-table-column>
+      <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
@@ -174,7 +174,7 @@ export default {
       }
     },
     show (id, row) {
-      this.form = Object.assign({}, row, {status: row.status + ''})
+      this.form = Object.assign({}, row, {description: row.description ? row.description : '暂无'})
       this.infoVisible = true
     }
   },
