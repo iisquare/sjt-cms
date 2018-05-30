@@ -144,7 +144,7 @@ export default {
       })
     },
     edit (id, row) {
-      this.form = Object.assign({}, row)
+      this.form = Object.assign({}, row, {status: row.status + ''})
       this.formVisible = true
       if (!this.config.ready) {
         this.config.ready = true
