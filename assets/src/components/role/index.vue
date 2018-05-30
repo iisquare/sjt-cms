@@ -23,10 +23,10 @@
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
       <el-table-column prop="updatedUidName" label="更新者" sortable></el-table-column>
       <el-table-column prop="updatedTime" label="更新时间" width="150" :formatter="date" sortable></el-table-column>
-      <el-table-column label="操作" width="150">
+      <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="info" size="small" @click="edit(scope.$id, scope.row)">查看</el-button>
-          <el-button size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
+          <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
+          <el-button type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -59,6 +59,22 @@
         <el-button type="primary" @click.native="submit" :loading="formLoading">提交</el-button>
       </div>
     </el-dialog>
+    <!--编辑界面-->
+    <el-dialog title="查看" :visible.sync="infoVisible" :close-on-click-modal="false">
+      <el-form :model="form" label-width="80px" :loading="infoLoading">
+        <el-form-item label="名称">{{form.name}}</el-form-item>
+        <el-form-item label="排序">{{form.sort}}</el-form-item>
+        <el-form-item label="状态">{{form.statusText}}</el-form-item>
+        <el-form-item label="描述">{{form.description}}</el-form-item>
+        <el-form-item label="创建者">{{form.createdUidName}}</el-form-item>
+        <el-form-item label="创建时间">{{form.createdTime|date}}</el-form-item>
+        <el-form-item label="修改者">{{form.updatedUidName}}</el-form-item>
+        <el-form-item label="修改时间">{{form.updatedTime|date}}</el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="infoVisible = false">关闭</el-button>
+      </div>
+    </el-dialog>
   </section>
 </template>
 <script>
@@ -77,6 +93,8 @@ export default {
       total: 0,
       loading: false,
       sels: [], // 列表选中列
+      infoVisible: false,
+      infoLoading: false,
       formVisible: false,
       formLoading: false,
       config: {
@@ -154,6 +172,10 @@ export default {
           }
         })
       }
+    },
+    show (id, row) {
+      this.form = Object.assign({}, row, {status: row.status + ''})
+      this.infoVisible = true
     }
   },
   mounted () {
