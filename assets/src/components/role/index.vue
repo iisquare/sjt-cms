@@ -22,8 +22,8 @@
       <el-table-column prop="sort" label="排序" sortable></el-table-column>
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
       <el-table-column prop="updatedUidName" label="更新者" sortable></el-table-column>
-      <el-table-column prop="updatedTime" label="更新时间" :formatter="date" sortable></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column prop="updatedTime" label="更新时间" width="150" :formatter="date" sortable></el-table-column>
+      <el-table-column label="操作" width="150">
         <template slot-scope="scope">
           <el-button type="info" size="small" @click="edit(scope.$id, scope.row)">查看</el-button>
           <el-button size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
@@ -64,6 +64,7 @@
 <script>
 import wrapper from '@/core/RequestWrapper'
 import roleService from '@/service/role'
+import DateUtil from '@/utils/date'
 export default {
   data () {
     return {
@@ -90,8 +91,8 @@ export default {
     }
   },
   methods: {
-    date (row, column) {
-      console.log(row, column)
+    date (row, column, cellValue, index) {
+      return DateUtil.format(cellValue)
     },
     search () {
       this.loading = true

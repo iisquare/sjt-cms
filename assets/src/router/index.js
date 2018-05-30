@@ -26,7 +26,6 @@ let routes = [{
   component: () => import(/* webpackChunkName: 'error' */ '@/components/error/500')
 }, {
   path: '/',
-  name: 'LayoutMain',
   component: () => import(/* webpackChunkName: 'main' */ '@/components/layout/main'),
   children: [{
     path: '/',

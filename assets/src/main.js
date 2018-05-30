@@ -7,11 +7,14 @@ import store from './store'
 import App from './App'
 import router from './router'
 import 'font-awesome/css/font-awesome.min.css'
+import DateUtil from './utils/date'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 store.dispatch('user/loadConfig')
+
+Vue.filter('date', DateUtil.format)
 
 /* eslint-disable no-new */
 new Vue({
