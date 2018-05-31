@@ -47,6 +47,10 @@ let routes = [{
     path: '/menu/index',
     name: 'MenuIndex',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/menu/index')
+  }, {
+    path: '/resource/index',
+    name: 'ResourceIndex',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/resource/index')
   }]
 }, {
   path: '*',

@@ -35,11 +35,11 @@
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
       <el-table-column prop="updatedUidName" label="操作者" sortable></el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
-      <el-table-column label="操作" width="138">
+      <el-table-column label="操作" width="126">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
           <el-button type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
-          <el-button type="text" size="small" @click="sublevel(scope.$id, scope.row)">子菜单</el-button>
+          <el-button type="text" size="small" @click="sublevel(scope.$id, scope.row)">子级</el-button>
         </template>
       </el-table-column>
     </el-table>

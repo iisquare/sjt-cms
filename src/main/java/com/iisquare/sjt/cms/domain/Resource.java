@@ -23,7 +23,9 @@ public class Resource implements Serializable {
     @Column
     private String name;
     @Column
-    private Integer parent;
+    private Integer parentId;
+    @Transient
+    private String parentIdName;
     @Column
     private String module;
     @Column
@@ -34,15 +36,21 @@ public class Resource implements Serializable {
     private Integer sort;
     @Column
     private Integer status;
+    @Transient
+    private String statusText;
     @Column
     private String description;
     @Column
     private Long createdTime;
     @Column
     private Integer createdUid;
+    @Transient
+    private String createdUidName;
     @Column
     private Long updatedTime;
     @Column
     private Integer updatedUid;
+    @Transient
+    private String updatedUidName;
 
 }
