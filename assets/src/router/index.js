@@ -51,6 +51,10 @@ let routes = [{
     path: '/resource/index',
     name: 'ResourceIndex',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/resource/index')
+  }, {
+    path: '/settings/index',
+    name: 'SettingsIndex',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/settings/index')
   }]
 }, {
   path: '*',

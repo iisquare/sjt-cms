@@ -29,12 +29,12 @@ public class Settings implements Serializable {
     @Column
     private Integer sort;
     @Column
-    private Integer status;
-    @Column
     private String description;
     @Column
     private Long updatedTime;
     @Column
     private Integer updatedUid;
+    @Transient
+    private String updatedUidName;
 
 }
