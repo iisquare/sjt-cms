@@ -58,7 +58,7 @@ public class UserController {
             info.setCreatedIp(ServletUtil.getRemoteAddr(request));
         }
         if(!DPUtil.empty(password)) {
-            Integer salt = DPUtil.parseInt(DPUtil.random(4));
+            String salt = DPUtil.random(4);
             password = userService.password(password, salt);
             info.setPassword(password);
             info.setSalt(salt);

@@ -37,7 +37,7 @@ public class UserService extends ServiceBase {
         return userDao.existsBySerial(serial);
     }
 
-    public String password(String password, Integer salt) {
+    public String password(String password, String salt) {
         return CodeUtil.md5(CodeUtil.md5(password) + salt);
     }
 
@@ -73,19 +73,25 @@ public class UserService extends ServiceBase {
         return userDao.save(info);
     }
 
+    public List<User> filter(List<User> list) {
+        for (User item : list) {
+            item.setPassword("");
+            item.setSalt("");
+        }
+        return list;
+    }
+
     public Map<?, ?> search(Map<?, ?> param, Map<?, ?> config) {
         Map<String, Object> result = new LinkedHashMap<>();
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);
         int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, 1, 500, 15);
-        Page<?> data = userDao.findAll(new Specification() {
+        Page<User> data = userDao.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
                 int status = DPUtil.parseInt(param.get("status"));
                 if(!"".equals(DPUtil.parseString(param.get("status")))) {
                     predicates.add(cb.equal(root.get("status"), status));
-                } else {
-                    predicates.add(cb.notEqual(root.get("status"), -1));
                 }
                 String name = DPUtil.trim(DPUtil.parseString(param.get("name")));
                 if(!DPUtil.empty(name)) {
@@ -138,7 +144,7 @@ public class UserService extends ServiceBase {
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }, PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("sort"))));
-        List<?> rows = data.getContent();
+        List<?> rows = this.filter(data.getContent());
         if(!DPUtil.empty(config.get("withUserInfo"))) {
             userService.fillInfo(rows, "createdUid", "updatedUid");
         }

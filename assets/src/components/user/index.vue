@@ -4,10 +4,7 @@
     <el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
       <el-form :inline="true" :model="filters">
         <el-form-item>
-          <el-input v-model="filters.name" placeholder="名称"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" v-on:click="search">查询</el-button>
+          <el-button type="primary" @click="searchVisible = true">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="success" @click="add">新增</el-button>
@@ -18,15 +15,17 @@
     <el-table :data="rows" highlight-current-row v-loading="loading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" sortable=""></el-table-column>
+      <el-table-column prop="serial" label="账号" sortable></el-table-column>
       <el-table-column prop="name" label="名称" sortable></el-table-column>
       <el-table-column prop="sort" label="排序" sortable></el-table-column>
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
+      <el-table-column prop="loginedTime" label="登录时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column prop="updatedUidName" label="操作者" sortable></el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
-          <el-button type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.status != -1" type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -39,8 +38,14 @@
     <!--编辑界面-->
     <el-dialog :title="form.id ? ('修改[' + form.id + ']') : '新增'" :visible.sync="formVisible" :close-on-click-modal="false">
       <el-form :model="form" label-width="80px" :rules="rules" ref="form">
+        <el-form-item label="账号" prop="serial">
+          <el-input v-model="form.serial" auto-complete="off" :disabled="form.id"></el-input>
+        </el-form-item>
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="密码">
+          <el-input v-model="form.password" auto-complete="off" placeholder="留空时不对密码做任何处理"></el-input>
         </el-form-item>
         <el-form-item label="排序">
           <el-input-number v-model="form.sort" :min="0" :max="200"></el-input-number>
@@ -62,14 +67,19 @@
     <!--展示界面-->
     <el-dialog title="查看" :visible.sync="infoVisible" :close-on-click-modal="false">
       <el-form :model="form" label-width="80px" :loading="infoLoading">
+        <el-form-item label="账号">{{form.serial}}</el-form-item>
         <el-form-item label="名称">{{form.name}}</el-form-item>
         <el-form-item label="排序">{{form.sort}}</el-form-item>
         <el-form-item label="状态">{{form.statusText}}</el-form-item>
         <el-form-item label="描述">{{form.description}}</el-form-item>
         <el-form-item label="创建者">{{form.createdUidName}}</el-form-item>
         <el-form-item label="创建时间">{{form.createdTime|date}}</el-form-item>
+        <el-form-item label="注册IP">{{form.createdIp}}</el-form-item>
         <el-form-item label="修改者">{{form.updatedUidName}}</el-form-item>
         <el-form-item label="修改时间">{{form.updatedTime|date}}</el-form-item>
+        <el-form-item label="登录IP">{{form.loginedIp}}</el-form-item>
+        <el-form-item label="登录时间">{{form.loginedTime|date}}</el-form-item>
+        <el-form-item label="锁定时间">{{form.lockedTime|date}}</el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="infoVisible = false">关闭</el-button>
@@ -79,7 +89,7 @@
 </template>
 <script>
 import wrapper from '@/core/RequestWrapper'
-import roleService from '@/service/role'
+import userService from '@/service/user'
 import DateUtil from '@/utils/date'
 export default {
   data () {
@@ -93,16 +103,19 @@ export default {
       total: 0,
       loading: false,
       sels: [], // 列表选中列
+      searchVisible: false,
       infoVisible: false,
       infoLoading: false,
       formVisible: false,
       formLoading: false,
       config: {
         ready: false,
+        defaultPassword: '',
         status: []
       },
       form: {},
       rules: {
+        serial: [{required: true, message: '请输入账号', trigger: 'blur'}],
         name: [{required: true, message: '请输入名称', trigger: 'blur'}],
         status: [{required: true, message: '请选择状态', trigger: 'change'}]
       }
@@ -114,7 +127,7 @@ export default {
     },
     search () {
       this.loading = true
-      wrapper.tips(roleService.list(this.filters)).then((response) => {
+      wrapper.tips(userService.list(this.filters)).then((response) => {
         this.total = response.data.total
         this.rows = response.data.rows
         this.loading = false
@@ -131,7 +144,7 @@ export default {
       let ids = this.sels.map(item => item.id)
       this.$confirm('确认删除选中记录吗？', '提示', {type: 'warning'}).then(() => {
         this.loading = true
-        wrapper.tips(roleService.delete(ids), true).then((response) => {
+        wrapper.tips(userService.delete(ids), true).then((response) => {
           if (response.code === 0) {
             this.search()
           } else {
@@ -144,7 +157,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (!valid || this.formLoading) return false
         this.formLoading = true
-        wrapper.tips(roleService.save(this.form)).then(response => {
+        wrapper.tips(userService.save(this.form)).then(response => {
           if (response.code === 0) {
             this.formVisible = false
             this.search()
@@ -155,7 +168,9 @@ export default {
     },
     add () {
       this.edit(0, {
+        serial: '',
         name: '',
+        password: this.config.defaultPassword,
         sort: '',
         status: '',
         description: ''
@@ -166,9 +181,10 @@ export default {
       this.formVisible = true
       if (!this.config.ready) {
         this.config.ready = true
-        wrapper.tips(roleService.config()).then((response) => {
+        wrapper.tips(userService.config()).then((response) => {
           if (response.code === 0) {
             Object.assign(this.config, response.data)
+            if (id === 0) this.form.password = this.config.defaultPassword
           }
         })
       }

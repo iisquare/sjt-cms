@@ -27,7 +27,7 @@ public class User implements Serializable {
     @Column
     private String password;
     @Column
-    private Integer salt; // 密码盐
+    private String salt; // 密码盐
     @Column
     private Integer sort;
     @Column
