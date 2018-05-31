@@ -35,6 +35,52 @@
       <el-pagination layout="prev, pager, next" @current-change="pageChange" :current-page="filters.page" :page-size="filters.pageSize" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
+    <!--搜索界面-->
+    <el-dialog title="查询参数" :visible.sync="searchVisible" :close-on-click-modal="false">
+      <el-form :model="filters" label-width="80px" ref="filters">
+        <el-form-item label="账号" prop="serial">
+          <el-input v-model="filters.serial" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model="filters.name" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="filters.status" clearable placeholder="请选择">
+            <el-option v-for="(value, key) in config.status" :key="key" :label="value" :value="key"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="注册IP" prop="createdIp">
+          <el-input v-model="filters.createdIp" auto-complete="on"></el-input>
+        </el-form-item>
+        <el-form-item label="创建时间" prop="createdTime">
+          <el-date-picker v-model="filters.createdTime" type="datetimerange" @change="dateChange('createdTime')"
+            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="修改时间" prop="updatedTime">
+          <el-date-picker v-model="filters.updatedTime" type="datetimerange" @change="dateChange('updatedTime')"
+            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="登录IP" prop="loginedIp">
+          <el-input v-model="filters.loginedIp" auto-complete="on"></el-input>
+        </el-form-item>
+        <el-form-item label="登录时间" prop="loginedTime">
+          <el-date-picker v-model="filters.loginedTime" type="datetimerange" @change="dateChange('loginedTime')"
+            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="锁定时间" prop="lockedTime">
+          <el-date-picker v-model="filters.lockedTime" type="datetimerange" @change="dateChange('lockedTime')"
+            range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+          </el-date-picker>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="reset('filters')">重置</el-button>
+        <el-button type="primary" @click.native="search">搜索</el-button>
+      </div>
+    </el-dialog>
     <!--编辑界面-->
     <el-dialog :title="form.id ? ('修改[' + form.id + ']') : '新增'" :visible.sync="formVisible" :close-on-click-modal="false">
       <el-form :model="form" label-width="80px" :rules="rules" ref="form">
@@ -96,8 +142,7 @@ export default {
     return {
       filters: {
         page: 1,
-        pageSize: 15,
-        name: ''
+        pageSize: 15
       },
       rows: [],
       total: 0,
@@ -122,10 +167,22 @@ export default {
     }
   },
   methods: {
+    reset (form) {
+      this.$refs[form].resetFields()
+    },
+    dateChange (field) {
+      if (this.filters[field]) {
+        this.filters[field + 'Start'] = DateUtil.format(new Date(this.filters[field][0]).getTime())
+        this.filters[field + 'End'] = DateUtil.format(new Date(this.filters[field][1]).getTime())
+      } else {
+        this.filters[field + 'Start'] = this.filters[field + 'End'] = ''
+      }
+    },
     date (row, column, cellValue, index) {
       return DateUtil.format(cellValue)
     },
     search () {
+      this.searchVisible = false
       this.loading = true
       wrapper.tips(userService.list(this.filters)).then((response) => {
         this.total = response.data.total
@@ -179,15 +236,6 @@ export default {
     edit (id, row) {
       this.form = Object.assign({}, row, {status: row.status + ''})
       this.formVisible = true
-      if (!this.config.ready) {
-        this.config.ready = true
-        wrapper.tips(userService.config()).then((response) => {
-          if (response.code === 0) {
-            Object.assign(this.config, response.data)
-            if (id === 0) this.form.password = this.config.defaultPassword
-          }
-        })
-      }
     },
     show (id, row) {
       this.form = Object.assign({}, row, {description: row.description ? row.description : '暂无'})
@@ -196,6 +244,12 @@ export default {
   },
   mounted () {
     this.search()
+    wrapper.tips(userService.config()).then((response) => {
+      this.config.ready = true
+      if (response.code === 0) {
+        Object.assign(this.config, response.data)
+      }
+    })
   }
 }
 </script>

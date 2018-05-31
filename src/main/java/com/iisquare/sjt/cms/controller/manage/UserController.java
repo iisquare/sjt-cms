@@ -93,7 +93,7 @@ public class UserController {
 
     @RequestMapping("/config")
     public String configAction(ModelMap model) {
-        model.put("status", userService.status("default"));
+        model.put("status", userService.status("full"));
         model.put("defaultPassword", settingsService.get("system", "defaultPassword"));
         return ApiUtil.echoResult(0, null, model);
     }
