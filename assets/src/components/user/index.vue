@@ -169,6 +169,13 @@ export default {
   methods: {
     reset (form) {
       this.$refs[form].resetFields()
+      switch (form) {
+        case 'filters' :
+          ['createdTime', 'updatedTime', 'loginedTime', 'lockedTime'].forEach((value) => {
+            this.dateChange(value)
+          })
+          break
+      }
     },
     dateChange (field) {
       if (this.filters[field]) {
