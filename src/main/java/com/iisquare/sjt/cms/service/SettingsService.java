@@ -29,6 +29,21 @@ public class SettingsService extends ServiceBase {
     @Autowired
     private UserService userService;
 
+    public boolean set(String type, String key, String value) {
+        Settings info = settingsDao.findFirstByTypeAndName(type, key);
+        if(null == info) return false;
+        info.setContent(value);
+        return null != save(info, 0);
+    }
+
+    public String get(String type, String key) {
+        Settings info = settingsDao.findFirstByTypeAndName(type, key);
+        if(null == info) return "";
+        String value = info.getContent();
+        if(null == value) return "";
+        return value;
+    }
+
     public Settings info(Integer id) {
         if(null == id || id < 1) return null;
         return settingsDao.findById(id).get();

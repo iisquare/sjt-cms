@@ -5,4 +5,6 @@ import com.iisquare.sjt.cms.domain.Settings;
 
 public interface SettingsDao extends DaoBase<Settings, Integer> {
 
+    Settings findFirstByTypeAndName(String type, String name);
+
 }

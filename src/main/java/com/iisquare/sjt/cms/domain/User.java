@@ -32,23 +32,29 @@ public class User implements Serializable {
     private Integer sort;
     @Column
     private Integer status;
+    @Transient
+    private String statusText;
     @Column
     private String description;
     @Column
     private Long createdTime;
     @Column
     private Integer createdUid;
+    @Transient
+    private String createdUidName;
     @Column
     private String createdIp;
     @Column
     private Long updatedTime;
     @Column
     private Integer updatedUid;
+    @Transient
+    private String updatedUidName;
     @Column
     private Long loginedTime; // 最后登录时间
     @Column
     private String loginedIp; // 最后登录IP
     @Column
-    private Long lockedTime;
+    private Long lockedTime; // 锁定时间
 
 }

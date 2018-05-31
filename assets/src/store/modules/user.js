@@ -15,7 +15,7 @@ const getters = {
 // actions
 const actions = {
   loadConfig ({ commit }) {
-    wrapper.tips(userService.config()).then((response) => {
+    wrapper.tips(userService.login()).then((response) => {
       if (response.code === 0) {
         commit('ready')
         commit('data', response.data)

@@ -32,6 +32,10 @@ let routes = [{
     name: 'Welcome',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/layout/welcome')
   }, {
+    path: '/user/index',
+    name: 'UserIndex',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/user/index')
+  }, {
     path: '/user/password',
     name: 'UserPassword',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/user/password')

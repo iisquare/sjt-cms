@@ -27,3 +27,7 @@ spring:
     mode: HTML
     suffix: .htm
     cache: false
+
+custom:
+  date:
+    format: yyyy-MM-dd HH:mm:ss
