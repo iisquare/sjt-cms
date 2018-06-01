@@ -1,6 +1,8 @@
 package com.iisquare.sjt.cms.controller.manage;
 
 import com.iisquare.sjt.cms.domain.Role;
+import com.iisquare.sjt.cms.service.MenuService;
+import com.iisquare.sjt.cms.service.ResourceService;
 import com.iisquare.sjt.cms.service.RoleService;
 import com.iisquare.sjt.cms.service.UserService;
 import com.iisquare.sjt.cms.utils.ApiUtil;
@@ -12,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/manage/role")
@@ -24,6 +24,46 @@ public class RoleController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private MenuService menuService;
+    @Autowired
+    private ResourceService resourceService;
+
+    @RequestMapping("/tree")
+    public String treeAction(@RequestBody Map<?, ?> param, ModelMap model) {
+        Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
+        if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
+        Role info = roleService.info(id);
+        if(null == info || -1 == info.getStatus()) return ApiUtil.echoResult(1002, "记录不存在", id);
+        Map<String, Object> result = new LinkedHashMap<>();
+        String type = DPUtil.parseString(param.get("type"));
+        if(param.containsKey("bids")) {
+            switch (type) {
+                case "menu":
+                case "resource":
+                    Set<Integer> bids = new HashSet<>();
+                    bids.addAll((List<Integer>) param.get("bids"));
+                    bids = roleService.relationIds(type, id, bids);
+                    return ApiUtil.echoResult(null == bids ? 500 : 0, null, bids);
+                default:
+                    return ApiUtil.echoResult(1003, "类型异常", id);
+            }
+        } else {
+            switch (type) {
+                case "menu":
+                    result.put("tree", menuService.tree());
+                    result.put("checked", roleService.relationIds(type, info.getId(), null));
+                    break;
+                case "resource":
+                    result.put("tree", resourceService.tree());
+                    result.put("checked", roleService.relationIds(type, info.getId(), null));
+                    break;
+                default:
+                    result.put("tree", new ArrayList<>());
+            }
+            return ApiUtil.echoResult(0, null, result);
+        }
+    }
 
     @RequestMapping("/list")
     public String listAction(@RequestBody Map<?, ?> param) {

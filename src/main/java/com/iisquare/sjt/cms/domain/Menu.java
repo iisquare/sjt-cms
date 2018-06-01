@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,6 +27,8 @@ public class Menu implements Serializable {
     private Integer parentId;
     @Transient
     private String parentIdName;
+    @Transient
+    private List<Menu> children;
     @Column
     private String icon; // 图标
     @Column

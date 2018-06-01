@@ -23,10 +23,12 @@
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
       <el-table-column prop="updatedUidName" label="操作者" sortable></el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="200">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
           <el-button type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
+          <el-button type="text" size="small" @click="editTree('resource', scope.row.id)">资源</el-button>
+          <el-button type="text" size="small" @click="editTree('menu', scope.row.id)">菜单</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -36,6 +38,19 @@
       <el-pagination layout="prev, pager, next" @current-change="pageChange" :current-page="filters.page" :page-size="filters.pageSize" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
+    <!--权限菜单-->
+    <el-dialog :title="tree.title + '[' + tree.id + ']'" :visible.sync="tree.visible" :close-on-click-modal="false">
+      <el-input placeholder="输入关键字进行过滤" v-model="treeKeyword"></el-input>
+      <el-tree class="filter-tree" :data="tree.data"
+        default-expand-all show-checkbox check-strictly ref="tree"
+        :props="tree.props" :filter-node-method="filterTree"
+        node-key="id" :default-checked-keys="tree.checked">
+      </el-tree>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="tree.visible = false">取消</el-button>
+        <el-button type="primary" @click.native="saveTree" :loading="tree.loading">提交</el-button>
+      </div>
+    </el-dialog>
     <!--编辑界面-->
     <el-dialog :title="form.id ? ('修改[' + form.id + ']') : '新增'" :visible.sync="formVisible" :close-on-click-modal="false">
       <el-form :model="form" label-width="80px" :rules="rules" ref="form">
@@ -105,10 +120,65 @@ export default {
       rules: {
         name: [{required: true, message: '请输入名称', trigger: 'blur'}],
         status: [{required: true, message: '请选择状态', trigger: 'change'}]
+      },
+      treeKeyword: '',
+      tree: {
+        id: '',
+        type: '',
+        title: '',
+        visible: false,
+        loading: false,
+        checked: [],
+        props: {
+          children: 'children',
+          label: 'name'
+        },
+        data: []
       }
     }
   },
+  watch: {
+    treeKeyword (val) {
+      this.$refs.tree.filter(val)
+    }
+  },
   methods: {
+    filterTree (value, data) {
+      if (!value) return true
+      return data.label.indexOf(value) !== -1
+    },
+    editTree (type, id) {
+      Object.assign(this.tree, {
+        id: id,
+        type: type,
+        title: {menu: '菜单', resource: '资源'}[type],
+        data: [],
+        checked: [],
+        visible: true,
+        loading: true
+      })
+      wrapper.tips(roleService.tree({id: id, type: type})).then((response) => {
+        if (response.code === 0) {
+          Object.assign(this.tree, {
+            data: response.data.tree,
+            checked: response.data.checked,
+            loading: false
+          })
+        }
+      })
+    },
+    saveTree () {
+      if (this.tree.loading) return false
+      this.tree.loading = true
+      wrapper.tips(roleService.tree({
+        id: this.tree.id, type: this.tree.type, bids: this.$refs.tree.getCheckedKeys()
+      })).then(response => {
+        if (response.code === 0) {
+          this.tree.visible = false
+        }
+        this.tree.loading = true
+      })
+    },
     date (row, column, cellValue, index) {
       return DateUtil.format(cellValue)
     },

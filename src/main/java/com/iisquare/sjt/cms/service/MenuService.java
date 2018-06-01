@@ -78,6 +78,18 @@ public class MenuService extends ServiceBase {
         return list;
     }
 
+    public List<Menu> tree() {
+        List<Menu> data = menuDao.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.notEqual(root.get("status"), -1));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, Sort.by(Sort.Order.desc("sort")));
+        return ServiceUtil.formatRelation(data, Menu.class, "parentId", 0, "id", "children");
+    }
+
     public Map<?, ?> search(Map<?, ?> param, Map<?, ?> config) {
         Map<String, Object> result = new LinkedHashMap<>();
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);

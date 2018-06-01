@@ -12,5 +12,8 @@ export default {
   },
   save (param) {
     return base.post('/role/save', param)
+  },
+  tree (param) {
+    return base.post('/role/tree', param)
   }
 }

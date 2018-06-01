@@ -28,6 +28,18 @@ public class ResourceService extends ServiceBase {
     @Autowired
     private UserService userService;
 
+    public List<Resource> tree() {
+        List<Resource> data = resourceDao.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.notEqual(root.get("status"), -1));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, Sort.by(Sort.Order.desc("sort")));
+        return ServiceUtil.formatRelation(data, Resource.class, "parentId", 0, "id", "children");
+    }
+
     public Map<?, ?> status(String level) {
         Map<Integer, String> status = new LinkedHashMap<>();
         status.put(1, "启用");

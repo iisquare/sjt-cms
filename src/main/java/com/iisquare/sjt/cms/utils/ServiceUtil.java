@@ -9,6 +9,18 @@ import java.util.*;
  */
 public class ServiceUtil {
 
+	public static <T> List<T> formatRelation(List<?> data, Class<T> requiredType, String parentKey, Object parentValue, String idKey, String childrenKey) {
+		List<T> list = new ArrayList<>();
+		for(Object item : data) {
+			if(!parentValue.equals(ReflectUtil.getPropertyValue(item, parentKey))) continue;
+			list.add((T) item);
+			ReflectUtil.setPropertyValue(item, childrenKey, new Class[] {List.class}, new Object[]{
+				formatRelation(data, requiredType, parentKey, ReflectUtil.getPropertyValue(item, idKey), idKey, childrenKey)
+			});
+		}
+		return list;
+	}
+
 	public static void fillFields(List<Map<String, Object>> list, String[] froms, String[] tos, Map<?, ?> ...maps) {
 		if(null == list) return;
 		for (Map<String, Object> item : list) {
