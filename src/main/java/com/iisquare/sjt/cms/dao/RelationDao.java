@@ -12,4 +12,6 @@ public interface RelationDao extends DaoBase<Relation, String> {
 
     List<Relation> findAllByTypeAndAidIn(String type, Collection<Integer> aids);
 
+    List<Relation> findAllByTypeAndBidIn(String type, Collection<Integer> bids);
+
 }

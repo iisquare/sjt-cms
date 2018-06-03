@@ -148,6 +148,11 @@ public class UserService extends ServiceBase {
                 if(!DPUtil.empty(lockedTimeEnd)) {
                     predicates.add(cb.le(root.get("lockedTime"), DPUtil.dateTimeToMillis(lockedTimeEnd, configuration.getDateFormat())));
                 }
+                List<Integer> roleIds = (List<Integer>) param.get("roleIds");
+                if(!DPUtil.empty(roleIds)) {
+                    predicates.add(root.get("id").in(ServiceUtil.getPropertyValues(
+                        relationDao.findAllByTypeAndBidIn("user_role", roleIds), Integer.class, "aid")));
+                }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }, PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("sort"))));
