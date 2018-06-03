@@ -1,10 +1,7 @@
 package com.iisquare.sjt.cms.controller.manage;
 
 import com.iisquare.sjt.cms.domain.Role;
-import com.iisquare.sjt.cms.service.MenuService;
-import com.iisquare.sjt.cms.service.ResourceService;
-import com.iisquare.sjt.cms.service.RoleService;
-import com.iisquare.sjt.cms.service.UserService;
+import com.iisquare.sjt.cms.service.*;
 import com.iisquare.sjt.cms.utils.ApiUtil;
 import com.iisquare.sjt.cms.utils.DPUtil;
 import com.iisquare.sjt.cms.utils.ValidateUtil;
@@ -28,6 +25,8 @@ public class RoleController {
     private MenuService menuService;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private RelationService relationService;
 
     @RequestMapping("/tree")
     public String treeAction(@RequestBody Map<?, ?> param, ModelMap model) {
@@ -43,7 +42,7 @@ public class RoleController {
                 case "resource":
                     Set<Integer> bids = new HashSet<>();
                     bids.addAll((List<Integer>) param.get("bids"));
-                    bids = roleService.relationIds(type, id, bids);
+                    bids = relationService.relationIds("role_" + type, id, bids);
                     return ApiUtil.echoResult(null == bids ? 500 : 0, null, bids);
                 default:
                     return ApiUtil.echoResult(1003, "类型异常", id);
@@ -52,15 +51,14 @@ public class RoleController {
             switch (type) {
                 case "menu":
                     result.put("tree", menuService.tree());
-                    result.put("checked", roleService.relationIds(type, info.getId(), null));
                     break;
                 case "resource":
                     result.put("tree", resourceService.tree());
-                    result.put("checked", roleService.relationIds(type, info.getId(), null));
                     break;
                 default:
                     result.put("tree", new ArrayList<>());
             }
+            result.put("checked", relationService.relationIds("role_" + type, info.getId(), null));
             return ApiUtil.echoResult(0, null, result);
         }
     }

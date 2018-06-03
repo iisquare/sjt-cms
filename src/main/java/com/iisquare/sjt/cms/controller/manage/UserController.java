@@ -1,7 +1,9 @@
 package com.iisquare.sjt.cms.controller.manage;
 
 import com.iisquare.sjt.cms.core.Configuration;
+import com.iisquare.sjt.cms.domain.Role;
 import com.iisquare.sjt.cms.domain.User;
+import com.iisquare.sjt.cms.service.RelationService;
 import com.iisquare.sjt.cms.service.SettingsService;
 import com.iisquare.sjt.cms.service.UserService;
 import com.iisquare.sjt.cms.utils.ApiUtil;
@@ -16,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/manage/user")
@@ -30,10 +30,12 @@ public class UserController {
     private Configuration configuration;
     @Autowired
     private SettingsService settingsService;
+    @Autowired
+    private RelationService relationService;
 
     @RequestMapping("/list")
     public String listAction(@RequestBody Map<?, ?> param) {
-        Map<?, ?> result = userService.search(param, DPUtil.buildMap("withUserInfo", true, "withStatusText", true));
+        Map<?, ?> result = userService.search(param, DPUtil.buildMap("withUserInfo", true, "withStatusText", true, "withRoles", true));
         return ApiUtil.echoResult(0, null, result);
     }
 
@@ -96,6 +98,29 @@ public class UserController {
         model.put("status", userService.status("full"));
         model.put("defaultPassword", settingsService.get("system", "defaultPassword"));
         return ApiUtil.echoResult(0, null, model);
+    }
+
+    @RequestMapping("/tree")
+    public String treeAction(@RequestBody Map<?, ?> param, ModelMap model) {
+        Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
+        if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
+        User info = userService.info(id);
+        if(null == info || -1 == info.getStatus()) return ApiUtil.echoResult(1002, "记录不存在", id);
+        Map<String, Object> result = new LinkedHashMap<>();
+        String type = DPUtil.parseString(param.get("type"));
+        if(param.containsKey("bids")) {
+            switch (type) {
+                case "role":
+                    Set<Integer> bids = new HashSet<>();
+                    bids.addAll((List<Integer>) param.get("bids"));
+                    bids = relationService.relationIds("user_" + type, id, bids);
+                    return ApiUtil.echoResult(null == bids ? 500 : 0, null, bids);
+                default:
+                    return ApiUtil.echoResult(1003, "类型异常", id);
+            }
+        } else {
+            return ApiUtil.echoResult(0, null, result);
+        }
     }
 
     @RequestMapping("/login")

@@ -2,10 +2,13 @@ package com.iisquare.sjt.cms.service;
 
 import com.iisquare.sjt.cms.core.Configuration;
 import com.iisquare.sjt.cms.core.ServiceBase;
+import com.iisquare.sjt.cms.dao.RelationDao;
+import com.iisquare.sjt.cms.dao.RoleDao;
 import com.iisquare.sjt.cms.dao.UserDao;
+import com.iisquare.sjt.cms.domain.Relation;
 import com.iisquare.sjt.cms.domain.User;
+import com.iisquare.sjt.cms.domain.Role;
 import com.iisquare.sjt.cms.utils.*;
-import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +31,10 @@ public class UserService extends ServiceBase {
     private UserService userService;
     @Autowired
     private Configuration configuration;
+    @Autowired
+    private RelationDao relationDao;
+    @Autowired
+    private RoleDao roleDao;
 
     public boolean existsByName(String name, Integer ...ids) {
         return userDao.existsByNameEqualsAndIdNotIn(name, ids);
@@ -150,6 +157,25 @@ public class UserService extends ServiceBase {
         }
         if(!DPUtil.empty(config.get("withStatusText"))) {
             ServiceUtil.fillProperties(rows, new String[]{"status"}, new String[]{"statusText"}, status("full"));
+        }
+        if(!DPUtil.empty(config.get("withRoles")) && rows.size() > 0) {
+            Map<Integer, User> rowsMap = ServiceUtil.indexObjectList(rows, Integer.class, User.class, "id");
+            Set<Integer> ids = rowsMap.keySet();
+            List<Relation> relations = relationDao.findAllByTypeAndAidIn("user_role", ids);
+            Set<Integer> roleIds = ServiceUtil.getPropertyValues(relations, Integer.class, "bid");
+            Map<Integer, Role> roleMap = ServiceUtil.indexObjectList(roleDao.findAllById(roleIds), Integer.class, Role.class, "id");
+            for (Relation relation : relations) {
+                User item = rowsMap.get(relation.getAid());
+                if(null == item) continue;
+                List<Role> roles = item.getRoles();
+                if(null == roles) {
+                    roles = new ArrayList<>();
+                    item.setRoles(roles);
+                }
+                Role role = roleMap.get(relation.getBid());
+                if(null == role) continue;
+                roles.add(role);
+            }
         }
         result.put("page", page);
         result.put("pageSize", pageSize);

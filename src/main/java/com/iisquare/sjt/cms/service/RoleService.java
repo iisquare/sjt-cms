@@ -26,24 +26,6 @@ public class RoleService extends ServiceBase {
     private RoleDao roleDao;
     @Autowired
     private UserService userService;
-    @Autowired
-    private RelationDao relationDao;
-
-    public Set<Integer> relationIds(String type, Integer aid, Set<Integer> bids) {
-        type = "role_" + type;
-        List<Relation> list = relationDao.findAllByTypeAndAid(type, aid);
-        if(null == bids) {
-            return ServiceUtil.getPropertyValues(list, Integer.class, "bid");
-        } else {
-            relationDao.deleteAll(list);
-            list = new ArrayList<>();
-            for (Integer bid : bids) {
-                list.add(Relation.builder().id(type + "_" + aid + "_" + bid).type(type).aid(aid).bid(bid).build());
-            }
-            relationDao.saveAll(list);
-            return bids;
-        }
-    }
 
     public Map<?, ?> status(String level) {
         Map<Integer, String> status = new LinkedHashMap<>();

@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -56,5 +57,7 @@ public class User implements Serializable {
     private String loginedIp; // 最后登录IP
     @Column
     private Long lockedTime; // 锁定时间
+    @Transient
+    private List<Role> roles; // 拥有角色
 
 }
