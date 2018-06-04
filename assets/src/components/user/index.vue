@@ -105,7 +105,7 @@
     <el-dialog :title="form.id ? ('修改[' + form.id + ']') : '新增'" :visible.sync="formVisible" :close-on-click-modal="false">
       <el-form :model="form" label-width="80px" :rules="rules" ref="form">
         <el-form-item label="账号" prop="serial">
-          <el-input v-model="form.serial" auto-complete="off" :disabled="form.id"></el-input>
+          <el-input v-model="form.serial" auto-complete="off" :disabled="form.id ? true : false"></el-input>
         </el-form-item>
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" auto-complete="off"></el-input>
