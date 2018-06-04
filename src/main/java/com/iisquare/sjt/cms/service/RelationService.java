@@ -5,11 +5,13 @@ import com.iisquare.sjt.cms.dao.RelationDao;
 import com.iisquare.sjt.cms.domain.Relation;
 import com.iisquare.sjt.cms.utils.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class RelationService extends ServiceBase {
 
     @Autowired

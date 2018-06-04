@@ -62,8 +62,8 @@ public class RoleService extends ServiceBase {
     public Map<?, ?> search(Map<?, ?> param, Map<?, ?> config) {
         Map<String, Object> result = new LinkedHashMap<>();
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);
-        int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, 1, 500, 15);
-        Page<?> data = roleDao.findAll(new Specification() {
+        int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, -1, 500, 15);
+        Specification spec = new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
@@ -74,8 +74,22 @@ public class RoleService extends ServiceBase {
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
-        }, PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("sort"))));
-        List<?> rows = data.getContent();
+        };
+        List<?> rows = null;
+        long total = 0;
+        switch (pageSize) {
+            case 0:
+                total = roleDao.count(spec);
+                break;
+            case -1:
+                total = roleDao.count(spec);
+                rows = roleDao.findAll(spec);
+                break;
+            default:
+                Page<?> data = roleDao.findAll(spec, PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("sort"))));
+                rows = data.getContent();
+                total = data.getTotalElements();
+        }
         if(!DPUtil.empty(config.get("withUserInfo"))) {
             userService.fillInfo(rows, "createdUid", "updatedUid");
         }
@@ -84,7 +98,7 @@ public class RoleService extends ServiceBase {
         }
         result.put("page", page);
         result.put("pageSize", pageSize);
-        result.put("total", data.getTotalElements());
+        result.put("total", total);
         result.put("rows", rows);
         return result;
     }

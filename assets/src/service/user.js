@@ -18,5 +18,8 @@ export default {
   },
   logout () {
     return base.post('/user/logout')
+  },
+  tree (param) {
+    return base.post('/user/tree', param)
   }
 }

@@ -19,13 +19,15 @@
       <el-table-column prop="name" label="名称" sortable></el-table-column>
       <el-table-column prop="sort" label="排序" sortable></el-table-column>
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
+      <el-table-column prop="roles" label="角色" :formatter="roles" sortable></el-table-column>
       <el-table-column prop="loginedTime" label="登录时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column prop="updatedUidName" label="操作者" sortable></el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="130">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
           <el-button v-if="scope.row.status != -1" type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.status != -1" type="text" size="small" @click="editTree('role', scope.row.id)">角色</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -35,6 +37,19 @@
       <el-pagination layout="prev, pager, next" @current-change="pageChange" :current-page="filters.page" :page-size="filters.pageSize" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
+    <!--角色分配-->
+    <el-dialog :title="tree.title + '[' + tree.id + ']'" :visible.sync="tree.visible" :close-on-click-modal="false">
+      <el-table :data="tree.data" ref="tree" highlight-current-row v-loading="loading" @selection-change="treeChange" style="width: 100%;">
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column prop="id" label="ID" sortable=""></el-table-column>
+        <el-table-column prop="name" label="名称" sortable></el-table-column>
+        <el-table-column prop="statusText" label="状态" sortable></el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="tree.visible = false">取消</el-button>
+        <el-button type="primary" @click.native="saveTree" :loading="tree.loading">提交</el-button>
+      </div>
+    </el-dialog>
     <!--搜索界面-->
     <el-dialog title="查询参数" :visible.sync="searchVisible" :close-on-click-modal="false">
       <el-form :model="filters" label-width="80px" ref="filters">
@@ -47,6 +62,11 @@
         <el-form-item label="状态" prop="status">
           <el-select v-model="filters.status" clearable placeholder="请选择">
             <el-option v-for="(value, key) in config.status" :key="key" :label="value" :value="key"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="角色" prop="roleIds">
+          <el-select v-model="filters.roleIds" multiple clearable placeholder="请选择">
+            <el-option v-for="item in config.roles" :key="item.id" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="注册IP" prop="createdIp">
@@ -156,17 +176,75 @@ export default {
       config: {
         ready: false,
         defaultPassword: '',
-        status: []
+        status: [],
+        roles: []
       },
       form: {},
       rules: {
         serial: [{required: true, message: '请输入账号', trigger: 'blur'}],
         name: [{required: true, message: '请输入名称', trigger: 'blur'}],
         status: [{required: true, message: '请选择状态', trigger: 'change'}]
+      },
+      tree: {
+        id: '',
+        type: '',
+        title: '',
+        visible: false,
+        loading: false,
+        checked: [],
+        data: []
       }
     }
   },
   methods: {
+    treeChange: function (sels) {
+      this.tree.checked = sels.map(item => item.id)
+    },
+    editTree (type, id) {
+      Object.assign(this.tree, {
+        id: id,
+        type: type,
+        title: {role: '角色'}[type],
+        data: [],
+        checked: [],
+        visible: true,
+        loading: true
+      })
+      wrapper.tips(userService.tree({id: id, type: type})).then((response) => {
+        if (response.code === 0) {
+          Object.assign(this.tree, {
+            data: this.config.roles,
+            checked: response.data.checked,
+            loading: false
+          })
+          this.$nextTick(() => {
+            let checked = this.tree.checked
+            this.tree.data.forEach(item => {
+              if (checked.indexOf(item.id) !== -1) {
+                this.$refs.tree.toggleRowSelection(item, true)
+              }
+            })
+          })
+        }
+      })
+    },
+    saveTree () {
+      if (this.tree.loading) return false
+      this.tree.loading = true
+      wrapper.tips(userService.tree({
+        id: this.tree.id, type: this.tree.type, bids: this.tree.checked
+      })).then(response => {
+        if (response.code === 0) {
+          this.tree.visible = false
+          this.search()
+        }
+        this.tree.loading = true
+      })
+    },
+    roles (row, column, cellValue, index) {
+      if (!cellValue) return ''
+      return cellValue.map(item => item.name).join(',')
+    },
     reset (form) {
       this.$refs[form].resetFields()
       switch (form) {

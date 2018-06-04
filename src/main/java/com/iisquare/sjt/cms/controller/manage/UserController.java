@@ -4,6 +4,7 @@ import com.iisquare.sjt.cms.core.Configuration;
 import com.iisquare.sjt.cms.domain.Role;
 import com.iisquare.sjt.cms.domain.User;
 import com.iisquare.sjt.cms.service.RelationService;
+import com.iisquare.sjt.cms.service.RoleService;
 import com.iisquare.sjt.cms.service.SettingsService;
 import com.iisquare.sjt.cms.service.UserService;
 import com.iisquare.sjt.cms.utils.ApiUtil;
@@ -32,6 +33,8 @@ public class UserController {
     private SettingsService settingsService;
     @Autowired
     private RelationService relationService;
+    @Autowired
+    private RoleService roleService;
 
     @RequestMapping("/list")
     public String listAction(@RequestBody Map<?, ?> param) {
@@ -97,6 +100,8 @@ public class UserController {
     public String configAction(ModelMap model) {
         model.put("status", userService.status("full"));
         model.put("defaultPassword", settingsService.get("system", "defaultPassword"));
+        Map<?, ?> searchResult = roleService.search(new LinkedHashMap<>(), DPUtil.buildMap("withStatusText", true));
+        model.put("roles", searchResult.get("rows"));
         return ApiUtil.echoResult(0, null, model);
     }
 
@@ -105,7 +110,7 @@ public class UserController {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
         User info = userService.info(id);
-        if(null == info || -1 == info.getStatus()) return ApiUtil.echoResult(1002, "记录不存在", id);
+        if(null == info || -1 == info.getStatus()) return ApiUtil.echoResult(1002, "记录不存在或已删除", id);
         Map<String, Object> result = new LinkedHashMap<>();
         String type = DPUtil.parseString(param.get("type"));
         if(param.containsKey("bids")) {
@@ -119,6 +124,7 @@ public class UserController {
                     return ApiUtil.echoResult(1003, "类型异常", id);
             }
         } else {
+            result.put("checked", relationService.relationIds("user_" + type, info.getId(), null));
             return ApiUtil.echoResult(0, null, result);
         }
     }
