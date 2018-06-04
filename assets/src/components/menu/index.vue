@@ -227,7 +227,7 @@ export default {
     },
     iconSearch (query, callback) {
       callback(query ? this.icons.filter((item) => {
-        return item.name.toLowerCase().indexOf(query.toLowerCase()) === 0
+        return item.name.toLowerCase().indexOf(query.toLowerCase()) !== -1
       }) : this.icons)
     },
     iconSelect (item) {
