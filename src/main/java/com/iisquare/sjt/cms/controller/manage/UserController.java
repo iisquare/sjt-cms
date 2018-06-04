@@ -103,7 +103,7 @@ public class UserController {
     }
 
     @RequestMapping("/tree")
-    public String treeAction(@RequestBody Map<?, ?> param, ModelMap model) {
+    public String treeAction(@RequestBody Map<?, ?> param) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
         User info = userService.info(id);
