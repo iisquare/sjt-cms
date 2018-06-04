@@ -9,4 +9,6 @@ public interface UserDao extends DaoBase<User, Integer> {
 
     boolean existsBySerial(String serial);
 
+    User findFirstBySerial(String serial);
+
 }

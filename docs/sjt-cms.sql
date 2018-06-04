@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-06-04 11:35:16
+Date: 2018-06-04 14:40:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -102,6 +102,8 @@ INSERT INTO `sjt_relation` VALUES ('role_resource_2_3', 'role_resource', '2', '3
 INSERT INTO `sjt_relation` VALUES ('role_resource_2_4', 'role_resource', '2', '4');
 INSERT INTO `sjt_relation` VALUES ('role_resource_2_5', 'role_resource', '2', '5');
 INSERT INTO `sjt_relation` VALUES ('role_resource_2_6', 'role_resource', '2', '6');
+INSERT INTO `sjt_relation` VALUES ('user_role_1_1', 'user_role', '1', '1');
+INSERT INTO `sjt_relation` VALUES ('user_role_2_2', 'user_role', '2', '2');
 
 -- ----------------------------
 -- Table structure for sjt_resource
@@ -172,7 +174,7 @@ CREATE TABLE `sjt_role` (
 -- ----------------------------
 -- Records of sjt_role
 -- ----------------------------
-INSERT INTO `sjt_role` VALUES ('1', '管理员', '0', '1', '', '1528081589495', '1', '1528081589495', '1');
+INSERT INTO `sjt_role` VALUES ('1', '后台管理', '0', '1', '', '1528081589495', '1', '1528085892556', '1');
 INSERT INTO `sjt_role` VALUES ('2', '普通用户', '0', '1', '', '1528081606670', '1', '1528081606670', '1');
 
 -- ----------------------------
@@ -196,7 +198,7 @@ CREATE TABLE `sjt_settings` (
 -- ----------------------------
 INSERT INTO `sjt_settings` VALUES ('1', 'defaultPassword', 'system', 'password', '1', '', '1527731577113', '1');
 INSERT INTO `sjt_settings` VALUES ('2', 'siteName', 'system', '未命名站点', '2', '', '1527731583739', '1');
-INSERT INTO `sjt_settings` VALUES ('3', 'test', 'sf', 'fffff', '0', 'ff', '1527731617144', '1');
+INSERT INTO `sjt_settings` VALUES ('3', 'manageMenuParentId', 'system', '1', '0', '管理后台菜单根节点ID', '1528094436264', '1');
 
 -- ----------------------------
 -- Table structure for sjt_user
@@ -227,5 +229,5 @@ CREATE TABLE `sjt_user` (
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
-INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', 'ae82fcc2926b84984cf14b49b4e44833', '4091', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '0', '', '0');
-INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', '0', '1', '', '1528081567988', '127.0.0.1', '1', '1528081567988', '1', '0', '', '0');
+INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', 'ae82fcc2926b84984cf14b49b4e44833', '4091', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1528094332797', '127.0.0.1', '0');
+INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', '0', '1', '', '1528081567988', '127.0.0.1', '1', '1528081567988', '1', '1528094356530', '127.0.0.1', '0');

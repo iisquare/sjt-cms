@@ -36,6 +36,10 @@ public class UserService extends ServiceBase {
     @Autowired
     private RoleDao roleDao;
 
+    public User infoBySerial(String serial) {
+        return userDao.findFirstBySerial(serial);
+    }
+
     public boolean existsByName(String name, Integer ...ids) {
         return userDao.existsByNameEqualsAndIdNotIn(name, ids);
     }
@@ -71,8 +75,10 @@ public class UserService extends ServiceBase {
 
     public User save(User info, int uid) {
         long time = System.currentTimeMillis();
-        info.setUpdatedTime(time);
-        info.setUpdatedUid(uid);
+        if(uid > 0) {
+            info.setUpdatedTime(time);
+            info.setUpdatedUid(uid);
+        }
         if(null == info.getId()) {
             info.setCreatedTime(time);
             info.setCreatedUid(uid);

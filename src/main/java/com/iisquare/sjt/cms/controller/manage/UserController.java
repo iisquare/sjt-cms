@@ -1,12 +1,8 @@
 package com.iisquare.sjt.cms.controller.manage;
 
 import com.iisquare.sjt.cms.core.Configuration;
-import com.iisquare.sjt.cms.domain.Role;
 import com.iisquare.sjt.cms.domain.User;
-import com.iisquare.sjt.cms.service.RelationService;
-import com.iisquare.sjt.cms.service.RoleService;
-import com.iisquare.sjt.cms.service.SettingsService;
-import com.iisquare.sjt.cms.service.UserService;
+import com.iisquare.sjt.cms.service.*;
 import com.iisquare.sjt.cms.utils.ApiUtil;
 import com.iisquare.sjt.cms.utils.DPUtil;
 import com.iisquare.sjt.cms.utils.ServletUtil;
@@ -15,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +30,8 @@ public class UserController {
     private RelationService relationService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private SessionService sessionService;
 
     @RequestMapping("/list")
     public String listAction(@RequestBody Map<?, ?> param) {
@@ -130,11 +127,38 @@ public class UserController {
     }
 
     @RequestMapping("/login")
-    public String loginAction(@RequestParam Map<?, ?> param, ModelMap model) {
-        model.put("info", User.builder().name("test").build());
-        model.put("menu", null);
-        model.put("resource", null);
-        return ApiUtil.echoResult(0, null, model);
+    public String loginAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
+        User info = null;
+        Map<String, Object> session = null;
+        if(param.containsKey("serial")) {
+            info = userService.infoBySerial(DPUtil.parseString(param.get("serial")));
+            if(null == info) return ApiUtil.echoResult(1001, "账号不存在", null);
+            if(!info.getPassword().equals(userService.password(DPUtil.parseString(param.get("password")), info.getSalt()))) {
+                return ApiUtil.echoResult(1002, "密码错误", null);
+            }
+            info.setLoginedTime(System.currentTimeMillis());
+            info.setLoginedIp(ServletUtil.getRemoteAddr(request));
+            userService.save(info, 0);
+            session = sessionService.currentInfo(request, DPUtil.buildMap("uid", info.getId()));
+        } else {
+            session = sessionService.currentInfo(request, null);
+            info = userService.info(DPUtil.parseInt(session.get("uid")));
+        }
+        if(null != info) {
+            info.setPassword("");
+            info.setSalt("");
+        }
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("info", info);
+        result.put("menu", sessionService.menu(session, DPUtil.parseInt(settingsService.get("system", "manageMenuParentId"))));
+        result.put("resource", null);
+        return ApiUtil.echoResult(0, null, result);
+    }
+
+    @RequestMapping("/logout")
+    public String logoutAction(HttpServletRequest request) {
+        sessionService.currentInfo(request, DPUtil.buildMap("uid", 0));
+        return ApiUtil.echoResult(0, null, null);
     }
 
 }

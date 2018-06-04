@@ -13,8 +13,9 @@ export default {
   save (param) {
     return base.post('/user/save', param)
   },
-  login () {
-    return base.post('/user/login')
+  login (param) {
+    if (!param) param = {}
+    return base.post('/user/login', param)
   },
   logout () {
     return base.post('/user/logout')

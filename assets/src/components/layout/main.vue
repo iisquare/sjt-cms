@@ -107,7 +107,7 @@ export default {
       this.$confirm('确认退出吗?', '提示')
         .then(() => {
           wrapper.tips(userService.logout()).then(() => {
-            _this.$router.push('/user/login')
+            _this.$router.go(0)
           })
         })
         .catch(() => {})
