@@ -6,11 +6,11 @@ Vue.use(Router)
 
 let routes = [{
   path: '/startup',
-  name: 'Startup',
+  name: '欢迎使用',
   component: () => import(/* webpackChunkName: 'login' */ '@/components/layout/startup')
 }, {
   path: '/user/login',
-  name: 'UserLogin',
+  name: '用户登录',
   component: () => import(/* webpackChunkName: 'login' */ '@/components/user/login')
 }, {
   path: '/error/403',
@@ -29,35 +29,35 @@ let routes = [{
   component: () => import(/* webpackChunkName: 'main' */ '@/components/layout/main'),
   children: [{
     path: '/',
-    name: 'Welcome',
+    name: '后台首页',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/layout/welcome')
   }, {
     path: '/user/index',
-    name: 'UserIndex',
+    name: '用户管理',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/user/index')
   }, {
     path: '/user/password',
-    name: 'UserPassword',
+    name: '修改密码',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/user/password')
   }, {
     path: '/user/info',
-    name: 'UserInfo',
+    name: '个人信息',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/user/info')
   }, {
     path: '/role/index',
-    name: 'RoleIndex',
+    name: '角色管理',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/role/index')
   }, {
     path: '/menu/index',
-    name: 'MenuIndex',
+    name: '菜单管理',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/menu/index')
   }, {
     path: '/resource/index',
-    name: 'ResourceIndex',
+    name: '资源管理',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/resource/index')
   }, {
     path: '/settings/index',
-    name: 'SettingsIndex',
+    name: '配置管理',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/settings/index')
   }]
 }, {
