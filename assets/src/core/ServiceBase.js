@@ -2,7 +2,8 @@ import axios from 'axios'
 
 // @link:https://www.npmjs.com/package/axios
 let $axios = axios.create({
-  baseURL: process.env.apiURL
+  baseURL: process.env.apiURL,
+  withCredentials: true
 })
 
 // axios.interceptors.response.use((response) => {
