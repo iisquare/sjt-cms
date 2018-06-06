@@ -22,5 +22,8 @@ export default {
   },
   tree (param) {
     return base.post('/user/tree', param)
+  },
+  password (param) {
+    return base.post('/user/password', param)
   }
 }

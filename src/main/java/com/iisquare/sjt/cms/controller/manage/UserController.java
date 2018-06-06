@@ -134,6 +134,28 @@ public class UserController extends PermitController {
         }
     }
 
+    @RequestMapping("/password")
+    public String passwordAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
+        String password = DPUtil.trim(DPUtil.parseString(param.get("password")));
+        String passwordNew = DPUtil.trim(DPUtil.parseString(param.get("passwordNew")));
+        String passwordOld = DPUtil.trim(DPUtil.parseString(param.get("passwordOld")));
+        if(DPUtil.empty(passwordOld)) return ApiUtil.echoResult(1001, "请输入原密码", null);
+        if(DPUtil.empty(password)) return ApiUtil.echoResult(1002, "请输入新密码", null);
+        if(!password.equals(passwordNew)) return ApiUtil.echoResult(1003, "两次密码输入不一致", null);
+        User info = userService.info(uid(request));
+        if(null == info) return ApiUtil.echoResult(1004, "用户未登录或登录超时", null);
+        if(!info.getPassword().equals(userService.password(passwordOld, info.getSalt()))) {
+            return ApiUtil.echoResult(1005, "原密码错误", null);
+        }
+        String salt = DPUtil.random(4);
+        password = userService.password(password, salt);
+        info.setPassword(password);
+        info.setSalt(salt);
+        userService.save(info, 0);
+        logoutAction(request); // 退出登录
+        return ApiUtil.echoResult(0, null, null);
+    }
+
     @RequestMapping("/login")
     public String loginAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         User info = null;

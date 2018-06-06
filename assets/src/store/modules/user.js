@@ -26,8 +26,8 @@ const actions = {
 
 // mutations
 const mutations = {
-  ready () {
-    state.ready = true
+  ready (state, ready = true) {
+    state.ready = ready
   },
   data (state, data) {
     state.data = data
