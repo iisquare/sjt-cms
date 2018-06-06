@@ -1,6 +1,6 @@
 package com.iisquare.sjt.cms.controller.manage;
 
-import com.iisquare.sjt.cms.core.ControllerBase;
+import com.iisquare.sjt.cms.core.PermitController;
 import com.iisquare.sjt.cms.service.SettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RequestMapping("/manage")
 @Controller
-public class IndexController extends ControllerBase {
+public class IndexController extends PermitController {
 
     @Autowired
     private SettingsService settingsService;

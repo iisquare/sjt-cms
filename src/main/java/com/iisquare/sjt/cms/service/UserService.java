@@ -201,11 +201,14 @@ public class UserService extends ServiceBase {
         return true;
     }
 
-    public boolean delete(List<Integer> ids) {
+    public boolean delete(List<Integer> ids, int uid) {
         if(null == ids || ids.size() < 1) return false;
         List<User> list = userDao.findAllById(ids);
+        long time = System.currentTimeMillis();
         for (User item : list) {
             item.setStatus(-1);
+            item.setUpdatedTime(time);
+            item.setUpdatedUid(uid);
         }
         userDao.saveAll(list);
         return true;
@@ -236,10 +239,6 @@ public class UserService extends ServiceBase {
             }
         }
         return list;
-    }
-
-    public User current() {
-        return User.builder().id(1).build();
     }
 
 }

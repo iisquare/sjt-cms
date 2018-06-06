@@ -109,11 +109,14 @@ public class RoleService extends ServiceBase {
         return true;
     }
 
-    public boolean delete(List<Integer> ids) {
+    public boolean delete(List<Integer> ids, int uid) {
         if(null == ids || ids.size() < 1) return false;
         List<Role> list = roleDao.findAllById(ids);
+        long time = System.currentTimeMillis();
         for (Role item : list) {
             item.setStatus(-1);
+            item.setUpdatedTime(time);
+            item.setUpdatedUid(uid);
         }
         roleDao.saveAll(list);
         return true;

@@ -133,11 +133,14 @@ public class MenuService extends ServiceBase {
         return true;
     }
 
-    public boolean delete(List<Integer> ids) {
+    public boolean delete(List<Integer> ids, int uid) {
         if(null == ids || ids.size() < 1) return false;
         List<Menu> list = menuDao.findAllById(ids);
+        long time = System.currentTimeMillis();
         for (Menu item : list) {
             item.setStatus(-1);
+            item.setUpdatedTime(time);
+            item.setUpdatedUid(uid);
         }
         menuDao.saveAll(list);
         return true;

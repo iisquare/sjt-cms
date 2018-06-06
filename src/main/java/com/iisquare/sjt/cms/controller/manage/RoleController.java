@@ -1,5 +1,7 @@
 package com.iisquare.sjt.cms.controller.manage;
 
+import com.iisquare.sjt.cms.core.Permission;
+import com.iisquare.sjt.cms.core.PermitController;
 import com.iisquare.sjt.cms.domain.Role;
 import com.iisquare.sjt.cms.service.*;
 import com.iisquare.sjt.cms.utils.ApiUtil;
@@ -11,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
 @RequestMapping("/manage/role")
-public class RoleController {
+public class RoleController extends PermitController {
 
-    @Autowired
-    private UserService userService;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -29,7 +30,8 @@ public class RoleController {
     private RelationService relationService;
 
     @RequestMapping("/tree")
-    public String treeAction(@RequestBody Map<?, ?> param, ModelMap model) {
+    @Permission({"index", "menu", "resource"})
+    public String treeAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
         Role info = roleService.info(id);
@@ -40,6 +42,7 @@ public class RoleController {
             switch (type) {
                 case "menu":
                 case "resource":
+                    if(!hasPermit(request, type)) return ApiUtil.echoResult(9403, null, null);
                     Set<Integer> bids = new HashSet<>();
                     bids.addAll((List<Integer>) param.get("bids"));
                     bids = relationService.relationIds("role_" + type, id, bids);
@@ -64,13 +67,15 @@ public class RoleController {
     }
 
     @RequestMapping("/list")
+    @Permission("index")
     public String listAction(@RequestBody Map<?, ?> param) {
         Map<?, ?> result = roleService.search(param, DPUtil.buildMap("withUserInfo", true, "withStatusText", true));
         return ApiUtil.echoResult(0, null, result);
     }
 
     @RequestMapping("/save")
-    public String saveAction(@RequestBody Map<?, ?> param) {
+    @Permission({"add", "modify"})
+    public String saveAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         String name = DPUtil.trim(DPUtil.parseString(param.get("name")));
         if(DPUtil.empty(name)) return ApiUtil.echoResult(1001, "名称异常", name);
@@ -80,32 +85,36 @@ public class RoleController {
         String description = DPUtil.parseString(param.get("description"));
         Role info = null;
         if(id > 0) {
+            if(!hasPermit(request, "modify")) return ApiUtil.echoResult(9403, null, null);
             info = roleService.info(id);
             if(null == info) return ApiUtil.echoResult(404, null, id);
         } else {
+            if(!hasPermit(request, "add")) return ApiUtil.echoResult(9403, null, null);
             info = new Role();
         }
         info.setName(name);
         info.setSort(sort);
         info.setStatus(status);
         info.setDescription(description);
-        info = roleService.save(info, userService.current().getId());
+        info = roleService.save(info, uid(request));
         return ApiUtil.echoResult(null == info ? 500 : 0, null, info);
     }
 
     @RequestMapping("/delete")
-    public String deleteAction(@RequestBody Map<?, ?> param) {
+    @Permission
+    public String deleteAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         List<Integer> ids = null;
         if(param.get("ids") instanceof List) {
             ids = DPUtil.parseIntList((List<?>) param.get("ids"));
         } else {
             ids = Arrays.asList(DPUtil.parseInt(param.get("ids")));
         }
-        boolean result = roleService.delete(ids);
+        boolean result = roleService.delete(ids, uid(request));
         return ApiUtil.echoResult(result ? 0 : 500, null, result);
     }
 
     @RequestMapping("/config")
+    @Permission("index")
     public String configAction(ModelMap model) {
         model.put("status", roleService.status("default"));
         return ApiUtil.echoResult(0, null, model);

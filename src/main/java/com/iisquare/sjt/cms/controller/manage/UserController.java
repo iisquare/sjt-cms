@@ -1,6 +1,8 @@
 package com.iisquare.sjt.cms.controller.manage;
 
 import com.iisquare.sjt.cms.core.Configuration;
+import com.iisquare.sjt.cms.core.Permission;
+import com.iisquare.sjt.cms.core.PermitController;
 import com.iisquare.sjt.cms.domain.User;
 import com.iisquare.sjt.cms.service.*;
 import com.iisquare.sjt.cms.utils.ApiUtil;
@@ -18,7 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/manage/user")
-public class UserController {
+public class UserController extends PermitController {
 
     @Autowired
     private UserService userService;
@@ -30,16 +32,16 @@ public class UserController {
     private RelationService relationService;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    private SessionService sessionService;
 
     @RequestMapping("/list")
+    @Permission("index")
     public String listAction(@RequestBody Map<?, ?> param) {
         Map<?, ?> result = userService.search(param, DPUtil.buildMap("withUserInfo", true, "withStatusText", true, "withRoles", true));
         return ApiUtil.echoResult(0, null, result);
     }
 
     @RequestMapping("/save")
+    @Permission({"add", "modify"})
     public String saveAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         String name = DPUtil.trim(DPUtil.parseString(param.get("name")));
@@ -48,9 +50,11 @@ public class UserController {
         String password = DPUtil.trim(DPUtil.parseString(param.get("password")));
         User info = null;
         if(id > 0) {
+            if(!hasPermit(request, "modify")) return ApiUtil.echoResult(9403, null, null);
             info = userService.info(id);
             if(null == info) return ApiUtil.echoResult(404, null, id);
         } else {
+            if(!hasPermit(request, "add")) return ApiUtil.echoResult(9403, null, null);
             info = new User();
             String serial = DPUtil.trim(DPUtil.parseString(param.get("serial")));
             if(DPUtil.empty(serial)) return ApiUtil.echoResult(1002, "账号不能为空", name);
@@ -77,23 +81,25 @@ public class UserController {
         if(!DPUtil.empty(lockedTime)) {
             info.setLockedTime(DPUtil.dateTimeToMillis(lockedTime, configuration.getDateFormat()));
         }
-        info = userService.save(info, userService.current().getId());
+        info = userService.save(info, uid(request));
         return ApiUtil.echoResult(null == info ? 500 : 0, null, info);
     }
 
     @RequestMapping("/delete")
-    public String deleteAction(@RequestBody Map<?, ?> param) {
+    @Permission
+    public String deleteAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         List<Integer> ids = null;
         if(param.get("ids") instanceof List) {
             ids = DPUtil.parseIntList((List<?>) param.get("ids"));
         } else {
             ids = Arrays.asList(DPUtil.parseInt(param.get("ids")));
         }
-        boolean result = userService.delete(ids);
+        boolean result = userService.delete(ids, uid(request));
         return ApiUtil.echoResult(result ? 0 : 500, null, result);
     }
 
     @RequestMapping("/config")
+    @Permission("index")
     public String configAction(ModelMap model) {
         model.put("status", userService.status("full"));
         model.put("defaultPassword", settingsService.get("system", "defaultPassword"));
@@ -103,7 +109,8 @@ public class UserController {
     }
 
     @RequestMapping("/tree")
-    public String treeAction(@RequestBody Map<?, ?> param) {
+    @Permission({"index", "role"})
+    public String treeAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
         User info = userService.info(id);
@@ -113,6 +120,7 @@ public class UserController {
         if(param.containsKey("bids")) {
             switch (type) {
                 case "role":
+                    if(!hasPermit(request, type)) return ApiUtil.echoResult(9403, null, null);
                     Set<Integer> bids = new HashSet<>();
                     bids.addAll((List<Integer>) param.get("bids"));
                     bids = relationService.relationIds("user_" + type, id, bids);
@@ -136,6 +144,9 @@ public class UserController {
             if(!info.getPassword().equals(userService.password(DPUtil.parseString(param.get("password")), info.getSalt()))) {
                 return ApiUtil.echoResult(1002, "密码错误", null);
             }
+            if(!hasPermit(request, request.getAttribute("module").toString(), null, null)) {
+                return ApiUtil.echoResult(403, null, null);
+            }
             info.setLoginedTime(System.currentTimeMillis());
             info.setLoginedIp(ServletUtil.getRemoteAddr(request));
             userService.save(info, 0);
@@ -150,8 +161,8 @@ public class UserController {
         }
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("info", info);
-        result.put("menu", sessionService.menu(session, DPUtil.parseInt(settingsService.get("system", "manageMenuParentId"))));
-        result.put("resource", null);
+        result.put("menu", sessionService.menu(request, DPUtil.parseInt(settingsService.get("system", "manageMenuParentId"))));
+        result.put("resource", sessionService.resource(request));
         return ApiUtil.echoResult(0, null, result);
     }
 

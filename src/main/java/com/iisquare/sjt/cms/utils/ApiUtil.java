@@ -16,12 +16,15 @@ public class ApiUtil {
                     message = "操作成功";
                     break;
                 case 403:
+                case 9403:
                     message = "禁止访问";
                     break;
                 case 404:
+                case 9404:
                     message = "信息不存在";
                     break;
                 case 500:
+                case 9500:
                     message = "操作失败";
                     break;
             }

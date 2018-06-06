@@ -131,11 +131,14 @@ public class ResourceService extends ServiceBase {
         return true;
     }
 
-    public boolean delete(List<Integer> ids) {
+    public boolean delete(List<Integer> ids, int uid) {
         if(null == ids || ids.size() < 1) return false;
         List<Resource> list = resourceDao.findAllById(ids);
+        long time = System.currentTimeMillis();
         for (Resource item : list) {
             item.setStatus(-1);
+            item.setUpdatedTime(time);
+            item.setUpdatedUid(uid);
         }
         resourceDao.saveAll(list);
         return true;
