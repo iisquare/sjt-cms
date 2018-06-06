@@ -7,7 +7,7 @@
           <el-button type="primary" @click="searchVisible = true">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="success" @click="add">新增</el-button>
+          <el-button type="success" @click="add" v-permit="'manage:user:add'">新增</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -25,15 +25,15 @@
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column label="操作" width="130">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
-          <el-button v-if="scope.row.status != -1" type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
-          <el-button v-if="scope.row.status != -1" type="text" size="small" @click="editTree('role', scope.row.id)">角色</el-button>
+          <el-button type="text" size="small" v-permit="'manage:user:'" @click="show(scope.$id, scope.row)">查看</el-button>
+          <el-button v-if="scope.row.status != -1" v-permit="'manage:user:modify'" type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
+          <el-button v-if="scope.row.status != -1" v-permit="'manage:user:role'" type="text" size="small" @click="editTree('role', scope.row.id)">角色</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!--底部工具条-->
     <el-col :span="24" class="toolbar">
-      <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">删除所选</el-button>
+      <el-button type="danger" @click="batchRemove" v-permit="'manage:user:delete'" :disabled="this.sels.length===0">删除所选</el-button>
       <el-pagination layout="prev, pager, next" @current-change="pageChange" :current-page="filters.page" :page-size="filters.pageSize" :total="total" style="float:right;">
       </el-pagination>
     </el-col>

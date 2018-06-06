@@ -16,7 +16,7 @@
           <el-button type="primary" v-on:click="search">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="success" @click="add">新增</el-button>
+          <el-button type="success" v-permit="'manage:settings:add'" @click="add">新增</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -32,14 +32,14 @@
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
-          <el-button type="text" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
+          <el-button type="text" v-permit="'manage:settings:'" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
+          <el-button type="text" v-permit="'manage:settings:modify'" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!--底部工具条-->
     <el-col :span="24" class="toolbar">
-      <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">删除所选</el-button>
+      <el-button type="danger" v-permit="'manage:settings:delete'" @click="batchRemove" :disabled="this.sels.length===0">删除所选</el-button>
       <el-pagination layout="prev, pager, next" @current-change="pageChange" :current-page="filters.page" :page-size="filters.pageSize" :total="total" style="float:right;">
       </el-pagination>
     </el-col>

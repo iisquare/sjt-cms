@@ -8,6 +8,7 @@ import App from './App'
 import router from './router'
 import 'font-awesome/css/font-awesome.min.css'
 import DateUtil from './utils/date'
+import sessionService from './service/session'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
@@ -15,6 +16,14 @@ Vue.config.productionTip = false
 store.dispatch('user/loadConfig')
 
 Vue.filter('date', DateUtil.format)
+
+Vue.directive('permit', {
+  inserted (el, binding, vnode, oldVnode) {
+    if (!sessionService.hasPermit(store, binding.value)) {
+      el.remove()
+    }
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({
