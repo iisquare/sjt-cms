@@ -30,7 +30,7 @@ public class RoleController extends PermitController {
     private RelationService relationService;
 
     @RequestMapping("/tree")
-    @Permission({"index", "menu", "resource"})
+    @Permission({"", "menu", "resource"})
     public String treeAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
@@ -67,7 +67,7 @@ public class RoleController extends PermitController {
     }
 
     @RequestMapping("/list")
-    @Permission("index")
+    @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {
         Map<?, ?> result = roleService.search(param, DPUtil.buildMap("withUserInfo", true, "withStatusText", true));
         return ApiUtil.echoResult(0, null, result);
@@ -114,7 +114,7 @@ public class RoleController extends PermitController {
     }
 
     @RequestMapping("/config")
-    @Permission("index")
+    @Permission("")
     public String configAction(ModelMap model) {
         model.put("status", roleService.status("default"));
         return ApiUtil.echoResult(0, null, model);

@@ -25,7 +25,7 @@ public class SettingsController extends PermitController {
     private SettingsService settingsService;
 
     @RequestMapping("/list")
-    @Permission("index")
+    @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {
         Map<?, ?> result = settingsService.search(param, DPUtil.buildMap("withUserInfo", true));
         return ApiUtil.echoResult(0, null, result);

@@ -50,7 +50,7 @@ public class CorsConfig extends WebMvcConfigurationSupport {
                     permissions = new String[]{ module + ":" + controller + ":" + action };
                 }
                 for (String str : permissions) {
-                    if(null == str) return false;
+                    if(null == str) str = "";
                     String[] strs = str.split(":");
                     if(strs.length > 3) {
                         return false;

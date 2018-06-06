@@ -26,7 +26,7 @@ public class MenuController extends PermitController {
     private MenuService menuService;
 
     @RequestMapping("/list")
-    @Permission("index")
+    @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {
         Map<?, ?> result = menuService.search(param, DPUtil.buildMap(
             "withUserInfo", true, "withStatusText", true, "withParentInfo", true
@@ -91,7 +91,7 @@ public class MenuController extends PermitController {
     }
 
     @RequestMapping("/config")
-    @Permission("index")
+    @Permission("")
     public String configAction(ModelMap model) {
         model.put("status", menuService.status("default"));
         return ApiUtil.echoResult(0, null, model);

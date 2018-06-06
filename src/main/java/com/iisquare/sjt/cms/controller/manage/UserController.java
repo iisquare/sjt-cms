@@ -34,7 +34,7 @@ public class UserController extends PermitController {
     private RoleService roleService;
 
     @RequestMapping("/list")
-    @Permission("index")
+    @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {
         Map<?, ?> result = userService.search(param, DPUtil.buildMap("withUserInfo", true, "withStatusText", true, "withRoles", true));
         return ApiUtil.echoResult(0, null, result);
@@ -99,7 +99,7 @@ public class UserController extends PermitController {
     }
 
     @RequestMapping("/config")
-    @Permission("index")
+    @Permission("")
     public String configAction(ModelMap model) {
         model.put("status", userService.status("full"));
         model.put("defaultPassword", settingsService.get("system", "defaultPassword"));
@@ -109,7 +109,7 @@ public class UserController extends PermitController {
     }
 
     @RequestMapping("/tree")
-    @Permission({"index", "role"})
+    @Permission({"", "role"})
     public String treeAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         if(id < 1) return ApiUtil.echoResult(1001, "参数异常", id);
@@ -144,13 +144,14 @@ public class UserController extends PermitController {
             if(!info.getPassword().equals(userService.password(DPUtil.parseString(param.get("password")), info.getSalt()))) {
                 return ApiUtil.echoResult(1002, "密码错误", null);
             }
-            if(!hasPermit(request, request.getAttribute("module").toString(), null, null)) {
-                return ApiUtil.echoResult(403, null, null);
-            }
             info.setLoginedTime(System.currentTimeMillis());
             info.setLoginedIp(ServletUtil.getRemoteAddr(request));
             userService.save(info, 0);
             session = sessionService.currentInfo(request, DPUtil.buildMap("uid", info.getId()));
+            if(!hasPermit(request, request.getAttribute("module").toString(), null, null)) {
+                logoutAction(request);
+                return ApiUtil.echoResult(403, null, null);
+            }
         } else {
             session = sessionService.currentInfo(request, null);
             info = userService.info(DPUtil.parseInt(session.get("uid")));

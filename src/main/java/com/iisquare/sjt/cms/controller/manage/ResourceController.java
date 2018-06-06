@@ -26,7 +26,7 @@ public class ResourceController extends PermitController {
     private ResourceService resourceService;
 
     @RequestMapping("/list")
-    @Permission("index")
+    @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {
         Map<?, ?> result = resourceService.search(param, DPUtil.buildMap(
             "withUserInfo", true, "withStatusText", true, "withParentInfo", true
@@ -91,7 +91,7 @@ public class ResourceController extends PermitController {
     }
 
     @RequestMapping("/config")
-    @Permission("index")
+    @Permission("")
     public String configAction(ModelMap model) {
         model.put("status", resourceService.status("default"));
         return ApiUtil.echoResult(0, null, model);
