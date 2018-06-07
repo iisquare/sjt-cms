@@ -77,9 +77,13 @@ public class UserController extends PermitController {
         info.setSort(sort);
         info.setStatus(status);
         info.setDescription(description);
-        String lockedTime =  DPUtil.trim(DPUtil.parseString(param.get("lockedTime")));
-        if(!DPUtil.empty(lockedTime)) {
-            info.setLockedTime(DPUtil.dateTimeToMillis(lockedTime, configuration.getDateFormat()));
+        if(param.containsKey("lockedTime")) {
+            String lockedTime =  DPUtil.trim(DPUtil.parseString(param.get("lockedTime")));
+            if(DPUtil.empty(lockedTime)) {
+                info.setLockedTime(0L);
+            } else {
+                info.setLockedTime(DPUtil.dateTimeToMillis(lockedTime, configuration.getDateFormat()));
+            }
         }
         info = userService.save(info, uid(request));
         return ApiUtil.echoResult(null == info ? 500 : 0, null, info);
@@ -165,6 +169,9 @@ public class UserController extends PermitController {
             if(null == info) return ApiUtil.echoResult(1001, "账号不存在", null);
             if(!info.getPassword().equals(userService.password(DPUtil.parseString(param.get("password")), info.getSalt()))) {
                 return ApiUtil.echoResult(1002, "密码错误", null);
+            }
+            if(info.getLockedTime() > System.currentTimeMillis()) {
+                return ApiUtil.echoResult(1003, "账号已锁定，请联系管理人员", null);
             }
             info.setLoginedTime(System.currentTimeMillis());
             info.setLoginedIp(ServletUtil.getRemoteAddr(request));

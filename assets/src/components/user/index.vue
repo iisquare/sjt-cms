@@ -121,6 +121,9 @@
             <el-option v-for="(value, key) in config.status" :key="key" :label="value" :value="key"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="锁定">
+          <el-date-picker v-model="form.lockedTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        </el-form-item>
         <el-form-item label="描述">
           <el-input type="textarea" v-model="form.description"></el-input>
         </el-form-item>
@@ -299,7 +302,10 @@ export default {
       this.$refs.form.validate((valid) => {
         if (!valid || this.formLoading) return false
         this.formLoading = true
-        wrapper.tips(userService.save(this.form)).then(response => {
+        let param = Object.assign({}, this.form, {
+          lockedTime: this.form.lockedTime ? DateUtil.format(this.form.lockedTime.getTime()) : ''
+        })
+        wrapper.tips(userService.save(param)).then(response => {
           if (response.code === 0) {
             this.formVisible = false
             this.search()
@@ -315,15 +321,22 @@ export default {
         password: this.config.defaultPassword,
         sort: '',
         status: '',
+        lockedTime: '',
         description: ''
       })
     },
     edit (id, row) {
-      this.form = Object.assign({}, row, {status: row.status + ''})
+      this.form = Object.assign({}, row, {
+        status: row.status + '',
+        lockedTime: (row.lockedTime && row.lockedTime > 0) ? new Date(row.lockedTime) : ''
+      })
       this.formVisible = true
     },
     show (id, row) {
-      this.form = Object.assign({}, row, {description: row.description ? row.description : '暂无'})
+      this.form = Object.assign({}, row, {
+        description: row.description ? row.description : '暂无',
+        lockedTime: (row.lockedTime && row.lockedTime > 0) ? new Date(row.lockedTime) : ''
+      })
       this.infoVisible = true
     }
   },
