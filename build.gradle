@@ -1,7 +1,20 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+    }
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 subprojects {
 
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
 
     sourceCompatibility = 1.8
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -15,5 +28,10 @@ subprojects {
     }
 
     archivesBaseName = 'sjt-' + name
+
+    task jars(type: Copy) {
+        from configurations.runtime
+        into 'build/opt' // 目标依赖位置
+    }
 
 }

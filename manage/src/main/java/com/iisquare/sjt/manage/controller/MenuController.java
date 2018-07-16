@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/manage/menu")
+@RequestMapping("/menu")
 public class MenuController extends PermitController {
 
     @Autowired

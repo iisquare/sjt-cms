@@ -1,5 +1,7 @@
 package com.iisquare.sjt.api.util;
 
+import com.iisquare.sjt.core.util.DPUtil;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;

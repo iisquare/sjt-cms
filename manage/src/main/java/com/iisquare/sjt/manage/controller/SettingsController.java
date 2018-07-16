@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/manage/settings")
+@RequestMapping("/settings")
 public class SettingsController extends PermitController {
 
     @Autowired

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
-@RequestMapping("/manage/role")
+@RequestMapping("/role")
 public class RoleController extends PermitController {
 
     @Autowired

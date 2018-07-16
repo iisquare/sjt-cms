@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/manage/resource")
+@RequestMapping("/resource")
 public class ResourceController extends PermitController {
 
     @Autowired

@@ -11,3 +11,6 @@
 /manage/src/main/resources/static/css
 /manage/src/main/resources/static/fonts
 /manage/src/main/resources/static/img
+/manage/out
+/api/out
+/core/out

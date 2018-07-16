@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
-@RequestMapping("/manage/user")
+@RequestMapping("/user")
 public class UserController extends PermitController {
 
     @Autowired

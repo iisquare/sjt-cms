@@ -8,7 +8,9 @@ public class BeanNameGenerator extends AnnotationBeanNameGenerator {
 
     @Override
     public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
-        return definition.getBeanClassName();
+        String classname = definition.getBeanClassName();
+        if(classname.startsWith("com.iisquare.sjt.")) return classname;
+        return super.generateBeanName(definition, registry);
     }
 
 }

@@ -4,6 +4,8 @@ import com.iisquare.sjt.api.mvc.ServiceBase;
 import com.iisquare.sjt.api.dao.RoleDao;
 import com.iisquare.sjt.api.domain.Role;
 import com.iisquare.sjt.api.util.ServiceUtil;
+import com.iisquare.sjt.core.util.DPUtil;
+import com.iisquare.sjt.core.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
