@@ -63,7 +63,7 @@ public abstract class PermitController extends ControllerBase {
         if(DPUtil.empty(controller)) {
             return module + "/" + action;
         }
-        return module + "/" + controller + "/" + action;
+        return controller + "/" + action;
     }
 
 }

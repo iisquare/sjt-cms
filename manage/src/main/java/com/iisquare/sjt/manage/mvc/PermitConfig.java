@@ -28,10 +28,10 @@ public class PermitConfig extends WebMvcConfiguration {
                     Map<String, Object> model = new LinkedHashMap<>();
                     if("GET".equals(request.getMethod())) {
                         model.put("message", ex.getMessage());
-                        return new ModelAndView("error/permit/web", model);
+                        return new ModelAndView("error/permit-web", model);
                     } else {
                         model.put("message", ApiUtil.echoResult(403, ex.getMessage(), null));
-                        return new ModelAndView("error/permit/json", model);
+                        return new ModelAndView("error/permit-json", model);
                     }
                 }
                 return null;
@@ -50,8 +50,8 @@ public class PermitConfig extends WebMvcConfiguration {
                 if(!(method.getBean() instanceof PermitController)) return true;
                 PermitController instance = (PermitController) method.getBean();
                 String[] names = DPUtil.explode(instance.getClass().getName(), "\\.", null, false);
-                if(names.length < 2) throw new PermitException("class has no package");
-                String module = names[names.length - 2];
+                if(names.length < 3) throw new PermitException("class has no package");
+                String module = names[names.length - 3];
                 String controller = names[names.length - 1].replaceFirst("Controller", "");
                 controller = controller.substring(0, 1).toLowerCase() + controller.substring(1);
                 String action = method.getMethod().getName().replaceFirst("Action", "");
@@ -94,7 +94,7 @@ public class PermitConfig extends WebMvcConfiguration {
             public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 
             }
-        }).addPathPatterns("/manage/**");
+        }).addPathPatterns("/**");
     }
 
 }
