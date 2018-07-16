@@ -1,26 +1,19 @@
+subprojects {
 
-apply plugin: 'java'
-apply plugin: 'idea'
+    apply plugin: 'java'
+    apply plugin: 'idea'
 
-sourceCompatibility = 1.8
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+    sourceCompatibility = 1.8
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-repositories {
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-}
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
 
-def springBootVersion = '2.0.2.RELEASE'
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+    }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: springBootVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: springBootVersion
-    compile group: 'com.alibaba', name: 'druid', version: '1.1.9'
-    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.46'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.5'
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.20'
-    compile group: 'org.springframework', name: 'spring-jdbc', version: '5.0.6.RELEASE'
+    archivesBaseName = 'sjt-' + name
 
 }
