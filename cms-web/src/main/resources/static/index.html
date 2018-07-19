@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+	<title>一点业</title>
+	<link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/jsmodern-1.1.1.min.css">
+	<script src="js/jquery-2.1.1.js"></script>
+	<script src="js/jsmodern-1.1.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<!-- 首页幻灯片 -->
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/lrtk.js"></script>
+	<style type="text/css">
+		.box {
+			height: 30px;
+		}
+		.box span{
+			font-size: 12px;
+			color: #999;
+			float: left;
+		}
+		.box > div {
+			width: 16px;
+			height: 16px;
+			float: left;
+			cursor: pointer;
+			border-radius: 4px;
+			background-size: contain;
+			margin: 0 3px;
+		}
+		#share-qrcode { background-image: url(images/wechat.png); }
+		#share-douban { background-image: url(images/db.png); }
+		#share-qzone { background-image: url(images/qzone.png); }
+		#share-sina { background-image: url(images/sina.png); }
+		#share-qq { background-image: url(images/qq.png); }
+	</style>
+</head>
+<body>
+	<div class="header">
+		<div class="top1">
+			<div class="cont">
+				<div class="welcome lf"><i class="fa fa-file-text"></i>康美生态圈、大健康共创共享平台！</div>
+				<ul class="topnav rt">
+					<li><a href="">品牌介绍</a></li>
+					<li><a href="">联系我们</a></li>
+					<li><a href="">合作加盟</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="top2">
+			<div class="cont">
+				<div class="logo lf"><a href=""><img src="images/logo.png"></a></div>
+				<ul class="menu lf">
+					<li><a href="index.html">精选</a></li>
+					<li><a href="">新闻</a></li>
+					<li><a href="">观点</a></li>
+					<li><a href="">跨界</a></li>
+					<li><a href="">产品</a></li>
+					<li><a href="">服务</a></li>
+					<li><a href="">机构</a></li>
+					<!-- <li class="showSubmenu"><a href="javascript:void(0)"><img src="images/bot.png"></a></li> -->
+				</ul>
+				<div class="kjbtn">
+					<div class="arra"><i class="fa fa-angle-down"></i></div>
+					<div class="index_search lf"><i class="fa fa-search"></i></div>
+					<div class="search">
+						<input type="text" placeholder="输入关键字" name="">
+						<i class="fa fa-search"></i>
+					</div>
+					<div class="shopping lf"><a href="">一点商城</a></div>
+					<div class="loginbtn lf"><a href="">登录</a></div>
+				</div>
+			</div>
+			<div class="subMenu">
+				<div class="cont">
+					<ul class="">
+						<li><a href="">精选</a></li>
+						<li><a href="">新闻</a></li>
+						<li><a href="">观点</a></li>
+						<li><a href="">跨界</a></li>
+						<li><a href="">产品</a></li>
+						<li><a href="">服务</a></li>
+						<li><a href="">机构</a></li>
+						<li><a href="">观点</a></li>
+						<li><a href="">跨界</a></li>
+						<li><a href="">产品</a></li>
+						<li><a href="">服务</a></li>
+						<li><a href="">机构</a></li>
+						<li><a href="">观点</a></li>
+						<li><a href="">跨界</a></li>
+						<li><a href="">产品</a></li>
+						<li><a href="">服务</a></li>
+						<li><a href="">机构</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content">
+		<div class="cont">
+			<div class="cont_l lf">
+				<!-- 幻灯片 -->
+				<div id="zSlider">
+					<div id="picshow">
+						<div id="picshow_img">
+							<ul>
+							  <li><a href="" target="_blank"><img src="images/1.jpg"></a></li>
+							  <li><a href="" target="_blank"><img src="images/2.jpg"></a></li>
+							  <li><a href="" target="_blank"><img src="images/3.jpg"></a></li>
+							  <li><a href="" target="_blank"><img src="images/4.jpg"></a></li>
+							  <li><a href="" target="_blank"><img src="images/5.jpg"></a></li>
+							  <li><a href="" target="_blank"><img src="images/6.jpg"></a></li>
+							</ul>
+						</div>
+						<div id="picshow_tx">
+							<ul>
+								<li><a href="" target="_blank">中国死飞店铺推介：上海死飞店FACTORY FIVE</a></li>
+								<li><a href="" target="_blank">骑看世界：纯美的世界恬静的心冰岛骑游之旅</a></li>
+								<li><a href="" target="_blank">空气糟糕透了！推荐几款实用的骑行防毒口罩</a></li>
+								<li><a href="" target="_blank">[组图]1200万像素带Wi-Fi 骑行记录仪Gopro Hero3评测</a></li>
+								<li><a href="" target="_blank">张向东：南非无危险的骑行与有纠结的ubuntu(组图)</a></li>
+								<li><a href="" target="_blank">单车文化课堂⑥：学会撬胎补胎爆胎不再烦</a></li>
+							</ul>
+						</div>
+					</div>
+					<div id="select_btn">
+						<ul>
+							<li><a href="" target="_blank">新闻</a></li>
+							<li><a href="" target="_blank">观点</a></li>
+							<li><a href="" target="_blank">跨界</a></li>
+							<li><a href="" target="_blank">产品</a></li>
+							<li><a href="" target="_blank">项目</a></li>
+							<li><a href="" target="_blank">机构</a></li>
+						</ul>
+					</div>	
+				</div>
+				<!-- 新闻 -->
+				<ul class="news_tab">
+					<li class="news_act">全部</li>
+					<li>医疗</li>
+					<li>美容</li>
+					<li>健康</li>
+					<li>养生</li>
+				</ul>
+				<div class="news_info">
+					<!-- 全部 -->
+					<ul class="thisclass hidden">
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news1.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">王仕锐：大健康产业或将成为成都“新名片”</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news2.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">未来互联网大健康产业将会超越阿里巴巴年入千</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news3.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">王仕锐：大健康产业或将成为成都“新名片”</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news1.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">王仕锐：大健康产业或将成为成都“新名片”</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news2.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">未来互联网大健康产业将会超越阿里巴巴年入千</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news3.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">王仕锐：大健康产业或将成为成都“新名片”</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news1.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">王仕锐：大健康产业或将成为成都“新名片”</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news2.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">未来互联网大健康产业将会超越阿里巴巴年入千</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li>
+							<div class="lf news_pic"><a href=""><img src="images/news3.png"></a></div>
+							<div class="rt news_intro">
+								<div class="news_til"><a href="">王仕锐：大健康产业或将成为成都“新名片”</a></div>
+								<div class="news_comm">美国战略思维发生了明显的变化：国家间，特别是大国间的竞争被当成了处理国…</div>
+								<div class="news_time"><span class="lf"><a href="">观点   |  207评论   |  20分钟前</a></span>
+									<div class="box rt">
+										<span>分享到：</span>
+										<div id="share-douban" title="豆瓣分享"></div>
+										<div id="share-qzone" title="QQ空间分享"></div>
+										<div id="share-sina" title="新浪微博分享"></div>
+										<div id="share-qq" title="QQ好友分享"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+					<!-- 医疗 -->
+					<ul class="hidden">
+						<li>医疗</li>
+					</ul>
+					<!-- 美容 -->
+					<ul class="hidden">
+						<li>美容</li>
+					</ul>
+					<!-- 健康 -->
+					<ul class="hidden">
+						<li>健康</li>
+					</ul>
+					<!-- 养生 -->
+					<ul class="hidden">
+						<li>养生</li>
+					</ul>
+					<div class="news_more">更多>></div>
+				</div>
+			</div>
+			<!-- 右侧 -->
+			<div class="cont_r rt">
+				<!-- 电话 -->
+				<div class="phone1"><img src="images/phone.png"></div>
+				<!-- 幻灯片2 -->
+				<div class="slider-outer" id="j_silder_outer">
+					<div class="img-item">
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+					</div>
+					<div class="img-item">
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+					</div>
+					<div class="img-item">
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+					</div>
+					<div class="img-item">
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+					</div>
+					<div class="img-item">
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+						<div class="img"></div>
+					</div>
+					<div class="btns" data-num="0">
+						<div class="prev"><</div>
+						<div class="next">></div>
+					</div>
+				</div>
+				<!-- 服务机构 -->
+				<div class="service_jg">
+					<div class="ser_til"><span>服务机构</span></div>
+					<ul>
+						<li><a href=""><img src="images/jg1.png"></a></li>
+						<li><a href=""><img src="images/jg2.png"></a></li>
+					</ul>
+				</div>
+				<!-- 精选优品 -->
+				<div class="service_jg">
+					<div class="ser_til"><span>精选优品</span></div>
+					<ul>
+						<li><a href=""><img src="images/jx1.png"></a></li>
+						<li><a href=""><img src="images/jx2.png"></a></li>
+					</ul>
+				</div>
+				<!-- 联系我们 -->
+				<div class="index_contact">
+					<div class="contact_til"><span>联系我们</span></div>
+					<div class="erweima">
+						<div class="erwm1"><img src="images/dyh.png"><br>一点业订阅号</div>
+						<div class="erwm2"><img src="images/fwh.png"><br>一点业服务号</div>
+					</div>
+					<div class="phone2"><img src="images/phone2.png"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<ul class="bot1">
+			<li><a href="">关于我们</a></li>
+			<li><a href="">版权声明</a></li>
+			<li><a href="">合作说明</a></li>
+			<li><a href="">联系我们</a></li>
+			<li><a href="">一点业商城</a></li>
+			<li class="bot1last"><a href="">友情链接</a></li>
+		</ul>
+		<div class="bot2">Copyright © 2017-2018 The Paper All rights reserved.北京中科网软科技有限公司   京ICP备15035481号</div>
+		<div class="bot3"><a href="">沪公网安备31002645645454号</a></div>
+	</div>
+	<!-- 右侧浮动按钮 -->
+	<ul class="rightFloat">
+		<li><a href=""><i class="fa fa-share-alt"></i></a></li>
+		<li><a href=""><i class="fa fa-weixin"></i></a></li>
+		<li><a href=""><i class="fa fa-envelope"></i></a></li>
+		<li><a href=""><i class="fa fa-map-marker"></i></a></li>
+		<li id="go-top"><i class="fa fa-arrow-up"></i></li>
+	</ul>
+</body>
+<!-- 菜单高亮 -->
+<script type="text/javascript" src="js/menu.js"></script>
+<!-- 选项卡 -->
+<script type="text/javascript" src="js/tab.js"></script>
+<!-- 幻灯片2 -->
+<script type="text/javascript" src="js/slide2.js"></script>
+<!-- 回到顶部 -->
+<script type="text/javascript" src="js/backTop.js"></script>
+<!-- 导航跟随 -->
+<script type="text/javascript" src="js/nav.js"></script>
+<script>
+	jsModern.share({
+	    qrcode: "#share-qrcode",
+	    douban: "#share-douban",
+	    qzone: "#share-qzone",
+	    sina: "#share-sina",
+	    qq: "#share-qq"
+	});  
+</script>
+</html>

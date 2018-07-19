@@ -1,0 +1,612 @@
+@charset "utf-8";
+/*通用样式*/
+*{
+	margin:0;
+	padding: 0;
+	font-family: '微软雅黑';
+}
+html{
+	overflow-x: hidden;
+}
+.hidden{
+	display: none;
+}
+.thisclass{
+	display: block;
+}
+.wapheader{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 4.5rem;
+	background: #c63131 url(../images/waplogo.png) no-repeat center center;
+	background-size: 25%; 
+	z-index: 99;
+}
+.wapheader .myCenter a i{
+	font-size: 2.5rem;
+	line-height: 4.5rem;
+	margin-left: 1rem;
+}
+.wapheader .myCenter a{
+	color: #f5f5f5;
+}
+.wapheader .wapSearch a i{
+	font-size: 2.5rem;
+	line-height: 4.5rem;
+	margin-right: 1rem;
+}
+.wapheader .wapSearch a{
+	color: #f5f5f5;
+	display: block;
+}
+ul.wapMenu{
+	width: 100%;
+	overflow: hidden;
+	position: fixed;
+	top: 4.5rem;
+	left: 0;
+	height: 4rem;
+	background: #f2f2f2;
+	border-bottom: 1px solid #e2e2e2;
+	display: -webkit-flex; 
+    display: flex; 
+    -webkit-justify-content: space-between; 
+    justify-content: space-between; 
+    box-sizing: border-box;
+    padding: 0 1rem;
+    z-index: 99;
+}
+ul.wapMenu li{
+	font-size: 1.4rem;
+	line-height: 4rem;
+}
+ul.wapMenu li a{
+	color: #333;
+}
+@media screen and (max-width: 320px) {html{font-size: 10px}}
+@media screen and (min-width:321px) and (max-width:375px){html{font-size:11px}}
+@media screen and (min-width:376px) and (max-width:414px){html{font-size:12px}}
+@media screen and (min-width:415px) and (max-width:639px){html{font-size:13px}}
+@media screen and (min-width:640px) and (max-width:719px){html{font-size:20px}}
+@media screen and (min-width:720px) and (max-width:749px){html{font-size:22.5px}}
+@media screen and (min-width:750px) and (max-width:799px){html{font-size:23.5px}}
+@media screen and (min-width:800px){html{font-size:25px}}
+@media screen and (max-width: 1000px) {
+  img {
+    max-width: 100%;
+  }
+}
+header{
+	height: 4rem;
+	background-color: #e93038;
+	text-align: center;
+	color: #fff;
+	line-height: 4rem;
+}
+footer{
+	height: 4rem;
+	background-color: #e93038;
+	text-align: center;
+	color: #fff;
+	line-height: 4rem;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+#wrapper{
+	width: 100%;
+	position: absolute;
+	left: 0;
+	top: 8.5rem;
+	bottom: 0rem;
+	overflow: hidden;
+	z-index: 1;
+	background-color: #ccc;
+}
+#wrapper li{
+	/*height: 10rem;
+	line-height: 10rem;
+	text-align: center;
+	border-bottom: 1px solid rgba(0,0,0,.1);*/
+	box-sizing: border-box;
+	padding: 1rem;
+	overflow: hidden;
+}
+.more{
+	height: 4rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #333;
+}
+.pull_icon{
+	width: 25px;
+	height: 25px;
+	background-image: url('../images/pull.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 25px;
+	transition: all .5s;
+}
+.more span{
+	padding-left: .5rem;
+}
+
+.scroller{
+	background-color: #fff;
+}
+
+
+.more .flip{
+	transform: rotate(180deg);
+}
+.loading{
+	background-image: url('../images/loading.png');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 25px;
+}
+.more .loading{
+  -webkit-transform: rotate(0deg) translateZ(0);
+  -webkit-transition-duration: 0;
+  -webkit-animation-name: loading;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes loading {
+  from {
+    -webkit-transform: rotate(0deg) translateZ(0);
+  }
+  to {
+    -webkit-transform: rotate(360deg) translateZ(0);
+  }
+}
+
+
+div.news_tit{
+	color: #333;
+	font-size: 1.6rem;
+	line-height: 2.5rem;
+	font-weight: normal;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+div.news_tit a{
+	color: #333;
+}
+div.news_pic a{
+	display: -webkit-flex; 
+    display: flex; 
+    -webkit-justify-content: space-between; 
+    justify-content: space-between; 
+}
+
+div.news_pic img{
+	width: 30%;
+	height: 30%;
+}
+div.news_source span{
+	font-size: 1.2rem;
+	line-height: 2rem;
+	color: #999;
+	margin-right: 1.5rem;
+}
+div.news_source{
+	border-bottom: 1px solid #ddd;
+}
+div.newsinfo{
+	width: 70%;
+}
+div.newsimg{
+	width: 30%;
+}
+div.newscont{
+	width: 100%;
+	border-bottom: 1px solid #ddd;
+	overflow: hidden;
+}
+.newstit a{
+	color: #333;
+    font-size: 1.6rem;
+    line-height: 1.8rem;
+    font-weight: normal;
+    display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+.newssource span{
+	font-size: 1.2rem;
+	line-height: 2rem;
+	color: #999;
+	margin-right: 1.5rem;
+}
+.newsimg img{
+	/*margin-top: 0.5rem;*/
+}
+
+body.detail-body{
+	background: #fafafa;
+	padding-top: 0.6rem;
+	padding-bottom: 4rem;
+}
+.news_detail{
+	box-sizing: border-box;
+	padding: 0 1rem;
+}
+.detail_tit{
+	font-size: 1.6rem;
+	color: #333;
+	line-height: 2rem;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+.detail_source span{
+	font-size: 1.2rem;
+	line-height: 2rem;
+	color: #999;
+	margin-right: 1.5rem;
+}
+
+.detail_cont,.detail_cont p{
+	font-size: 1.4rem;
+	line-height: 1.8rem;
+	color: #333;
+	text-align:justify;
+	text-justify:distribute-all-lines;/*ie6-8*/
+	text-align-last:justify;/* ie9*/
+	-moz-text-align-last:justify;/*ff*/
+	-webkit-text-align-last:justify;/*chrome 20+*/
+}
+.news_comment{
+	box-sizing: border-box;
+	padding: 0 1rem;
+	overflow: hidden;
+	background: #fff;
+}
+.comment_tit{
+	background: #f8f8f8;
+	font-size: 1.4rem;
+	height: 2.4rem;
+	margin-top: 2rem;
+	line-height: 2.4rem;
+	color: #666;
+	box-sizing: border-box;
+	padding: 0 1rem;
+}
+ul.comment_list{
+	width: 100%;
+	background: #fff;
+}
+.comment_list li{
+	padding: 1.2rem 0;
+	overflow: hidden;
+}
+.userface{
+	width: 10%;
+}
+.userface a img{
+	border-radius: 50%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+}
+.uesrComDt{
+	width: 88%;
+}
+.username a{
+	font-size: 1.2rem;
+	line-height: 1.5rem;
+	color: #3586ea;
+}
+.usercomment{
+	font-size: 1.3rem;
+	line-height: 1.5rem;
+	color: #333;
+	margin-top: 0.5rem;
+}
+.usercom{
+	margin-top: 1rem;
+}
+.usercom span.commtime{
+	display: block;
+	float: left;
+	font-size: 1rem;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	color: #333;
+	margin-right: 1rem;
+}
+.usercom span.replybtn{
+	margin-left: 1rem;
+	font-size: 1rem;
+	color: #333;
+	background: #f2f3f4;
+	display: block;
+	float: left;
+	height: 1.5rem;
+	line-height: 1.5rem;
+	padding: 0rem 1rem;
+	border-radius: 0.7rem;
+}
+
+ul.allMenu{
+	position: fixed;
+	top: 8.5rem;
+	left:0;
+	background: #f2f2f2;
+	overflow: hidden;
+	z-index: 9999;
+	border-bottom: 1px solid #ddd;
+	display: none;
+}
+
+ul.allMenu li{
+	float: left;
+	font-size: 1.4rem;
+	margin:1rem;
+}
+
+ul.allMenu li a{
+	color: #333;
+}
+
+
+.reply{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 4rem;
+	background: #fff;
+	border-top: 1px solid #ddd;
+	box-sizing: border-box;
+	padding: 0 1rem;
+}
+
+.rpCont{
+	width: 80%;
+	height: 2.5rem;
+	margin-top: 0.7rem;
+	background: #f8f8f8;
+	border: 1px solid #ddd;
+	border-radius: 1.2rem;
+}
+.rpCont input{
+	width: 80%;
+	margin:0.4rem 0 0 0.8rem;
+	border: 0;
+	background: none;
+	outline: none;
+}
+.rpCont a{
+	display: block;
+	font-size: 2rem;
+	color: #999;
+	margin-right: 0.5rem;
+}
+a.morecont{
+	display: block;
+	font-size: 1.8rem;
+	color: #999;
+	margin-top: 0.8rem;
+}
+a.link{
+	display: block;
+	font-size: 1.8rem;
+	color: #999;
+	margin-right: 1rem;
+	margin-top: 0.8rem;
+}
+.search{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: #f2f2f2;
+	z-index: 999;
+	display: none;
+}
+.search1{
+	height: 4rem;
+	width: 100%;
+	background: #f7f7f7;
+	box-sizing: border-box;
+	padding: 0 1rem;
+}
+.scCont{
+	width: 85%;
+    height: 2.5rem;
+    margin-top: 0.7rem;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 1.2rem;
+}
+.scCont i{
+	color: #999;
+	margin-top: 0.6rem;
+	margin-left: 0.7rem;
+}
+.scCont input{
+	width: 80%;
+	margin:0.4rem 0 0 0.8rem;
+	border: 0;
+	background: none;
+	outline: none;
+}
+a.searchBt{
+	display: block;
+	font-size: 1.2rem;
+	color: #666;
+	margin: 1.2rem 0.8rem 0 0rem; 
+}
+.search2{
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0 1rem;
+}
+.sch2Tit{
+	color: #999;
+	font-size: 1.2rem;
+	line-height: 2.6rem;
+}
+.search2 ul{
+	overflow: hidden;
+}
+
+.search2 ul li{
+	font-size: 1.2rem;
+	line-height: 2.6rem;
+	width: 50%;
+	float: left;
+}
+
+.search2 ul li a{
+	color: #333;
+}
+
+.search2 ul li a i{
+	margin: 0 1rem
+}
+.search2 ul li a i.one{
+	color: #b90000
+}
+.search2 ul li a i.two{
+	color: #dc6312
+}
+.search2 ul li a i.three{
+	color: #dcd512
+}
+
+
+/*登录*/
+
+ul.login{
+	width: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 2rem;
+}
+ul.login li{
+	width: 100%;
+	overflow: hidden;
+}
+li.logo{
+	text-align: center;
+}
+li.logo img{
+	width: 35%;
+}
+li.username{
+	margin: 1rem 0;
+}
+li.username input{
+	width: 99%;
+	height: 2.6rem;
+	border:1px solid #ddd;
+	box-sizing: border-box;
+	padding: 0 0.6rem;
+	outline: none;
+}
+li.yzm{
+	margin: 1rem 0;
+}
+li.yzm .yzmtext{
+	width: 60%;
+	height: 2.6rem;
+	border:1px solid #ddd;
+	box-sizing: border-box;
+	padding: 0 0.6rem;
+	outline: none;
+}
+li.yzm .yzmcg{
+	width: 35%;
+	height: 2.6rem;
+	line-height: 2.6rem;
+	font-weight: bold;
+	color: #0d0aef;
+}
+li.phoneyzm{
+	height: 2.6rem;
+	border:1px solid #ddd;
+	box-sizing: border-box;
+	padding: 0 0.6rem;
+	margin: 1rem 0;
+}
+.phoneyzmtext{
+	width: 50%;
+	outline: none;
+	margin-top: 0.4rem;
+	border: 0;
+	background: none
+}
+li.phoneyzm a{
+	display: block;
+	margin-top: 0.4rem;
+	padding: 0 1rem;
+	color: #333;
+	font-size: 1.4rem;
+	border-left: 1px solid #ddd;
+}
+li.shengm{
+	margin: 1rem 0;
+	font-size: 1.4rem;
+	color: #333;
+}
+li.shengm input{
+	margin-right: 0.6rem;
+}
+li.shengm a{ 
+	font-size: 1.4rem;
+	color: #333;
+}
+li.subm{
+	margin: 1rem 0;
+}
+li.subm input{
+	width: 100%;
+	height: 2.6rem;
+	line-height: 2.6rem;
+	background: #ff5b5f;
+	color: #fff;
+	font-size: 1.4rem;
+	border: 0;
+}
+li.qiehuan{
+
+}
+li.qiehuan a{
+	font-size: 1.4rem;
+	color: #999;
+}
+li.dsf{
+	margin: 1rem 0;
+	text-align: center;
+	font-size: 1.6rem;
+	color: #999;
+}
+li.dsf_login{
+	margin: 1rem 0;
+}
+ul.dsflogin_btn{
+	display: -webkit-flex; 
+    display: flex; 
+    -webkit-justify-content: space-between; 
+    justify-content: space-between; 
+}
+ul.dsflogin_btn li{
+	text-align: center;
+}
+ul.dsflogin_btn li a i{
+	font-size: 2rem;
+	color: #999;
+}
