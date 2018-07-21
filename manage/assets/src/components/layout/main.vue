@@ -22,7 +22,7 @@
     </el-col>
     <el-col :span="24" class="main">
       <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
-        <el-menu :default-active="$router.path" :collapse="collapsed" router>
+        <el-menu :default-active="$router.path" :collapse="collapsed" router style="overflow:auto">
           <template v-for="item in $store.state.user.data.menu">
             <el-submenu :key="item.id" :index="item.url" v-if="item.children.length > 0">
               <template slot="title">
