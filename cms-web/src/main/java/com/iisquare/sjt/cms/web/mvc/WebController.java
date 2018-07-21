@@ -23,13 +23,11 @@ public class WebController extends ControllerBase {
     }
 
     protected String displayTemplate(ModelMap model, HttpServletRequest request, String controller, String action) {
-        String module = request.getAttribute("module").toString();
         Map<String, Object> page = new HashMap<>();
         page.put("title", settingsService.get("system", "siteName"));
         model.put("page", page);
-        if(DPUtil.empty(controller)) {
-            return module + "/" + action;
-        }
+        model.put("staticUrl", "/static");
+        if(DPUtil.empty(controller)) return action;
         return controller + "/" + action;
     }
 
