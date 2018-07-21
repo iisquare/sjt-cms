@@ -11,11 +11,116 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 21/07/2018 08:59:30
+ Date: 21/07/2018 18:08:37
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for sjt_article
+-- ----------------------------
+DROP TABLE IF EXISTS `sjt_article`;
+CREATE TABLE `sjt_article` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `from_name` varchar(64) NOT NULL DEFAULT '',
+  `from_url` varchar(255) NOT NULL DEFAULT '',
+  `author` varchar(64) NOT NULL DEFAULT '',
+  `thumb_url` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `target` varchar(8) NOT NULL DEFAULT '',
+  `sort` tinyint(4) NOT NULL DEFAULT '0',
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `description` text NOT NULL,
+  `content` longtext NOT NULL,
+  `publish_time` bigint(20) NOT NULL DEFAULT '0',
+  `created_time` bigint(20) NOT NULL DEFAULT '0',
+  `created_uid` int(11) NOT NULL DEFAULT '0',
+  `updated_time` bigint(20) NOT NULL DEFAULT '0',
+  `updated_uid` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sjt_article
+-- ----------------------------
+BEGIN;
+INSERT INTO `sjt_article` VALUES (1, '后台', '', '', '', '', '', '', 0, 1, '', '', 0, 1528082694531, 1, 1528082694531, 1);
+INSERT INTO `sjt_article` VALUES (2, '后台管理', 'fa fa-home', '/', '', '', '', '', 0, 1, '', '', 0, 1528082833701, 1, 1528082833701, 1);
+INSERT INTO `sjt_article` VALUES (3, '用户管理', 'fa fa-user-circle', '/user/index', '', '', '', '', 0, 1, '', '', 0, 1528082886891, 1, 1528082886891, 1);
+INSERT INTO `sjt_article` VALUES (4, '角色管理', 'fa fa-user-secret', '/role/index', '', '', '', '', 0, 1, '', '', 0, 1528082942723, 1, 1528082942723, 1);
+INSERT INTO `sjt_article` VALUES (5, '配置管理', 'fa fa-cogs', '/settings/index', '', '', '', '', 0, 1, '', '', 0, 1528083035344, 1, 1528083035344, 1);
+INSERT INTO `sjt_article` VALUES (6, '菜单管理', 'fa fa-link', '/menu/index', '', '', '', '', 0, 1, '', '', 0, 1528083079182, 1, 1528083079182, 1);
+INSERT INTO `sjt_article` VALUES (7, '资源管理', 'fa fa-tree', '/resource/index', '', '', '', '', 0, 1, '', '', 0, 1528083144253, 1, 1528083144253, 1);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sjt_category
+-- ----------------------------
+DROP TABLE IF EXISTS `sjt_category`;
+CREATE TABLE `sjt_category` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL DEFAULT '',
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `icon` varchar(64) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `target` varchar(8) NOT NULL DEFAULT '',
+  `sort` tinyint(4) NOT NULL DEFAULT '0',
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `description` text NOT NULL,
+  `created_time` bigint(20) NOT NULL DEFAULT '0',
+  `created_uid` int(11) NOT NULL DEFAULT '0',
+  `updated_time` bigint(20) NOT NULL DEFAULT '0',
+  `updated_uid` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sjt_category
+-- ----------------------------
+BEGIN;
+INSERT INTO `sjt_category` VALUES (1, '后台', 0, '', '', '', 0, 1, '', 1528082694531, 1, 1528082694531, 1);
+INSERT INTO `sjt_category` VALUES (2, '后台管理', 1, 'fa fa-home', '/', '', 0, 1, '', 1528082833701, 1, 1528082833701, 1);
+INSERT INTO `sjt_category` VALUES (3, '用户管理', 2, 'fa fa-user-circle', '/user/index', '', 0, 1, '', 1528082886891, 1, 1528082886891, 1);
+INSERT INTO `sjt_category` VALUES (4, '角色管理', 2, 'fa fa-user-secret', '/role/index', '', 0, 1, '', 1528082942723, 1, 1528082942723, 1);
+INSERT INTO `sjt_category` VALUES (5, '配置管理', 2, 'fa fa-cogs', '/settings/index', '', 0, 1, '', 1528083035344, 1, 1528083035344, 1);
+INSERT INTO `sjt_category` VALUES (6, '菜单管理', 2, 'fa fa-link', '/menu/index', '', 0, 1, '', 1528083079182, 1, 1528083079182, 1);
+INSERT INTO `sjt_category` VALUES (7, '资源管理', 2, 'fa fa-tree', '/resource/index', '', 0, 1, '', 1528083144253, 1, 1528083144253, 1);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sjt_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `sjt_comment`;
+CREATE TABLE `sjt_comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text NOT NULL,
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  `article_id` int(11) NOT NULL DEFAULT '0',
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `to_uid` int(11) NOT NULL DEFAULT '0',
+  `sort` tinyint(4) NOT NULL DEFAULT '0',
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  `created_time` bigint(20) NOT NULL DEFAULT '0',
+  `created_uid` int(11) NOT NULL DEFAULT '0',
+  `updated_time` bigint(20) NOT NULL DEFAULT '0',
+  `updated_uid` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sjt_comment
+-- ----------------------------
+BEGIN;
+INSERT INTO `sjt_comment` VALUES (1, '', 0, 0, 0, 0, 0, 1, 1528082694531, 1, 1528082694531, 1);
+INSERT INTO `sjt_comment` VALUES (2, '', 0, 0, 1, 0, 0, 1, 1528082833701, 1, 1528082833701, 1);
+INSERT INTO `sjt_comment` VALUES (3, '', 0, 0, 2, 0, 0, 1, 1528082886891, 1, 1528082886891, 1);
+INSERT INTO `sjt_comment` VALUES (4, '', 0, 0, 2, 0, 0, 1, 1528082942723, 1, 1528082942723, 1);
+INSERT INTO `sjt_comment` VALUES (5, '', 0, 0, 2, 0, 0, 1, 1528083035344, 1, 1528083035344, 1);
+INSERT INTO `sjt_comment` VALUES (6, '', 0, 0, 2, 0, 0, 1, 1528083079182, 1, 1528083079182, 1);
+INSERT INTO `sjt_comment` VALUES (7, '', 0, 0, 2, 0, 0, 1, 1528083144253, 1, 1528083144253, 1);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sjt_menu
@@ -242,7 +347,7 @@ CREATE TABLE `sjt_user` (
 -- Records of sjt_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1528273337071, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1532154017735, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (2, 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', 0, 1, '', 1528081567988, '127.0.0.1', 1, 1528081567988, 1, 1528267171953, '127.0.0.1', 0);
 COMMIT;
 
