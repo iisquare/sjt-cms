@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 21/07/2018 18:08:37
+ Date: 21/07/2018 18:33:49
 */
 
 SET NAMES utf8mb4;
@@ -30,6 +30,7 @@ CREATE TABLE `sjt_article` (
   `thumb_url` varchar(255) NOT NULL DEFAULT '',
   `url` varchar(255) NOT NULL DEFAULT '',
   `target` varchar(8) NOT NULL DEFAULT '',
+  `comment_status` tinyint(4) NOT NULL DEFAULT '0',
   `sort` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '0',
   `description` text NOT NULL,
@@ -46,13 +47,13 @@ CREATE TABLE `sjt_article` (
 -- Records of sjt_article
 -- ----------------------------
 BEGIN;
-INSERT INTO `sjt_article` VALUES (1, '后台', '', '', '', '', '', '', 0, 1, '', '', 0, 1528082694531, 1, 1528082694531, 1);
-INSERT INTO `sjt_article` VALUES (2, '后台管理', 'fa fa-home', '/', '', '', '', '', 0, 1, '', '', 0, 1528082833701, 1, 1528082833701, 1);
-INSERT INTO `sjt_article` VALUES (3, '用户管理', 'fa fa-user-circle', '/user/index', '', '', '', '', 0, 1, '', '', 0, 1528082886891, 1, 1528082886891, 1);
-INSERT INTO `sjt_article` VALUES (4, '角色管理', 'fa fa-user-secret', '/role/index', '', '', '', '', 0, 1, '', '', 0, 1528082942723, 1, 1528082942723, 1);
-INSERT INTO `sjt_article` VALUES (5, '配置管理', 'fa fa-cogs', '/settings/index', '', '', '', '', 0, 1, '', '', 0, 1528083035344, 1, 1528083035344, 1);
-INSERT INTO `sjt_article` VALUES (6, '菜单管理', 'fa fa-link', '/menu/index', '', '', '', '', 0, 1, '', '', 0, 1528083079182, 1, 1528083079182, 1);
-INSERT INTO `sjt_article` VALUES (7, '资源管理', 'fa fa-tree', '/resource/index', '', '', '', '', 0, 1, '', '', 0, 1528083144253, 1, 1528083144253, 1);
+INSERT INTO `sjt_article` VALUES (1, '后台', '', '', '', '', '', '', 0, 0, 1, '', '', 0, 1528082694531, 1, 1528082694531, 1);
+INSERT INTO `sjt_article` VALUES (2, '后台管理', 'fa fa-home', '/', '', '', '', '', 0, 0, 1, '', '', 0, 1528082833701, 1, 1528082833701, 1);
+INSERT INTO `sjt_article` VALUES (3, '用户管理', 'fa fa-user-circle', '/user/index', '', '', '', '', 0, 0, 1, '', '', 0, 1528082886891, 1, 1528082886891, 1);
+INSERT INTO `sjt_article` VALUES (4, '角色管理', 'fa fa-user-secret', '/role/index', '', '', '', '', 0, 0, 1, '', '', 0, 1528082942723, 1, 1528082942723, 1);
+INSERT INTO `sjt_article` VALUES (5, '配置管理', 'fa fa-cogs', '/settings/index', '', '', '', '', 0, 0, 1, '', '', 0, 1528083035344, 1, 1528083035344, 1);
+INSERT INTO `sjt_article` VALUES (6, '菜单管理', 'fa fa-link', '/menu/index', '', '', '', '', 0, 0, 1, '', '', 0, 1528083079182, 1, 1528083079182, 1);
+INSERT INTO `sjt_article` VALUES (7, '资源管理', 'fa fa-tree', '/resource/index', '', '', '', '', 0, 0, 1, '', '', 0, 1528083144253, 1, 1528083144253, 1);
 COMMIT;
 
 -- ----------------------------

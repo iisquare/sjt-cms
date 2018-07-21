@@ -36,6 +36,8 @@ public class Article implements Serializable {
     @Column
     private String target; // 打开方式
     @Column
+    private Integer commentStatus; // 是否允许评论
+    @Column
     private Long sort; // 排序，默认为发布&创建时间
     @Column
     private Integer status;
