@@ -24,6 +24,10 @@ public class Article implements Serializable {
     @Column
     private String title; // 标题
     @Column
+    private Integer categoryId; // 栏目主键
+    @Transient
+    private String categoryIdName;
+    @Column
     private String fromName; // 来源名称
     @Column
     private String fromUrl; // 来源地址
