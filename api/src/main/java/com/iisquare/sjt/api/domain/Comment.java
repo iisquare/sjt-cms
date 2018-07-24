@@ -33,10 +33,10 @@ public class Comment implements Serializable {
     private String articleIdName;
     @Column
     private Integer parentId; // 父级评论主键
+    @Column
+    private Integer topId; // 一级评论主键
     @Transient
     private List<Comment> children;
-    @Column
-    private Integer toUid; // 回复对象
     @Transient
     private String toUidName;
     @Column

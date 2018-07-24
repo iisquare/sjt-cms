@@ -12,5 +12,8 @@ export default {
   },
   save (param) {
     return base.post('/article/save', param)
+  },
+  info (param) {
+    return base.post('/article/info', param)
   }
 }

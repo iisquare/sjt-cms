@@ -33,11 +33,11 @@
       </el-table-column>
       <el-table-column prop="sort" label="排序" sortable></el-table-column>
       <el-table-column prop="statusText" label="状态" sortable></el-table-column>
-      <el-table-column prop="updatedUidName" label="操作者" sortable></el-table-column>
+      <el-table-column prop="commentEnable" label="可评论" sortable></el-table-column>
       <el-table-column prop="publishTime" label="发布时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column label="操作" width="126">
         <template slot-scope="scope">
-          <el-button type="text" size="small" v-permit="'manage:article:'" @click="window.open(scope.row.url)">查看</el-button>
+          <el-button type="text" size="small" v-permit="'manage:article:'" @click.native="preview(scope.$id, scope.row)">查看</el-button>
           <el-button type="text" size="small" v-permit="'manage:article:modify'" @click.native="$router.push('/article/edit?id=' + scope.row.id)">编辑</el-button>
         </template>
       </el-table-column>
@@ -98,6 +98,9 @@ export default {
           }
         })
       }).catch(() => {})
+    },
+    preview (id, row) {
+      window.open(row.url)
     }
   },
   mounted () {

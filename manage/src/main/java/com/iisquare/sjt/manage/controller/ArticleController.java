@@ -29,6 +29,17 @@ public class ArticleController extends PermitController {
     @Autowired
     private CategoryService categoryService;
 
+    @RequestMapping("/info")
+    @Permission("")
+    public String infoAction(@RequestBody Map<?, ?> param) {
+        Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
+        Article info = articleService.info(id);
+        if(null == info || -1 == info.getStatus()) {
+            return ApiUtil.echoResult(404, null, id);
+        }
+        return ApiUtil.echoResult(0, null , info);
+    }
+
     @RequestMapping("/list")
     @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {

@@ -29,7 +29,7 @@
       <el-checkbox v-model="form.commentEnable">启用评论</el-checkbox>
     </el-form-item>
     <el-form-item label="排序">
-      <el-input-number v-model="form.sort" :min="0" aria-placeholder="默认为发布时间"></el-input-number>
+      <el-input-number v-model="form.sort" :min="0" size="medium" aria-placeholder="默认为发布时间"></el-input-number>
     </el-form-item>
     <el-form-item label="状态" prop="status">
       <el-select v-model="form.status" placeholder="请选择">
@@ -69,7 +69,9 @@ export default {
         value: 'id',
         label: 'name'
       },
-      form: {},
+      form: {
+        commentEnable: false
+      },
       rules: {
         title: [{required: true, message: '请输入文章标题', trigger: 'blur'}],
         categoryId: [{required: true, message: '请选择栏目名称', trigger: 'blur'}],
@@ -82,7 +84,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (!valid || this.formLoading) return false
         this.formLoading = true
-        let param = this.form
+        let param = Object.assign({}, this.form)
         param.categoryId = param.categoryId[0]
         wrapper.tips(articleService.save(param)).then(response => {
           if (response.code === 0) {
@@ -94,6 +96,17 @@ export default {
     }
   },
   mounted () {
+    let id = this.$router.currentRoute.query.id
+    if (id) {
+      wrapper.tips(articleService.info({id})).then((response) => {
+        if (response.code === 0) {
+          Object.assign(this.form, response.data, {
+            categoryId: [response.data.categoryId],
+            commentEnable: response.data.commentEnable === 1
+          })
+        }
+      })
+    }
     wrapper.tips(articleService.config()).then((response) => {
       this.config.ready = true
       if (response.code === 0) {
