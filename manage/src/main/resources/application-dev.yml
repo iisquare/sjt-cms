@@ -31,3 +31,6 @@ spring:
 custom:
   date:
     format: yyyy-MM-dd HH:mm:ss
+  uploads:
+    path: docs/uploads
+    uri: /files

@@ -25,9 +25,11 @@ public class Upload implements Serializable {
     @Column
     private String type; // 类型
     @Column
-    private String path; // 存储路径
+    private String contentType; // 类型
     @Column
-    private String uri; // 访问路径
+    private String path; // 存储文件相对路径
+    @Transient
+    private String url; // 访问链接
     @Column
     private Integer status;
     @Transient

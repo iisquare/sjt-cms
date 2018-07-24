@@ -7,6 +7,8 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 
@@ -17,11 +19,17 @@ public abstract class WebMvcConfiguration extends WebMvcConfigurationSupport {
 
     @Value("${spring.http.encoding.charset}")
     private String charset;
+    @Value("${custom.uploads.path}")
+    private String uploadsPath;
 
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/", "classpath:/public/");
+        String filepath = new File(uploadsPath).getAbsolutePath().replaceAll("\\\\", "/");
+        if(!filepath.startsWith("/")) filepath = "/" + filepath;
+        if(!filepath.endsWith("/")) filepath += "/";
+        registry.addResourceHandler("/files/**").addResourceLocations("file://" + filepath);
     }
 
     @Override
