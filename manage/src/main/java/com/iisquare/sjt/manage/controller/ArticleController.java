@@ -49,7 +49,7 @@ public class ArticleController extends PermitController {
         if(!articleService.status("default").containsKey(status)) return ApiUtil.echoResult(1002, "状态异常", status);
         String description = DPUtil.parseString(param.get("description"));
         int categoryId = DPUtil.parseInt(param.get("categoryId"));
-        if(categoryId < 0) {
+        if(categoryId < 1) {
             return ApiUtil.echoResult(1003, "栏目异常", categoryId);
         } else if(categoryId > 0) {
             Category parent = categoryService.info(categoryId);

@@ -4,7 +4,7 @@
       <el-input type="text" v-model="form.title" auto-complete="on" placeholder="文章标题"></el-input>
     </el-form-item>
     <el-form-item label="栏目" prop="categoryId">
-      <el-cascader v-model="form.categortId" :options="config.categories"
+      <el-cascader v-model="form.categoryId" :options="config.categories"
         expand-trigger="hover" :props="props" :change-on-select="true"></el-cascader>
     </el-form-item>
     <el-form-item label="来源名称" prop="fromName">
@@ -82,7 +82,9 @@ export default {
       this.$refs.form.validate((valid) => {
         if (!valid || this.formLoading) return false
         this.formLoading = true
-        wrapper.tips(articleService.save(this.form)).then(response => {
+        let param = this.form
+        param.categoryId = param.categoryId[0]
+        wrapper.tips(articleService.save(param)).then(response => {
           if (response.code === 0) {
             this.$router.push('/article/index')
           }
