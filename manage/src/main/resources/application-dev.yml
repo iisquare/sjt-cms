@@ -33,4 +33,6 @@ custom:
     format: yyyy-MM-dd HH:mm:ss
   uploads:
     path: docs/uploads
-    uri: /files
+    uri: http://127.0.0.1:8080/files
+  cms:
+    web: http://127.0.0.1:8001

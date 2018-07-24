@@ -67,6 +67,14 @@ let routes = [{
     path: '/category/index',
     name: '文章栏目',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/category/index')
+  }, {
+    path: '/article/index',
+    name: '文章管理',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/article/index')
+  }, {
+    path: '/article/edit',
+    name: '文章编辑',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/article/edit')
   }]
 }, {
   path: '*',

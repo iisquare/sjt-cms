@@ -1,7 +1,7 @@
 package com.iisquare.sjt.api.service;
 
-import com.iisquare.sjt.api.dao.CategoryDao;
-import com.iisquare.sjt.api.domain.Category;
+import com.iisquare.sjt.api.dao.ArticleDao;
+import com.iisquare.sjt.api.domain.Article;
 import com.iisquare.sjt.api.mvc.ServiceBase;
 import com.iisquare.sjt.api.util.ServiceUtil;
 import com.iisquare.sjt.core.util.DPUtil;
@@ -22,19 +22,21 @@ import javax.persistence.criteria.Root;
 import java.util.*;
 
 @Service
-public class CategoryService extends ServiceBase {
+public class ArticleService extends ServiceBase {
 
     @Autowired
-    private CategoryDao categoryDao;
+    private ArticleDao articleDao;
     @Autowired
     private UserService userService;
+    @Autowired
+    private CategoryService categoryService;
     @Value("${custom.cms.web}")
     private String cmsWeb;
 
     public Map<?, ?> status(String level) {
         Map<Integer, String> status = new LinkedHashMap<>();
-        status.put(1, "启用");
-        status.put(2, "关闭");
+        status.put(1, "上架");
+        status.put(2, "下架");
         switch (level) {
             case "default":
                 break;
@@ -47,71 +49,64 @@ public class CategoryService extends ServiceBase {
         return status;
     }
 
-    public Category info(Integer id) {
+    public Article info(Integer id) {
         if(null == id || id < 1) return null;
-        return categoryDao.findById(id).get();
+        return articleDao.findById(id).get();
     }
 
-    public Category save(Category info, int uid) {
+    public Article save(Article info, int uid) {
         long time = System.currentTimeMillis();
         info.setUpdatedTime(time);
         info.setUpdatedUid(uid);
         if(null == info.getId()) {
             info.setCreatedTime(time);
             info.setCreatedUid(uid);
+            Long sort = info.getSort();
+            if(null == sort || sort < 1) info.setSort(time);
+            Long publishTime = info.getPublishTime();
+            if(null == publishTime || publishTime < 1) info.setPublishTime(time);
+        } else {
+            Long publishTime = info.getPublishTime();
+            if(null == publishTime || publishTime < 1) info.setPublishTime(info.getCreatedTime());
+            Long sort = info.getSort();
+            if(null == sort || sort < 1) info.setSort(info.getPublishTime());
         }
-        return categoryDao.save(info);
-    }
-
-    public List<?> fillInfo(List<?> list, String ...properties) {
-        if(null == list || list.size() < 1 || properties.length < 1) return list;
-        Set<Integer> ids = ServiceUtil.getPropertyValues(list, Integer.class, properties);
-        if(ids.size() < 1) return list;
-        Map<Integer, Category> map = ServiceUtil.indexObjectList(categoryDao.findAllById(ids), Integer.class, Category.class, "id");
-        if(map.size() < 1) return list;
-        for (Object item : list) {
-            for (String property : properties) {
-                Category info = map.get(ReflectUtil.getPropertyValue(item, property));
-                if(null == info) continue;
-                ReflectUtil.setPropertyValue(item, property + "Name", null, new Object[]{info.getName()});
-            }
-        }
-        return list;
-    }
-
-    public List<Category> tree() {
-        List<Category> data = categoryDao.findAll(new Specification() {
-            @Override
-            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
-                List<Predicate> predicates = new ArrayList<>();
-                predicates.add(cb.notEqual(root.get("status"), -1));
-                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-            }
-        }, Sort.by(Sort.Order.desc("sort")));
-        return ServiceUtil.formatRelation(data, Category.class, "parentId", 0, "id", "children");
+        return articleDao.save(info);
     }
 
     public Map<?, ?> search(Map<?, ?> param, Map<?, ?> config) {
         Map<String, Object> result = new LinkedHashMap<>();
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);
         int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, 1, 500, 15);
-        Page<Category> data = categoryDao.findAll(new Specification() {
+        Page<Article> data = articleDao.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
                 predicates.add(cb.notEqual(root.get("status"), -1));
-                String name = DPUtil.trim(DPUtil.parseString(param.get("name")));
-                if(!DPUtil.empty(name)) {
-                    predicates.add(cb.like(root.get("name"), "%" + name + "%"));
+                String title = DPUtil.trim(DPUtil.parseString(param.get("title")));
+                if(!DPUtil.empty(title)) {
+                    predicates.add(cb.like(root.get("title"), "%" + title + "%"));
                 }
-                int parentId = DPUtil.parseInt(param.get("parentId"));
-                if(!"".equals(DPUtil.parseString(param.get("parentId")))) {
-                    predicates.add(cb.equal(root.get("parentId"), parentId));
+                int categoryId = DPUtil.parseInt(param.get("categoryId"));
+                if(!"".equals(DPUtil.parseString(param.get("categoryId")))) {
+                    predicates.add(cb.equal(root.get("categoryId"), categoryId));
+                }
+                String fromName = DPUtil.trim(DPUtil.parseString(param.get("fromName")));
+                if(!DPUtil.empty(fromName)) {
+                    predicates.add(cb.equal(root.get("fromName"), fromName));
+                }
+                String author = DPUtil.trim(DPUtil.parseString(param.get("author")));
+                if(!DPUtil.empty(author)) {
+                    predicates.add(cb.equal(root.get("author"), author));
+                }
+                String description = DPUtil.trim(DPUtil.parseString(param.get("description")));
+                if(!DPUtil.empty(description)) {
+                    predicates.add(cb.like(root.get("description"), "%" + description + "%"));
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         }, PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("sort"))));
-        List<Category> rows = data.getContent();
+        List<Article> rows = data.getContent();
         if(!DPUtil.empty(config.get("withUserInfo"))) {
             userService.fillInfo(rows, "createdUid", "updatedUid");
         }
@@ -119,12 +114,12 @@ public class CategoryService extends ServiceBase {
             ServiceUtil.fillProperties(rows, new String[]{"status"}, new String[]{"statusText"}, status("full"));
         }
         if(!DPUtil.empty(config.get("withParentInfo"))) {
-            this.fillInfo(rows, "parentId");
+            categoryService.fillInfo(rows, "categoryId");
         }
-        for (Category info : rows) {
+        for (Article info : rows) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/columns-" + info.getId() + ".shtml";
+                url = cmsWeb + "/news-" + info.getCategoryId() + "-" + info.getId() + ".shtml";
                 info.setUrl(url);
             }
         }
@@ -137,20 +132,20 @@ public class CategoryService extends ServiceBase {
 
     public boolean remove(List<Integer> ids) {
         if(null == ids || ids.size() < 1) return false;
-        categoryDao.deleteInBatch(categoryDao.findAllById(ids));
+        articleDao.deleteInBatch(articleDao.findAllById(ids));
         return true;
     }
 
     public boolean delete(List<Integer> ids, int uid) {
         if(null == ids || ids.size() < 1) return false;
-        List<Category> list = categoryDao.findAllById(ids);
+        List<Article> list = articleDao.findAllById(ids);
         long time = System.currentTimeMillis();
-        for (Category item : list) {
+        for (Article item : list) {
             item.setStatus(-1);
             item.setUpdatedTime(time);
             item.setUpdatedUid(uid);
         }
-        categoryDao.saveAll(list);
+        articleDao.saveAll(list);
         return true;
     }
 }

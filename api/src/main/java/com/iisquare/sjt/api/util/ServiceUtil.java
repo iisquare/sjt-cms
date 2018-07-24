@@ -16,9 +16,9 @@ public class ServiceUtil {
 		for(Object item : data) {
 			if(!parentValue.equals(ReflectUtil.getPropertyValue(item, parentKey))) continue;
 			list.add((T) item);
-			ReflectUtil.setPropertyValue(item, childrenKey, new Class[] {List.class}, new Object[]{
-				formatRelation(data, requiredType, parentKey, ReflectUtil.getPropertyValue(item, idKey), idKey, childrenKey)
-			});
+			List<T> children = formatRelation(data, requiredType, parentKey, ReflectUtil.getPropertyValue(item, idKey), idKey, childrenKey);
+			if(children.size() < 1) continue;
+			ReflectUtil.setPropertyValue(item, childrenKey, new Class[] {List.class}, new Object[]{children});
 		}
 		return list;
 	}
