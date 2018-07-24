@@ -63,6 +63,10 @@ let routes = [{
     path: '/upload/index',
     name: '文件管理',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/upload/index')
+  }, {
+    path: '/category/index',
+    name: '文章栏目',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/category/index')
   }]
 }, {
   path: '*',

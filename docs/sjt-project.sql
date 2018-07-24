@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-07-24 14:35:01
+Date: 2018-07-24 16:26:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -72,18 +72,14 @@ CREATE TABLE `sjt_category` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_category
 -- ----------------------------
-INSERT INTO `sjt_category` VALUES ('1', '后台', '0', '', '', '', '0', '1', '', '1528082694531', '1', '1528082694531', '1');
-INSERT INTO `sjt_category` VALUES ('2', '后台管理', '1', 'fa fa-home', '/', '', '0', '1', '', '1528082833701', '1', '1528082833701', '1');
-INSERT INTO `sjt_category` VALUES ('3', '用户管理', '2', 'fa fa-user-circle', '/user/index', '', '0', '1', '', '1528082886891', '1', '1528082886891', '1');
-INSERT INTO `sjt_category` VALUES ('4', '角色管理', '2', 'fa fa-user-secret', '/role/index', '', '0', '1', '', '1528082942723', '1', '1528082942723', '1');
-INSERT INTO `sjt_category` VALUES ('5', '配置管理', '2', 'fa fa-cogs', '/settings/index', '', '0', '1', '', '1528083035344', '1', '1528083035344', '1');
-INSERT INTO `sjt_category` VALUES ('6', '菜单管理', '2', 'fa fa-link', '/menu/index', '', '0', '1', '', '1528083079182', '1', '1528083079182', '1');
-INSERT INTO `sjt_category` VALUES ('7', '资源管理', '2', 'fa fa-tree', '/resource/index', '', '0', '1', '', '1528083144253', '1', '1528083144253', '1');
+INSERT INTO `sjt_category` VALUES ('1', '栏目一', '0', '', '', '', '0', '1', '', '1532420625702', '1', '1532420625702', '1');
+INSERT INTO `sjt_category` VALUES ('2', '栏目二', '0', '', '', '', '0', '1', '', '1532420653999', '1', '1532420653999', '1');
+INSERT INTO `sjt_category` VALUES ('3', '栏目三', '0', '', '', '', '0', '1', '', '1532420663511', '1', '1532420663511', '1');
 
 -- ----------------------------
 -- Table structure for sjt_comment
@@ -135,7 +131,7 @@ CREATE TABLE `sjt_menu` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_menu
@@ -148,6 +144,8 @@ INSERT INTO `sjt_menu` VALUES ('5', '配置管理', '2', 'fa fa-cogs', '/setting
 INSERT INTO `sjt_menu` VALUES ('6', '菜单管理', '2', 'fa fa-link', '/menu/index', '', '0', '1', '', '1528083079182', '1', '1528083079182', '1');
 INSERT INTO `sjt_menu` VALUES ('7', '资源管理', '2', 'fa fa-tree', '/resource/index', '', '0', '1', '', '1528083144253', '1', '1528083144253', '1');
 INSERT INTO `sjt_menu` VALUES ('8', '文件管理', '2', 'fa fa-files-o', '/upload/index', '', '0', '1', '', '1532412594129', '1', '1532412621732', '1');
+INSERT INTO `sjt_menu` VALUES ('9', '发布内容', '1', 'fa fa-newspaper-o', '', '', '2', '1', '', '1532420277048', '1', '1532420430126', '1');
+INSERT INTO `sjt_menu` VALUES ('10', '栏目管理', '9', 'fa fa-certificate', '/category/index', '', '0', '1', '', '1532420307513', '1', '1532420307513', '1');
 
 -- ----------------------------
 -- Table structure for sjt_relation
@@ -165,6 +163,7 @@ CREATE TABLE `sjt_relation` (
 -- Records of sjt_relation
 -- ----------------------------
 INSERT INTO `sjt_relation` VALUES ('role_menu_1_1', 'role_menu', '1', '1');
+INSERT INTO `sjt_relation` VALUES ('role_menu_1_10', 'role_menu', '1', '10');
 INSERT INTO `sjt_relation` VALUES ('role_menu_1_2', 'role_menu', '1', '2');
 INSERT INTO `sjt_relation` VALUES ('role_menu_1_3', 'role_menu', '1', '3');
 INSERT INTO `sjt_relation` VALUES ('role_menu_1_4', 'role_menu', '1', '4');
@@ -172,6 +171,7 @@ INSERT INTO `sjt_relation` VALUES ('role_menu_1_5', 'role_menu', '1', '5');
 INSERT INTO `sjt_relation` VALUES ('role_menu_1_6', 'role_menu', '1', '6');
 INSERT INTO `sjt_relation` VALUES ('role_menu_1_7', 'role_menu', '1', '7');
 INSERT INTO `sjt_relation` VALUES ('role_menu_1_8', 'role_menu', '1', '8');
+INSERT INTO `sjt_relation` VALUES ('role_menu_1_9', 'role_menu', '1', '9');
 INSERT INTO `sjt_relation` VALUES ('role_menu_2_1', 'role_menu', '2', '1');
 INSERT INTO `sjt_relation` VALUES ('role_menu_2_2', 'role_menu', '2', '2');
 INSERT INTO `sjt_relation` VALUES ('role_menu_2_3', 'role_menu', '2', '3');
@@ -196,7 +196,11 @@ INSERT INTO `sjt_relation` VALUES ('role_resource_1_25', 'role_resource', '1', '
 INSERT INTO `sjt_relation` VALUES ('role_resource_1_26', 'role_resource', '1', '26');
 INSERT INTO `sjt_relation` VALUES ('role_resource_1_27', 'role_resource', '1', '27');
 INSERT INTO `sjt_relation` VALUES ('role_resource_1_28', 'role_resource', '1', '28');
+INSERT INTO `sjt_relation` VALUES ('role_resource_1_29', 'role_resource', '1', '29');
 INSERT INTO `sjt_relation` VALUES ('role_resource_1_3', 'role_resource', '1', '3');
+INSERT INTO `sjt_relation` VALUES ('role_resource_1_30', 'role_resource', '1', '30');
+INSERT INTO `sjt_relation` VALUES ('role_resource_1_31', 'role_resource', '1', '31');
+INSERT INTO `sjt_relation` VALUES ('role_resource_1_32', 'role_resource', '1', '32');
 INSERT INTO `sjt_relation` VALUES ('role_resource_1_4', 'role_resource', '1', '4');
 INSERT INTO `sjt_relation` VALUES ('role_resource_1_5', 'role_resource', '1', '5');
 INSERT INTO `sjt_relation` VALUES ('role_resource_1_6', 'role_resource', '1', '6');
@@ -231,7 +235,7 @@ CREATE TABLE `sjt_resource` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_resource
@@ -264,6 +268,10 @@ INSERT INTO `sjt_resource` VALUES ('25', '后台-文件', '1', 'manage', 'upload
 INSERT INTO `sjt_resource` VALUES ('26', '后台-文件-添加', '25', 'manage', 'upload', 'add', '0', '1', '', '1528082616922', '1', '1532400115508', '1');
 INSERT INTO `sjt_resource` VALUES ('27', '后台-文件-修改', '25', 'manage', 'upload', 'modify', '0', '1', '', '1528082642509', '1', '1532400119332', '1');
 INSERT INTO `sjt_resource` VALUES ('28', '后台-文件-删除', '25', 'manage', 'upload', 'delete', '0', '1', '', '1528082662922', '1', '1532400123596', '1');
+INSERT INTO `sjt_resource` VALUES ('29', '后台-栏目', '1', 'manage', 'category', '', '0', '1', '', '1528081858994', '1', '1532400110993', '1');
+INSERT INTO `sjt_resource` VALUES ('30', '后台-栏目-添加', '29', 'manage', 'category', 'add', '0', '1', '', '1528082616922', '1', '1532400115508', '1');
+INSERT INTO `sjt_resource` VALUES ('31', '后台-栏目-修改', '29', 'manage', 'category', 'modify', '0', '1', '', '1528082642509', '1', '1532400119332', '1');
+INSERT INTO `sjt_resource` VALUES ('32', '后台-栏目-删除', '29', 'manage', 'category', 'delete', '0', '1', '', '1528082662922', '1', '1532400123596', '1');
 
 -- ----------------------------
 -- Table structure for sjt_role
@@ -302,7 +310,7 @@ CREATE TABLE `sjt_setting` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_setting
@@ -310,6 +318,7 @@ CREATE TABLE `sjt_setting` (
 INSERT INTO `sjt_setting` VALUES ('1', 'defaultPassword', 'system', 'password', '1', '', '1527731577113', '1');
 INSERT INTO `sjt_setting` VALUES ('2', 'siteName', 'system', '未命名站点', '2', '', '1527731583739', '1');
 INSERT INTO `sjt_setting` VALUES ('3', 'manageMenuParentId', 'system', '1', '1', '管理后台菜单根节点ID', '1532400139499', '1');
+INSERT INTO `sjt_setting` VALUES ('4', 'defaultCommentStatus', 'cms', '2', '0', '评论默认状态', '1532420732295', '1');
 
 -- ----------------------------
 -- Table structure for sjt_upload
@@ -327,11 +336,15 @@ CREATE TABLE `sjt_upload` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_upload
 -- ----------------------------
+INSERT INTO `sjt_upload` VALUES ('1', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/9729711532415535181.jpg', '-1', '1532415535181', '1', '1532415650835', '1');
+INSERT INTO `sjt_upload` VALUES ('2', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/7597861532415666399.jpg', '-1', '1532415666400', '1', '1532415690026', '1');
+INSERT INTO `sjt_upload` VALUES ('3', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/5422761532415800352.jpg', '-1', '1532415800352', '1', '1532419604697', '1');
+INSERT INTO `sjt_upload` VALUES ('4', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/8437111532419726255.jpg', '-1', '1532419726256', '1', '1532419743379', '1');
 
 -- ----------------------------
 -- Table structure for sjt_user
@@ -362,5 +375,5 @@ CREATE TABLE `sjt_user` (
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
-INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532414006328', '127.0.0.1', '0');
+INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532420562378', '127.0.0.1', '0');
 INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', '0', '1', '', '1528081567988', '127.0.0.1', '1', '1528081567988', '1', '1528267171953', '127.0.0.1', '0');
