@@ -44,7 +44,7 @@
       <el-input type="textarea" v-model="form.description"></el-input>
     </el-form-item>
     <el-form-item label="正文" prop="content">
-      <el-input type="textarea" v-model="form.content"></el-input>
+      <ueditor :content="form.content" :config="config.ueditor" ref="ue"></ueditor>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click.native="submit" :loading="formLoading">提交</el-button>
@@ -56,11 +56,15 @@
 <script>
 import wrapper from '@/core/RequestWrapper'
 import articleService from '@/service/article'
+import ueditor from '@/components/layout/ueditor.vue'
 export default {
+  components: {ueditor},
   data () {
     return {
       formLoading: false,
       config: {
+        ueditor: {
+        },
         ready: false,
         status: [],
         categories: []
@@ -86,6 +90,7 @@ export default {
         this.formLoading = true
         let param = Object.assign({}, this.form)
         param.categoryId = param.categoryId[0]
+        param.content = this.$refs.ue.getContent()
         wrapper.tips(articleService.save(param)).then(response => {
           if (response.code === 0) {
             this.$router.push('/article/index')
