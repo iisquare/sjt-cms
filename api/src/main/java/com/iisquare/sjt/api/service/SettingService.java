@@ -1,8 +1,8 @@
 package com.iisquare.sjt.api.service;
 
 import com.iisquare.sjt.api.mvc.ServiceBase;
-import com.iisquare.sjt.api.dao.SettingsDao;
-import com.iisquare.sjt.api.domain.Settings;
+import com.iisquare.sjt.api.dao.SettingDao;
+import com.iisquare.sjt.api.domain.Setting;
 import com.iisquare.sjt.core.util.DPUtil;
 import com.iisquare.sjt.core.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,45 +22,45 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SettingsService extends ServiceBase {
+public class SettingService extends ServiceBase {
 
     @Autowired
-    private SettingsDao settingsDao;
+    private SettingDao settingDao;
     @Autowired
     private UserService userService;
 
     public boolean set(String type, String key, String value) {
-        Settings info = settingsDao.findFirstByTypeAndName(type, key);
+        Setting info = settingDao.findFirstByTypeAndName(type, key);
         if(null == info) return false;
         info.setContent(value);
         return null != save(info, 0);
     }
 
     public String get(String type, String key) {
-        Settings info = settingsDao.findFirstByTypeAndName(type, key);
+        Setting info = settingDao.findFirstByTypeAndName(type, key);
         if(null == info) return "";
         String value = info.getContent();
         if(null == value) return "";
         return value;
     }
 
-    public Settings info(Integer id) {
+    public Setting info(Integer id) {
         if(null == id || id < 1) return null;
-        return settingsDao.findById(id).get();
+        return settingDao.findById(id).get();
     }
 
-    public Settings save(Settings info, int uid) {
+    public Setting save(Setting info, int uid) {
         long time = System.currentTimeMillis();
         info.setUpdatedTime(time);
         info.setUpdatedUid(uid);
-        return settingsDao.save(info);
+        return settingDao.save(info);
     }
 
     public Map<?, ?> search(Map<?, ?> param, Map<?, ?> config) {
         Map<String, Object> result = new LinkedHashMap<>();
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);
         int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, 1, 500, 15);
-        Page<?> data = settingsDao.findAll(new Specification() {
+        Page<?> data = settingDao.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
@@ -92,7 +92,7 @@ public class SettingsService extends ServiceBase {
 
     public boolean delete(List<Integer> ids) {
         if(null == ids || ids.size() < 1) return false;
-        settingsDao.deleteInBatch(settingsDao.findAllById(ids));
+        settingDao.deleteInBatch(settingDao.findAllById(ids));
         return true;
     }
 

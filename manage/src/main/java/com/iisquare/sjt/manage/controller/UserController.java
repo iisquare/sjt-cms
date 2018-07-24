@@ -27,7 +27,7 @@ public class UserController extends PermitController {
     @Autowired
     private Configuration configuration;
     @Autowired
-    private SettingsService settingsService;
+    private SettingService settingService;
     @Autowired
     private RelationService relationService;
     @Autowired
@@ -106,7 +106,7 @@ public class UserController extends PermitController {
     @Permission("")
     public String configAction(ModelMap model) {
         model.put("status", userService.status("full"));
-        model.put("defaultPassword", settingsService.get("system", "defaultPassword"));
+        model.put("defaultPassword", settingService.get("system", "defaultPassword"));
         Map<?, ?> searchResult = roleService.search(new LinkedHashMap<>(), DPUtil.buildMap("withStatusText", true));
         model.put("roles", searchResult.get("rows"));
         return ApiUtil.echoResult(0, null, model);
@@ -191,7 +191,7 @@ public class UserController extends PermitController {
         }
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("info", info);
-        result.put("menu", sessionService.menu(request, DPUtil.parseInt(settingsService.get("system", "manageMenuParentId"))));
+        result.put("menu", sessionService.menu(request, DPUtil.parseInt(settingService.get("system", "manageMenuParentId"))));
         result.put("resource", sessionService.resource(request));
         return ApiUtil.echoResult(0, null, result);
     }

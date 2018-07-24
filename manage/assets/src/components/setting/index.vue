@@ -16,7 +16,7 @@
           <el-button type="primary" v-on:click="search">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="success" v-permit="'manage:settings:add'" @click="add">新增</el-button>
+          <el-button type="success" v-permit="'manage:setting:add'" @click="add">新增</el-button>
         </el-form-item>
       </el-form>
     </el-col>
@@ -32,14 +32,14 @@
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="text" v-permit="'manage:settings:'" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
-          <el-button type="text" v-permit="'manage:settings:modify'" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
+          <el-button type="text" v-permit="'manage:setting:'" size="small" @click="show(scope.$id, scope.row)">查看</el-button>
+          <el-button type="text" v-permit="'manage:setting:modify'" size="small" @click="edit(scope.$id, scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
     <!--底部工具条-->
     <el-col :span="24" class="toolbar">
-      <el-button type="danger" v-permit="'manage:settings:delete'" @click="batchRemove" :disabled="this.sels.length===0">删除所选</el-button>
+      <el-button type="danger" v-permit="'manage:setting:delete'" @click="batchRemove" :disabled="this.sels.length===0">删除所选</el-button>
       <el-pagination layout="prev, pager, next" @current-change="pageChange" :current-page="filters.page" :page-size="filters.pageSize" :total="total" style="float:right;">
       </el-pagination>
     </el-col>
@@ -86,7 +86,7 @@
 </template>
 <script>
 import wrapper from '@/core/RequestWrapper'
-import settingsService from '@/service/settings'
+import settingService from '@/service/setting'
 import DateUtil from '@/utils/date'
 export default {
   data () {
@@ -119,7 +119,7 @@ export default {
     },
     search () {
       this.loading = true
-      wrapper.tips(settingsService.list(this.filters)).then((response) => {
+      wrapper.tips(settingService.list(this.filters)).then((response) => {
         this.total = response.data.total
         this.rows = response.data.rows
         this.loading = false
@@ -136,7 +136,7 @@ export default {
       let ids = this.sels.map(item => item.id)
       this.$confirm('确认删除选中记录吗？', '提示', {type: 'warning'}).then(() => {
         this.loading = true
-        wrapper.tips(settingsService.delete(ids), true).then((response) => {
+        wrapper.tips(settingService.delete(ids), true).then((response) => {
           if (response.code === 0) {
             this.search()
           } else {
@@ -149,7 +149,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (!valid || this.formLoading) return false
         this.formLoading = true
-        wrapper.tips(settingsService.save(this.form)).then(response => {
+        wrapper.tips(settingService.save(this.form)).then(response => {
           if (response.code === 0) {
             this.formVisible = false
             this.search()

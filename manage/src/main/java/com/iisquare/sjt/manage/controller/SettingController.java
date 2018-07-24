@@ -2,8 +2,8 @@ package com.iisquare.sjt.manage.controller;
 
 import com.iisquare.sjt.manage.mvc.Permission;
 import com.iisquare.sjt.manage.mvc.PermitController;
-import com.iisquare.sjt.api.domain.Settings;
-import com.iisquare.sjt.api.service.SettingsService;
+import com.iisquare.sjt.api.domain.Setting;
+import com.iisquare.sjt.api.service.SettingService;
 import com.iisquare.sjt.core.util.ApiUtil;
 import com.iisquare.sjt.core.util.DPUtil;
 import com.iisquare.sjt.core.util.ValidateUtil;
@@ -18,16 +18,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/settings")
-public class SettingsController extends PermitController {
+@RequestMapping("/setting")
+public class SettingController extends PermitController {
 
     @Autowired
-    private SettingsService settingsService;
+    private SettingService settingService;
 
     @RequestMapping("/list")
     @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {
-        Map<?, ?> result = settingsService.search(param, DPUtil.buildMap("withUserInfo", true));
+        Map<?, ?> result = settingService.search(param, DPUtil.buildMap("withUserInfo", true));
         return ApiUtil.echoResult(0, null, result);
     }
 
@@ -40,21 +40,21 @@ public class SettingsController extends PermitController {
         int sort = DPUtil.parseInt(param.get("sort"));
         String description = DPUtil.parseString(param.get("description"));
         String type = DPUtil.trim(DPUtil.parseString(param.get("type")));
-        Settings info = null;
+        Setting info = null;
         if(id > 0) {
             if(!hasPermit(request, "modify")) return ApiUtil.echoResult(9403, null, null);
-            info = settingsService.info(id);
+            info = settingService.info(id);
             if(null == info) return ApiUtil.echoResult(404, null, id);
         } else {
             if(!hasPermit(request, "add")) return ApiUtil.echoResult(9403, null, null);
-            info = new Settings();
+            info = new Setting();
         }
         info.setName(name);
         info.setType(type);
         info.setContent(DPUtil.parseString(param.get("content")));
         info.setSort(sort);
         info.setDescription(description);
-        info = settingsService.save(info, uid(request));
+        info = settingService.save(info, uid(request));
         return ApiUtil.echoResult(null == info ? 500 : 0, null, info);
     }
 
@@ -67,7 +67,7 @@ public class SettingsController extends PermitController {
         } else {
             ids = Arrays.asList(DPUtil.parseInt(param.get("ids")));
         }
-        boolean result = settingsService.delete(ids);
+        boolean result = settingService.delete(ids);
         return ApiUtil.echoResult(result ? 0 : 500, null, result);
     }
 

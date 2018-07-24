@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class Settings implements Serializable {
+public class Setting implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -56,9 +56,9 @@ let routes = [{
     name: '资源管理',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/resource/index')
   }, {
-    path: '/settings/index',
+    path: '/setting/index',
     name: '配置管理',
-    component: () => import(/* webpackChunkName: 'error' */ '@/components/settings/index')
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/setting/index')
   }]
 }, {
   path: '*',
