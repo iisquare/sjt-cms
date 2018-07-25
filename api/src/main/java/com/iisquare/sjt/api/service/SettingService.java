@@ -44,6 +44,18 @@ public class SettingService extends ServiceBase {
         return value;
     }
 
+    public Map<String, String> get(String type) {
+        Map<String, String> result = new LinkedHashMap<>();
+        List<Setting> list = settingDao.findAllByType(type);
+        for (Setting info : list) {
+            String key = info.getName();
+            String value = info.getContent();
+            if(null == value) value = "";
+            result.put(key, value);
+        }
+        return result;
+    }
+
     public Setting info(Integer id) {
         if(null == id || id < 1) return null;
         return settingDao.findById(id).get();
@@ -75,6 +87,10 @@ public class SettingService extends ServiceBase {
                 String content = DPUtil.trim(DPUtil.parseString(param.get("content")));
                 if(!DPUtil.empty(content)) {
                     predicates.add(cb.like(root.get("content"), "%" + content + "%"));
+                }
+                String description = DPUtil.trim(DPUtil.parseString(param.get("description")));
+                if(!DPUtil.empty(description)) {
+                    predicates.add(cb.like(root.get("description"), "%" + description + "%"));
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }

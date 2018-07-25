@@ -13,6 +13,9 @@
           <el-input v-model="filters.content" placeholder="内容"></el-input>
         </el-form-item>
         <el-form-item>
+          <el-input v-model="filters.description" placeholder="描述"></el-input>
+        </el-form-item>
+        <el-form-item>
           <el-button type="primary" v-on:click="search">查询</el-button>
         </el-form-item>
         <el-form-item>
@@ -26,7 +29,7 @@
       <el-table-column prop="id" label="ID" sortable=""></el-table-column>
       <el-table-column prop="name" label="名称" sortable></el-table-column>
       <el-table-column prop="type" label="类型" sortable></el-table-column>
-      <el-table-column prop="content" label="内容" sortable></el-table-column>
+      <el-table-column prop="description" label="描述" sortable></el-table-column>
       <el-table-column prop="sort" label="排序" sortable></el-table-column>
       <el-table-column prop="updatedUidName" label="操作者" sortable></el-table-column>
       <el-table-column prop="updatedTime" label="操作时间" width="150" :formatter="date" sortable></el-table-column>

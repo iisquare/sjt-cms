@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-07-25 16:57:18
+Date: 2018-07-25 18:17:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -129,7 +129,7 @@ CREATE TABLE `sjt_menu` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_menu
@@ -146,6 +146,8 @@ INSERT INTO `sjt_menu` VALUES ('9', '发布内容', '1', 'fa fa-newspaper-o', ''
 INSERT INTO `sjt_menu` VALUES ('10', '栏目管理', '9', 'fa fa-certificate', '/category/index', '', '0', '1', '', '1532420307513', '1', '1532420307513', '1');
 INSERT INTO `sjt_menu` VALUES ('11', '文章管理', '9', 'fa fa-hacker-news', '/article/index', '', '2', '1', '', '1532438377409', '1', '1532438405904', '1');
 INSERT INTO `sjt_menu` VALUES ('12', '评论管理', '9', 'fa fa-comment-o', '/comment/index', '', '0', '1', '', '1532504918238', '1', '1532504918238', '1');
+INSERT INTO `sjt_menu` VALUES ('13', 'CMS', '0', '', '', '', '0', '1', '', '1532512109203', '1', '1532512120889', '1');
+INSERT INTO `sjt_menu` VALUES ('14', '菜单项', '13', '', '', '', '0', '1', '', '1532512702598', '1', '1532512702598', '1');
 
 -- ----------------------------
 -- Table structure for sjt_relation
@@ -328,15 +330,25 @@ CREATE TABLE `sjt_setting` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_setting
 -- ----------------------------
 INSERT INTO `sjt_setting` VALUES ('1', 'defaultPassword', 'system', 'password', '1', '', '1527731577113', '1');
-INSERT INTO `sjt_setting` VALUES ('2', 'siteName', 'system', '未命名站点', '2', '', '1527731583739', '1');
+INSERT INTO `sjt_setting` VALUES ('2', 'siteName', 'system', '未命名站点', '2', '', '1532509471041', '1');
 INSERT INTO `sjt_setting` VALUES ('3', 'manageMenuParentId', 'system', '1', '1', '管理后台菜单根节点ID', '1532400139499', '1');
 INSERT INTO `sjt_setting` VALUES ('4', 'defaultCommentStatus', 'cms', '2', '0', '评论默认状态', '1532420732295', '1');
+INSERT INTO `sjt_setting` VALUES ('5', 'siteKeywords', 'cms', '', '0', '默认关键词', '1532509449362', '1');
+INSERT INTO `sjt_setting` VALUES ('6', 'siteName', 'cms', '一点业', '0', '站点名称', '1532509529929', '1');
+INSERT INTO `sjt_setting` VALUES ('7', 'siteDescription', 'cms', '', '0', '页面默认描述', '1532509548655', '1');
+INSERT INTO `sjt_setting` VALUES ('8', 'topTips', 'cmsSectionComm', '<div class=\"welcome lf\"><i class=\"fa fa-file-text\"></i>康美生态圈、大健康共创共享平台！</div>\n            <ul class=\"topnav rt\">\n                <li><a href=\"\">品牌介绍</a></li>\n                <li><a href=\"\">联系我们</a></li>\n                <li><a href=\"\">合作加盟</a></li>\n            </ul>', '0', '顶部导航', '1532511195071', '1');
+INSERT INTO `sjt_setting` VALUES ('9', 'carousel', 'cmsSectionIndex', '<div id=\"picshow\">\n                    <div id=\"picshow_img\">\n                        <ul>\n                            <li><a href=\"\" target=\"_blank\"><img src=\"/static/images/1.jpg\"></a></li>\n                            <li><a href=\"\" target=\"_blank\"><img src=\"/static/images/2.jpg\"></a></li>\n                            <li><a href=\"\" target=\"_blank\"><img src=\"/static/images/3.jpg\"></a></li>\n                            <li><a href=\"\" target=\"_blank\"><img src=\"/static/images/4.jpg\"></a></li>\n                            <li><a href=\"\" target=\"_blank\"><img src=\"/static/images/5.jpg\"></a></li>\n                            <li><a href=\"\" target=\"_blank\"><img src=\"/static/images/6.jpg\"></a></li>\n                        </ul>\n                    </div>\n                    <div id=\"picshow_tx\">\n                        <ul>\n                            <li><a href=\"\" target=\"_blank\">中国死飞店铺推介：上海死飞店FACTORY FIVE</a></li>\n                            <li><a href=\"\" target=\"_blank\">骑看世界：纯美的世界恬静的心冰岛骑游之旅</a></li>\n                            <li><a href=\"\" target=\"_blank\">空气糟糕透了！推荐几款实用的骑行防毒口罩</a></li>\n                            <li><a href=\"\" target=\"_blank\">[组图]1200万像素带Wi-Fi 骑行记录仪Gopro Hero3评测</a></li>\n                            <li><a href=\"\" target=\"_blank\">张向东：南非无危险的骑行与有纠结的ubuntu(组图)</a></li>\n                            <li><a href=\"\" target=\"_blank\">单车文化课堂⑥：学会撬胎补胎爆胎不再烦</a></li>\n                        </ul>\n                    </div>\n                </div>\n                <div id=\"select_btn\">\n                    <ul>\n                        <li><a href=\"\" target=\"_blank\">新闻</a></li>\n                        <li><a href=\"\" target=\"_blank\">观点</a></li>\n                        <li><a href=\"\" target=\"_blank\">跨界</a></li>\n                        <li><a href=\"\" target=\"_blank\">产品</a></li>\n                        <li><a href=\"\" target=\"_blank\">项目</a></li>\n                        <li><a href=\"\" target=\"_blank\">机构</a></li>\n                    </ul>\n                </div>', '0', '首页幻灯片', '1532511918901', '1');
+INSERT INTO `sjt_setting` VALUES ('10', 'tabs', 'cmsSectionIndex', '<li class=\"news_act\">全部</li>\n                <li>医疗</li>\n                <li>美容</li>\n                <li>健康</li>\n                <li>养生</li>', '0', '首页切签', '1532511213276', '1');
+INSERT INTO `sjt_setting` VALUES ('11', 'rigthSide', 'cmsSectionIndex', '<!-- 电话 -->\n            <div class=\"phone1\"><img src=\"/static/images/phone.png\"></div>\n            <!-- 幻灯片2 -->\n            <div class=\"slider-outer\" id=\"j_silder_outer\">\n                <div class=\"img-item\">\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                </div>\n                <div class=\"img-item\">\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                </div>\n                <div class=\"img-item\">\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                </div>\n                <div class=\"img-item\">\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                </div>\n                <div class=\"img-item\">\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                    <div class=\"img\"></div>\n                </div>\n                <div class=\"btns\" data-num=\"0\">\n                    <div class=\"prev\"><</div>\n                    <div class=\"next\">></div>\n                </div>\n            </div>\n            <!-- 服务机构 -->\n            <div class=\"service_jg\">\n                <div class=\"ser_til\"><span>服务机构</span></div>\n                <ul>\n                    <li><a href=\"\"><img src=\"/static/images/jg1.png\"></a></li>\n                    <li><a href=\"\"><img src=\"/static/images/jg2.png\"></a></li>\n                </ul>\n            </div>\n            <!-- 精选优品 -->\n            <div class=\"service_jg\">\n                <div class=\"ser_til\"><span>精选优品</span></div>\n                <ul>\n                    <li><a href=\"\"><img src=\"/static/images/jx1.png\"></a></li>\n                    <li><a href=\"\"><img src=\"/static/images/jx2.png\"></a></li>\n                </ul>\n            </div>\n            <!-- 联系我们 -->\n            <div class=\"index_contact\">\n                <div class=\"contact_til\"><span>联系我们</span></div>\n                <div class=\"erweima\">\n                    <div class=\"erwm1\"><img src=\"/static/images/dyh.png\"><br>一点业订阅号</div>\n                    <div class=\"erwm2\"><img src=\"/static/images/fwh.png\"><br>一点业服务号</div>\n                </div>\n                <div class=\"phone2\"><img src=\"/static/images/phone2.png\"></div>\n            </div>', '0', '首页侧边栏目', '1532511953529', '1');
+INSERT INTO `sjt_setting` VALUES ('12', 'footer', 'cmsSectionComm', '<ul class=\"bot1\">\n        <li><a href=\"\">关于我们</a></li>\n        <li><a href=\"\">版权声明</a></li>\n        <li><a href=\"\">合作说明</a></li>\n        <li><a href=\"\">联系我们</a></li>\n        <li><a href=\"\">一点业商城</a></li>\n        <li class=\"bot1last\"><a href=\"\">友情链接</a></li>\n    </ul>\n    <div class=\"bot2\">Copyright © 2017-2018 The Paper All rights reserved.北京中科网软科技有限公司   京ICP备15035481号</div>\n    <div class=\"bot3\"><a href=\"\">沪公网安备31002645645454号</a></div>', '0', '底部信息', '1532511200063', '1');
+INSERT INTO `sjt_setting` VALUES ('13', 'cmsMenuParentId', 'system', '13', '0', '新闻站页面菜单根节点', '1532512133859', '1');
+INSERT INTO `sjt_setting` VALUES ('14', 'link', 'cmsSectionComm', '<a href=\"\">一点商城</a>', '0', '顶部导航外链', '1532513245469', '1');
 
 -- ----------------------------
 -- Table structure for sjt_upload
@@ -401,5 +413,5 @@ CREATE TABLE `sjt_user` (
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
-INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532508830317', '127.0.0.1', '0');
+INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532513211495', '127.0.0.1', '0');
 INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', '0', '1', '', '1528081567988', '127.0.0.1', '1', '1528081567988', '1', '1528267171953', '127.0.0.1', '0');

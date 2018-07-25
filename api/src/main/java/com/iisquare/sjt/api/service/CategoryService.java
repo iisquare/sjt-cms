@@ -79,6 +79,26 @@ public class CategoryService extends ServiceBase {
         return list;
     }
 
+    public List<Category> tree(int parentId, boolean format) {
+        List<Category> data = categoryDao.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.equal(root.get("status"), 1));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, Sort.by(Sort.Order.desc("sort")));
+        for (Category info : data) {
+            String url = info.getUrl();
+            if(DPUtil.empty(url)) {
+                url = cmsWeb + "/columns-" + info.getId() + ".shtml";
+                info.setUrl(url);
+            }
+        }
+        if(!format) return data;
+        return ServiceUtil.formatRelation(data, Category.class, "parentId", parentId, "id", "children");
+    }
+
     public List<Category> tree() {
         List<Category> data = categoryDao.findAll(new Specification() {
             @Override

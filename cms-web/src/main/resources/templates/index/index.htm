@@ -4,7 +4,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
-    <title>一点业</title>
+    <title th:text="${page.title}">一点业</title>
+    <meta name="keywords" th:content="${page.keywords}" />
+    <meta name="description" th:content="${page.description}" />
     <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{{url}/css/font-awesome-4.7.0/css/font-awesome.min.css(url=${staticUrl})}"/>
     <link rel="stylesheet" th:href="@{{url}/css/reset.css(url=${staticUrl})}">
@@ -44,7 +46,7 @@
 <body>
 <div class="header">
     <div class="top1">
-        <div class="cont">
+        <div class="cont" th:utext="${sectionComm.topTips}">
             <div class="welcome lf"><i class="fa fa-file-text"></i>康美生态圈、大健康共创共享平台！</div>
             <ul class="topnav rt">
                 <li><a href="">品牌介绍</a></li>
@@ -56,14 +58,8 @@
     <div class="top2">
         <div class="cont">
             <div class="logo lf"><a href=""><img th:src="@{{url}/images/logo.png(url=${staticUrl})}"></a></div>
-            <ul class="menu lf">
-                <li><a href="index.html">精选</a></li>
-                <li><a href="">新闻</a></li>
-                <li><a href="">观点</a></li>
-                <li><a href="">跨界</a></li>
-                <li><a href="">产品</a></li>
-                <li><a href="">服务</a></li>
-                <li><a href="">机构</a></li>
+            <ul class="menu lf" th:each="collect,iterStat : ${menu}">
+                <li><a th:href="${collect.url}" th:target="${collect.target}" th:text="${collect.name}">导航菜单</a></li>
                 <!-- <li class="showSubmenu"><a href="javascript:void(0)"><img th:src="@{{url}/images/bot.png(url=${staticUrl})}"></a></li> -->
             </ul>
             <div class="kjbtn">
@@ -73,30 +69,14 @@
                     <input type="text" placeholder="输入关键字" name="">
                     <i class="fa fa-search"></i>
                 </div>
-                <div class="shopping lf"><a href="">一点商城</a></div>
+                <div class="shopping lf" th:utext="${sectionComm.link}"><a href="">一点商城</a></div>
                 <div class="loginbtn lf"><a href="">登录</a></div>
             </div>
         </div>
         <div class="subMenu">
             <div class="cont">
-                <ul class="">
-                    <li><a href="">精选</a></li>
-                    <li><a href="">新闻</a></li>
-                    <li><a href="">观点</a></li>
-                    <li><a href="">跨界</a></li>
-                    <li><a href="">产品</a></li>
-                    <li><a href="">服务</a></li>
-                    <li><a href="">机构</a></li>
-                    <li><a href="">观点</a></li>
-                    <li><a href="">跨界</a></li>
-                    <li><a href="">产品</a></li>
-                    <li><a href="">服务</a></li>
-                    <li><a href="">机构</a></li>
-                    <li><a href="">观点</a></li>
-                    <li><a href="">跨界</a></li>
-                    <li><a href="">产品</a></li>
-                    <li><a href="">服务</a></li>
-                    <li><a href="">机构</a></li>
+                <ul class="" th:each="collect,iterStat : ${category}">
+                    <li><a th:href="${collect.url}" th:target="${collect.target}" th:text="${collect.name}">栏目名称</a></li>
                 </ul>
             </div>
         </div>
@@ -106,7 +86,7 @@
     <div class="cont">
         <div class="cont_l lf">
             <!-- 幻灯片 -->
-            <div id="zSlider">
+            <div id="zSlider" th:utext="${sectionIndex.carousel}">
                 <div id="picshow">
                     <div id="picshow_img">
                         <ul>
@@ -141,7 +121,7 @@
                 </div>
             </div>
             <!-- 新闻 -->
-            <ul class="news_tab">
+            <ul class="news_tab" th:utext="${sectionIndex.tabs}">
                 <li class="news_act">全部</li>
                 <li>医疗</li>
                 <li>美容</li>
@@ -316,7 +296,7 @@
             </div>
         </div>
         <!-- 右侧 -->
-        <div class="cont_r rt">
+        <div class="cont_r rt" th:utext="${sectionIndex.rigthSide}">
             <!-- 电话 -->
             <div class="phone1"><img th:src="@{{url}/images/phone.png(url=${staticUrl})}"></div>
             <!-- 幻灯片2 -->
@@ -384,7 +364,7 @@
         </div>
     </div>
 </div>
-<div class="footer">
+<div class="footer" th:utext="${sectionComm.footer}">
     <ul class="bot1">
         <li><a href="">关于我们</a></li>
         <li><a href="">版权声明</a></li>
