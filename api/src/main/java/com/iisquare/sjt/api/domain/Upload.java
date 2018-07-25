@@ -31,6 +31,8 @@ public class Upload implements Serializable {
     @Transient
     private String url; // 访问链接
     @Column
+    private Long size; // 文件大小
+    @Column
     private Integer status;
     @Transient
     private String statusText;

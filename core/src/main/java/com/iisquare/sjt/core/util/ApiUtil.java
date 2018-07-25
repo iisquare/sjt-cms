@@ -5,8 +5,12 @@ import java.util.Map;
 
 public class ApiUtil {
 
+    public static String echoResult(Map<String, Object> result) {
+        return DPUtil.stringify(result);
+    }
+
     public static String echoResult(int code, String message, Object data) {
-        return DPUtil.stringify(result(code, message, data));
+        return echoResult(result(code, message, data));
     }
 
     public static Map<String, Object> result(int code, String message, Object data) {

@@ -5,7 +5,6 @@ import com.iisquare.sjt.api.service.UploadService;
 import com.iisquare.sjt.core.util.ApiUtil;
 import com.iisquare.sjt.core.util.DPUtil;
 import com.iisquare.sjt.core.util.FileUtil;
-import com.iisquare.sjt.core.util.ValidateUtil;
 import com.iisquare.sjt.manage.mvc.Permission;
 import com.iisquare.sjt.manage.mvc.PermitController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +13,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -47,40 +41,8 @@ public class UploadController extends PermitController {
     @RequestMapping("/save")
     @Permission("add")
     public String saveAction(HttpServletRequest request) {
-        MultipartHttpServletRequest multiRequest = new StandardMultipartHttpServletRequest(request);
-        Iterator iterator = multiRequest.getFileNames();
-        if(!iterator.hasNext()) {
-            return ApiUtil.echoResult(1002, "请选择上传文件", null);
-        }
-        MultipartFile file = multiRequest.getFile(iterator.next().toString());
-        if(null == file) {
-            return ApiUtil.echoResult(1003, "获取文件句柄失败", null);
-        }
-        Map<String, Map<String, String>> typeMap = uploadService.typeMap();
-        String type = request.getParameter("type");
-        if(!typeMap.containsKey(type)) {
-            return ApiUtil.echoResult(1004, "文件类型不支持", type);
-        }
-        String contentType = file.getContentType().toLowerCase();
-        if(!typeMap.get(type).containsKey(contentType)) {
-            return ApiUtil.echoResult(1005, "非法类型文件", contentType);
-        }
-        String path = type + "/" + DPUtil.random(6) + System.currentTimeMillis() + "." + typeMap.get(type).get(contentType);
-        String filepath = uploadsPath + File.separator + path;
-        String fileurl = uploadService.url(path);
-        Upload info = Upload.builder().name(file.getOriginalFilename())
-            .type(type).contentType(contentType).path(path).url(fileurl).status(1).build();
-        info = uploadService.save(info, uid(request));
-        if(null == info) {
-            return ApiUtil.echoResult(1006, "生成记录失败", info);
-        }
-        try {
-            FileUtil.mkdirs(uploadsPath + File.separator + type);
-            file.transferTo(new File(filepath).getAbsoluteFile());
-        } catch (IOException e) {
-            return ApiUtil.echoResult(1007, "写入文件失败", e.getMessage());
-        }
-        return ApiUtil.echoResult(0, null, info);
+        Map<String, Object> result = uploadService.upload(request, uid(request));
+        return ApiUtil.echoResult(result);
     }
 
     @RequestMapping("/delete")

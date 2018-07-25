@@ -637,6 +637,7 @@ public class DPUtil {
 	}
 
 	public static String stringify(Object object) {
+		if(null == object) return null;
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
@@ -656,6 +657,7 @@ public class DPUtil {
 	 * 解析JSON字符串
 	 */
 	public static JsonNode parseJSON(String json) {
+		if(null == json) return null;
 		try {
 			return mapper.readTree(json);
 		} catch (IOException e) {

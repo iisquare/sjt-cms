@@ -62,9 +62,10 @@
 import wrapper from '@/core/RequestWrapper'
 import articleService from '@/service/article'
 import ElementUI from 'element-ui'
-import ueditor from '@/components/layout/ueditor.vue'
 export default {
-  components: {ueditor},
+  components: {
+    ueditor: () => import('@/components/layout/ueditor.vue')
+  },
   data () {
     return {
       upload: {
@@ -73,7 +74,9 @@ export default {
       },
       formLoading: false,
       config: {
-        ueditor: {},
+        ueditor: {
+          initialFrameHeight: 420
+        },
         ready: false,
         status: [],
         categories: []
@@ -83,7 +86,8 @@ export default {
         label: 'name'
       },
       form: {
-        commentEnable: false
+        commentEnable: false,
+        content: ''
       },
       rules: {
         title: [{required: true, message: '请输入文章标题', trigger: 'blur'}],
@@ -155,6 +159,6 @@ export default {
 <style scoped lang="scss">
 .editor {
   width: 850px;
-  height: 600px;
+  line-height: normal;
 }
 </style>

@@ -67,7 +67,7 @@ public class FileUtil {
 	}
 	
 	public static String getContent(String filePath, String encoding) {
-		return getContent(filePath, false, encoding);
+		return getContent(filePath, true, encoding);
 	}
 
 	public static String getContent(URL url, boolean bDislodgeLine, String encoding) {

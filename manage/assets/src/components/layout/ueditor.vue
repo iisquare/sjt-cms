@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import '../../../static/ueditor/ueditor.config.js'
-import '../../../static/ueditor/ueditor.all.min.js'
-import '../../../static/ueditor/lang/zh-cn/zh-cn.js'
-window.UEDITOR_HOME_URL = process.env.apiURL + '/static/ueditor/'
+import '../../../../src/main/resources/public/ueditor/ueditor.config.js'
+import '../../../../src/main/resources/public/ueditor/ueditor.all.min.js'
+import '../../../../src/main/resources/public/ueditor/lang/zh-cn/zh-cn.js'
+
 export default {
   name: 'ueditor',
   data () {
@@ -26,9 +26,23 @@ export default {
   },
   mounted () {
     const _this = this
-    this.editor = window.UE.getEditor('editor', Object.assign({}, this.config, { // 初始化UE
-      serverUrl: process.env.apiURL + '/ueditor'
-    }))
+    this.editor = window.UE.getEditor('editor', Object.assign({ // 初始化UE
+      UEDITOR_HOME_URL: process.env.apiURL + '/static/ueditor/',
+      serverUrl: process.env.apiURL + '/ueditor',
+      toolbars: [[
+        'fullscreen', 'source', '|', 'undo', 'redo', '|',
+        'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc', '|',
+        'rowspacingtop', 'rowspacingbottom', 'lineheight', '|',
+        'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+        'directionalityltr', 'directionalityrtl', 'indent', '|',
+        'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
+        'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+        'simpleupload', 'insertcode', 'pagebreak', '|',
+        'horizontal', '|',
+        'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
+        'print', 'preview', 'searchreplace', 'drafts'
+      ]]
+    }, this.config))
     this.editor.addListener('ready', function () {
       _this.editor.setContent(_this.content) // 确保UE加载完成后，放入内容。
     })
