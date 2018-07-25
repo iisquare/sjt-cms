@@ -17,7 +17,12 @@
       <el-input type="text" v-model="form.author" auto-complete="on" placeholder="文章作者"></el-input>
     </el-form-item>
     <el-form-item label="封面图" prop="thumbUrl">
-      <el-input type="text" v-model="form.thumbUrl" auto-complete="on" placeholder="输入或上传封面图片"></el-input>
+      <el-input type="text" v-model="form.thumbUrl" auto-complete="on" placeholder="输入或上传封面图片">
+        <el-upload slot="append" :action="upload.action" with-credentials :show-file-list="false" :data="{type: 'image'}"
+          :on-progress="uploadProgress" :on-success="uploadSuccess" :on-error="uploadError">
+          <el-button type="success" :loading="upload.loading" icon="el-icon-upload"></el-button>
+        </el-upload>
+      </el-input>
     </el-form-item>
     <el-form-item label="链接" prop="url">
       <el-input v-model="form.url" auto-complete="on" placeholder="站内新闻落地页不需要输入内容"></el-input>
@@ -43,8 +48,8 @@
     <el-form-item label="描述" prop="description">
       <el-input type="textarea" v-model="form.description"></el-input>
     </el-form-item>
-    <el-form-item label="正文" prop="content">
-      <ueditor :content="form.content" :config="config.ueditor" ref="ue"></ueditor>
+    <el-form-item label="正文" prop="content" class="el-editor">
+      <quill-editor v-model="form.content" ref="editor" class="editor"></quill-editor>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click.native="submit" :loading="formLoading">提交</el-button>
@@ -56,15 +61,21 @@
 <script>
 import wrapper from '@/core/RequestWrapper'
 import articleService from '@/service/article'
-import ueditor from '@/components/layout/ueditor.vue'
+import { quillEditor } from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import ElementUI from 'element-ui'
 export default {
-  components: {ueditor},
+  components: {quillEditor},
   data () {
     return {
+      upload: {
+        action: process.env.apiURL + '/upload/save',
+        loading: false
+      },
       formLoading: false,
       config: {
-        ueditor: {
-        },
         ready: false,
         status: [],
         categories: []
@@ -84,6 +95,27 @@ export default {
     }
   },
   methods: {
+    uploadProgress (event, file, fileList) {
+      this.upload.loading = true
+    },
+    uploadSuccess (response, file, fileList) {
+      this.upload.loading = false
+      if (response && response.code === 0) {
+        this.form.thumbUrl = response.data.url
+      } else {
+        ElementUI.Notification.warning({
+          title: '状态：' + response.code,
+          message: '消息:' + response.message
+        })
+      }
+    },
+    uploadError (err, file, fileList) {
+      this.upload.loading = false
+      ElementUI.Notification.warning({
+        title: '上传失败',
+        message: err
+      })
+    },
     submit () {
       this.$refs.form.validate((valid) => {
         if (!valid || this.formLoading) return false
@@ -121,3 +153,14 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.el-editor {
+  height: 666px;
+}
+.editor {
+  width: 850px;
+  height: 600px;
+  line-height: normal;
+}
+</style>
