@@ -45,6 +45,9 @@
       <el-date-picker v-model="form.publishTime" type="datetime" placeholder="默认为记录创建时间">
     </el-date-picker>
     </el-form-item>
+    <el-form-item label="关键词" prop="keywords">
+      <el-input v-model="form.keywords" auto-complete="on" placeholder="英文逗号分隔"></el-input>
+    </el-form-item>
     <el-form-item label="描述" prop="description">
       <el-input type="textarea" v-model="form.description"></el-input>
     </el-form-item>

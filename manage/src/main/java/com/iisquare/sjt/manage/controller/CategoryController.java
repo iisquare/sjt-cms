@@ -40,10 +40,8 @@ public class CategoryController extends PermitController {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         String name = DPUtil.trim(DPUtil.parseString(param.get("name")));
         if(DPUtil.empty(name)) return ApiUtil.echoResult(1001, "名称异常", name);
-        int sort = DPUtil.parseInt(param.get("sort"));
         int status = DPUtil.parseInt(param.get("status"));
         if(!categoryService.status("default").containsKey(status)) return ApiUtil.echoResult(1002, "状态异常", status);
-        String description = DPUtil.parseString(param.get("description"));
         int parentId = DPUtil.parseInt(param.get("parentId"));
         if(parentId < 0) {
             return ApiUtil.echoResult(1003, "上级节点异常", name);
@@ -53,8 +51,6 @@ public class CategoryController extends PermitController {
                 return ApiUtil.echoResult(1004, "上级节点不存在或已删除", name);
             }
         }
-        String url = DPUtil.trim(DPUtil.parseString(param.get("url")));
-        String target = DPUtil.trim(DPUtil.parseString(param.get("target")));
         Category info = null;
         if(id > 0) {
             if(!hasPermit(request, "modify")) return ApiUtil.echoResult(9403, null, null);
@@ -66,11 +62,12 @@ public class CategoryController extends PermitController {
         }
         info.setName(name);
         info.setParentId(parentId);
-        info.setUrl(url);
-        info.setTarget(target);
-        info.setSort(sort);
+        info.setUrl(DPUtil.trim(DPUtil.parseString(param.get("url"))));
+        info.setTarget(DPUtil.trim(DPUtil.parseString(param.get("target"))));
+        info.setSort(DPUtil.parseInt(param.get("sort")));
         info.setStatus(status);
-        info.setDescription(description);
+        info.setKeywords(DPUtil.parseString(param.get("keywords")));
+        info.setDescription(DPUtil.parseString(param.get("description")));
         info = categoryService.save(info, uid(request));
         return ApiUtil.echoResult(null == info ? 500 : 0, null, info);
     }

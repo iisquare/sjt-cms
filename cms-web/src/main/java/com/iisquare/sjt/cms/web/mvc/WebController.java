@@ -23,9 +23,11 @@ public class WebController extends ControllerBase {
     }
 
     protected String displayTemplate(ModelMap model, HttpServletRequest request, String controller, String action) {
-        Map<String, Object> page = new HashMap<>();
-        page.put("title", settingService.get("system", "siteName"));
-        model.put("page", page);
+        Map<String, String> page = (Map<String, String>) model.get("page");
+        if(null == page) model.put("page", page = new HashMap<>());
+        if(DPUtil.empty(page.get("title"))) page.put("title", settingService.get("system", "siteName"));
+        if(DPUtil.empty(page.get("keywords"))) page.put("keywords", settingService.get("system", "siteKeywords"));
+        if(DPUtil.empty(page.get("description"))) page.put("description", settingService.get("system", "siteDescription"));
         model.put("staticUrl", "/static");
         if(DPUtil.empty(controller)) return action;
         return controller + "/" + action;

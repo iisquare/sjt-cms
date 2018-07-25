@@ -55,10 +55,8 @@ public class ArticleController extends PermitController {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
         String title = DPUtil.trim(DPUtil.parseString(param.get("title")));
         if(DPUtil.empty(title)) return ApiUtil.echoResult(1001, "标题异常", title);
-        long sort = DPUtil.parseLong(param.get("sort"));
         int status = DPUtil.parseInt(param.get("status"));
         if(!articleService.status("default").containsKey(status)) return ApiUtil.echoResult(1002, "状态异常", status);
-        String description = DPUtil.parseString(param.get("description"));
         int categoryId = DPUtil.parseInt(param.get("categoryId"));
         if(categoryId < 1) {
             return ApiUtil.echoResult(1003, "栏目异常", categoryId);
@@ -68,8 +66,6 @@ public class ArticleController extends PermitController {
                 return ApiUtil.echoResult(1004, "栏目不存在或已删除", categoryId);
             }
         }
-        String url = DPUtil.trim(DPUtil.parseString(param.get("url")));
-        String target = DPUtil.trim(DPUtil.parseString(param.get("target")));
         Article info = null;
         if(id > 0) {
             if(!hasPermit(request, "modify")) return ApiUtil.echoResult(9403, null, null);
@@ -85,13 +81,14 @@ public class ArticleController extends PermitController {
         info.setFromUrl(DPUtil.trim(DPUtil.parseString(param.get("fromUrl"))));
         info.setAuthor(DPUtil.trim(DPUtil.parseString(param.get("author"))));
         info.setThumbUrl(DPUtil.trim(DPUtil.parseString(param.get("thumbUrl"))));
-        info.setUrl(url);
-        info.setTarget(target);
+        info.setUrl(DPUtil.trim(DPUtil.parseString(param.get("url"))));
+        info.setTarget(DPUtil.trim(DPUtil.parseString(param.get("target"))));
         info.setCommentEnable(DPUtil.parseInt(param.get("commentEnable")));
-        info.setSort(sort);
+        info.setSort(DPUtil.parseLong(param.get("sort")));
         info.setStatus(status);
         info.setPublishTime(DPUtil.parseLong(param.get("publishTime")));
-        info.setDescription(description);
+        info.setKeywords(DPUtil.parseString(param.get("keywords")));
+        info.setDescription(DPUtil.parseString(param.get("description")));
         info.setContent(DPUtil.parseString(param.get("content")));
         info = articleService.save(info, uid(request));
         return ApiUtil.echoResult(null == info ? 500 : 0, null, info);

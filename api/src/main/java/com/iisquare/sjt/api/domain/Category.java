@@ -40,6 +40,8 @@ public class Category implements Serializable {
     @Transient
     private String statusText;
     @Column
+    private String keywords; // 关键词
+    @Column
     private String description;
     @Column
     private Long createdTime;

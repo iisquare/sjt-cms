@@ -48,6 +48,8 @@ public class Article implements Serializable {
     @Transient
     private String statusText;
     @Column
+    private String keywords; // 关键词
+    @Column
     private String description; // 摘要
     @Column
     private String content; // 正文

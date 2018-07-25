@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-07-25 16:20:13
+Date: 2018-07-25 16:57:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,6 +32,7 @@ CREATE TABLE `sjt_article` (
   `comment_enable` tinyint(4) NOT NULL DEFAULT '0',
   `sort` bigint(20) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '0',
+  `keywords` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   `content` longtext NOT NULL,
   `publish_time` bigint(20) NOT NULL DEFAULT '0',
@@ -45,8 +46,8 @@ CREATE TABLE `sjt_article` (
 -- ----------------------------
 -- Records of sjt_article
 -- ----------------------------
-INSERT INTO `sjt_article` VALUES ('1', 'test', '2', '', '', '', '', '', '', '1', '1532439708928', '1', '', '', '1532439708928', '1532439708928', '1', '1532439708928', '1');
-INSERT INTO `sjt_article` VALUES ('2', 'sssxxxxx', '1', '', '', '', '', '', '', '0', '1532440629896', '1', '', '', '1532440629896', '1532440629896', '1', '1532502311257', '1');
+INSERT INTO `sjt_article` VALUES ('1', 'test', '2', '', '', '', '', '', '', '1', '1532439708928', '1', '', '', '', '1532439708928', '1532439708928', '1', '1532439708928', '1');
+INSERT INTO `sjt_article` VALUES ('2', 'sssxxxxx', '1', '', '', '', '', '', '', '0', '1532440629896', '1', '', '', '', '1532440629896', '1532440629896', '1', '1532502311257', '1');
 
 -- ----------------------------
 -- Table structure for sjt_category
@@ -61,6 +62,7 @@ CREATE TABLE `sjt_category` (
   `target` varchar(8) NOT NULL DEFAULT '',
   `sort` tinyint(4) NOT NULL DEFAULT '0',
   `status` tinyint(4) NOT NULL DEFAULT '0',
+  `keywords` varchar(255) NOT NULL DEFAULT '',
   `description` text NOT NULL,
   `created_time` bigint(20) NOT NULL DEFAULT '0',
   `created_uid` int(11) NOT NULL DEFAULT '0',
@@ -72,10 +74,10 @@ CREATE TABLE `sjt_category` (
 -- ----------------------------
 -- Records of sjt_category
 -- ----------------------------
-INSERT INTO `sjt_category` VALUES ('1', '栏目一', '0', '', '', '', '0', '1', '', '1532420625702', '1', '1532420625702', '1');
-INSERT INTO `sjt_category` VALUES ('2', '栏目二', '0', '', '', '', '0', '1', '', '1532420653999', '1', '1532420653999', '1');
-INSERT INTO `sjt_category` VALUES ('3', '栏目三', '0', '', '', '', '0', '1', '', '1532420663511', '1', '1532420663511', '1');
-INSERT INTO `sjt_category` VALUES ('4', '子栏目', '2', '', '', '', '0', '1', '', '1532439692157', '1', '1532439692157', '1');
+INSERT INTO `sjt_category` VALUES ('1', '栏目一', '0', '', '', '', '0', '1', '', '', '1532420625702', '1', '1532420625702', '1');
+INSERT INTO `sjt_category` VALUES ('2', '栏目二', '0', '', '', '', '0', '1', '', '', '1532420653999', '1', '1532420653999', '1');
+INSERT INTO `sjt_category` VALUES ('3', '栏目三', '0', '', '', '', '0', '1', '', '', '1532420663511', '1', '1532420663511', '1');
+INSERT INTO `sjt_category` VALUES ('4', '子栏目', '2', '', '', '', '0', '1', '', '', '1532439692157', '1', '1532439692157', '1');
 
 -- ----------------------------
 -- Table structure for sjt_comment
@@ -365,10 +367,10 @@ INSERT INTO `sjt_upload` VALUES ('4', '2018031510274349.jpg', 'image', 'image/jp
 INSERT INTO `sjt_upload` VALUES ('5', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/7114831532486875433.jpg', '0', '-1', '1532486875434', '1', '1532487077688', '1');
 INSERT INTO `sjt_upload` VALUES ('6', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/1725971532486902678.jpg', '0', '-1', '1532486902678', '1', '1532487080746', '1');
 INSERT INTO `sjt_upload` VALUES ('7', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/5064821532487050588.jpg', '0', '-1', '1532487050588', '1', '1532487083631', '1');
-INSERT INTO `sjt_upload` VALUES ('8', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/0286311532501450963.jpg', '474971', '1', '1532501450965', '0', '1532501450965', '0');
-INSERT INTO `sjt_upload` VALUES ('9', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/0572841532501744138.jpg', '474971', '1', '1532501744142', '0', '1532501744142', '0');
-INSERT INTO `sjt_upload` VALUES ('10', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/0422961532502158764.jpg', '474971', '1', '1532502158775', '1', '1532502158775', '1');
-INSERT INTO `sjt_upload` VALUES ('11', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/3568551532502450241.jpg', '474971', '1', '1532502450242', '1', '1532502450242', '1');
+INSERT INTO `sjt_upload` VALUES ('8', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/0286311532501450963.jpg', '474971', '-1', '1532501450965', '0', '1532506917423', '1');
+INSERT INTO `sjt_upload` VALUES ('9', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/0572841532501744138.jpg', '474971', '-1', '1532501744142', '0', '1532506920175', '1');
+INSERT INTO `sjt_upload` VALUES ('10', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/0422961532502158764.jpg', '474971', '-1', '1532502158775', '1', '1532506923954', '1');
+INSERT INTO `sjt_upload` VALUES ('11', '2018031510274349.jpg', 'image', 'image/jpeg', 'image/3568551532502450241.jpg', '474971', '-1', '1532502450242', '1', '1532506926575', '1');
 
 -- ----------------------------
 -- Table structure for sjt_user
@@ -399,5 +401,5 @@ CREATE TABLE `sjt_user` (
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
-INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532506155437', '127.0.0.1', '0');
+INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532508830317', '127.0.0.1', '0');
 INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', '0', '1', '', '1528081567988', '127.0.0.1', '1', '1528081567988', '1', '1528267171953', '127.0.0.1', '0');

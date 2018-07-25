@@ -71,6 +71,9 @@
             <el-option v-for="(value, key) in config.status" :key="key" :label="value" :value="key"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="关键词">
+          <el-input v-model="form.keywords" auto-complete="on" placeholder="英文逗号分隔"></el-input>
+        </el-form-item>
         <el-form-item label="描述">
           <el-input type="textarea" v-model="form.description"></el-input>
         </el-form-item>
@@ -89,6 +92,7 @@
         <el-form-item label="打开方式">{{form.target ? form.target : '_self'}}</el-form-item>
         <el-form-item label="排序">{{form.sort}}</el-form-item>
         <el-form-item label="状态">{{form.statusText}}</el-form-item>
+        <el-form-item label="关键词">{{form.keywords}}</el-form-item>
         <el-form-item label="描述">{{form.description}}</el-form-item>
         <el-form-item label="创建者">{{form.createdUidName}}</el-form-item>
         <el-form-item label="创建时间">{{form.createdTime|date}}</el-form-item>
@@ -189,6 +193,7 @@ export default {
         target: '',
         sort: '',
         status: '',
+        keywords: '',
         description: ''
       })
     },
