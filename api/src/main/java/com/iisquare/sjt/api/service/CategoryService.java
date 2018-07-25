@@ -91,7 +91,7 @@ public class CategoryService extends ServiceBase {
         for (Category info : data) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/columns-" + info.getId() + ".shtml";
+                url = cmsWeb + "/columns-" + info.getId() + "-1.shtml";
                 info.setUrl(url);
             }
         }
@@ -144,7 +144,7 @@ public class CategoryService extends ServiceBase {
         for (Category info : rows) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/columns-" + info.getId() + ".shtml";
+                url = cmsWeb + "/columns-" + info.getId() + "-1.shtml";
                 info.setUrl(url);
             }
         }

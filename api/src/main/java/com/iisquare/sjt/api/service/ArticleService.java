@@ -90,7 +90,7 @@ public class ArticleService extends ServiceBase {
         return articleDao.save(info);
     }
 
-    public Map<?, ?> search(Map<?, ?> param, Map<?, ?> config) {
+    public Map<String, Object> search(Map<?, ?> param, Map<?, ?> config) {
         Map<String, Object> result = new LinkedHashMap<>();
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);
         int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, 1, 500, 15);
@@ -98,7 +98,14 @@ public class ArticleService extends ServiceBase {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
-                predicates.add(cb.notEqual(root.get("status"), -1));
+                Object status = param.get("status");
+                if(null != status && status instanceof Integer) {
+                    predicates.add(cb.equal(root.get("status"), DPUtil.parseInt(status)));
+                } else if(!DPUtil.empty(status) && status instanceof Collection) {
+                    predicates.add(root.get("status").in(DPUtil.parseIntSet((Collection) status)));
+                } else {
+                    predicates.add(cb.notEqual(root.get("status"), -1));
+                }
                 String title = DPUtil.trim(DPUtil.parseString(param.get("title")));
                 if(!DPUtil.empty(title)) {
                     predicates.add(cb.like(root.get("title"), "%" + title + "%"));

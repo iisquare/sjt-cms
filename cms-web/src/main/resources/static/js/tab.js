@@ -3,9 +3,20 @@ $(function(){
     function tabs(tabTit,on,tabCon){
         $(tabTit).children().click(function(){
             $(this).addClass(on).siblings().removeClass(on);
-            var index = $(tabTit).children().index(this);
-           	$(tabCon).children().eq(index).show().siblings().hide();
+            //var index = $(tabTit).children().index(this);
+           	//$(tabCon).children().eq(index).show().siblings().hide();
+            $('#js-nextpage-containe').html('');
+            $('.news_more').nextpage({
+                url: '/category/list',
+                paramters: function(page) {
+                    return {
+                        id: $('.news_act').data('category'),
+                        page: page
+                    };
+                }
+            });
     	});
+        $(tabTit).children().eq(0).trigger('click')
 	};
     tabs(".news_tab","news_act",".news_info");//首页新闻选项卡
 });

@@ -114,8 +114,17 @@ public class DPUtil {
 		return (int) parseDouble(object);
 	}
 
-	public static List<Integer> parseIntList(List<?> list) {
+	public static List<Integer> parseIntList(Collection<?> list) {
 		List<Integer> result = new ArrayList<>();
+		if(null == list) return result;
+		for (Object item : list) {
+			result.add(parseInt(item));
+		}
+		return result;
+	}
+
+	public static Set<Integer> parseIntSet(Collection<?> list) {
+		Set<Integer> result = new HashSet<>();
 		if(null == list) return result;
 		for (Object item : list) {
 			result.add(parseInt(item));
