@@ -48,8 +48,8 @@
     <el-form-item label="描述" prop="description">
       <el-input type="textarea" v-model="form.description"></el-input>
     </el-form-item>
-    <el-form-item label="正文" prop="content" class="el-editor">
-      <quill-editor v-model="form.content" ref="editor" class="editor"></quill-editor>
+    <el-form-item label="正文" prop="content">
+      <ueditor :content="form.content" :config="config.ueditor" class="editor" ref="ue"></ueditor>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click.native="submit" :loading="formLoading">提交</el-button>
@@ -61,13 +61,10 @@
 <script>
 import wrapper from '@/core/RequestWrapper'
 import articleService from '@/service/article'
-import { quillEditor } from 'vue-quill-editor'
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
 import ElementUI from 'element-ui'
+import ueditor from '@/components/layout/ueditor.vue'
 export default {
-  components: {quillEditor},
+  components: {ueditor},
   data () {
     return {
       upload: {
@@ -76,6 +73,7 @@ export default {
       },
       formLoading: false,
       config: {
+        ueditor: {},
         ready: false,
         status: [],
         categories: []
@@ -155,12 +153,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.el-editor {
-  height: 666px;
-}
 .editor {
   width: 850px;
   height: 600px;
-  line-height: normal;
 }
 </style>
