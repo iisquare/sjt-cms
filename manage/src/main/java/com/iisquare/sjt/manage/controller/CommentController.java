@@ -1,9 +1,10 @@
 package com.iisquare.sjt.manage.controller;
 
 import com.iisquare.sjt.api.domain.Article;
-import com.iisquare.sjt.api.domain.Category;
+import com.iisquare.sjt.api.domain.Comment;
 import com.iisquare.sjt.api.service.ArticleService;
-import com.iisquare.sjt.api.service.CategoryService;
+import com.iisquare.sjt.api.service.CommentService;
+import com.iisquare.sjt.api.util.ServletUtil;
 import com.iisquare.sjt.core.util.ApiUtil;
 import com.iisquare.sjt.core.util.DPUtil;
 import com.iisquare.sjt.core.util.ValidateUtil;
@@ -21,19 +22,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/article")
-public class ArticleController extends PermitController {
+@RequestMapping("/comment")
+public class CommentController extends PermitController {
 
     @Autowired
-    private ArticleService articleService;
+    private CommentService commentService;
     @Autowired
-    private CategoryService categoryService;
+    private ArticleService articleService;
 
     @RequestMapping("/info")
     @Permission("")
     public String infoAction(@RequestBody Map<?, ?> param) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
-        Article info = articleService.info(id);
+        Comment info = commentService.info(id);
         if(null == info || -1 == info.getStatus()) {
             return ApiUtil.echoResult(404, null, id);
         }
@@ -43,7 +44,7 @@ public class ArticleController extends PermitController {
     @RequestMapping("/list")
     @Permission("")
     public String listAction(@RequestBody Map<?, ?> param) {
-        Map<?, ?> result = articleService.search(param, DPUtil.buildMap(
+        Map<?, ?> result = commentService.search(param, DPUtil.buildMap(
             "withUserInfo", true, "withStatusText", true, "withParentInfo", true
         ));
         return ApiUtil.echoResult(0, null, result);
@@ -53,47 +54,46 @@ public class ArticleController extends PermitController {
     @Permission({"add", "modify"})
     public String saveAction(@RequestBody Map<?, ?> param, HttpServletRequest request) {
         Integer id = ValidateUtil.filterInteger(param.get("id"), true, 1, null, 0);
-        String title = DPUtil.trim(DPUtil.parseString(param.get("title")));
-        if(DPUtil.empty(title)) return ApiUtil.echoResult(1001, "标题异常", title);
-        long sort = DPUtil.parseLong(param.get("sort"));
+        String content = DPUtil.trim(DPUtil.parseString(param.get("content")));
+        if(DPUtil.empty(content)) return ApiUtil.echoResult(1001, "请输入评论内容", content);
         int status = DPUtil.parseInt(param.get("status"));
-        if(!articleService.status("default").containsKey(status)) return ApiUtil.echoResult(1002, "状态异常", status);
-        String description = DPUtil.parseString(param.get("description"));
-        int categoryId = DPUtil.parseInt(param.get("categoryId"));
-        if(categoryId < 1) {
-            return ApiUtil.echoResult(1003, "栏目异常", categoryId);
-        } else if(categoryId > 0) {
-            Category parent = categoryService.info(categoryId);
-            if(null == parent || !categoryService.status("default").containsKey(parent.getStatus())) {
-                return ApiUtil.echoResult(1004, "栏目不存在或已删除", categoryId);
-            }
-        }
-        String url = DPUtil.trim(DPUtil.parseString(param.get("url")));
-        String target = DPUtil.trim(DPUtil.parseString(param.get("target")));
-        Article info = null;
+        if(!commentService.status("default").containsKey(status)) return ApiUtil.echoResult(1002, "状态异常", status);
+        Comment info = null;
         if(id > 0) {
             if(!hasPermit(request, "modify")) return ApiUtil.echoResult(9403, null, null);
-            info = articleService.info(id);
+            info = commentService.info(id);
             if(null == info) return ApiUtil.echoResult(404, null, id);
         } else {
             if(!hasPermit(request, "add")) return ApiUtil.echoResult(9403, null, null);
-            info = new Article();
+            info = new Comment();
+            info.setCreatedIp(ServletUtil.getRemoteAddr(request));
         }
-        info.setTitle(title);
-        info.setCategoryId(categoryId);
-        info.setFromName(DPUtil.trim(DPUtil.parseString(param.get("fromName"))));
-        info.setFromUrl(DPUtil.trim(DPUtil.parseString(param.get("fromUrl"))));
-        info.setAuthor(DPUtil.trim(DPUtil.parseString(param.get("author"))));
-        info.setThumbUrl(DPUtil.trim(DPUtil.parseString(param.get("thumbUrl"))));
-        info.setUrl(url);
-        info.setTarget(target);
-        info.setCommentEnable(DPUtil.parseInt(param.get("commentEnable")));
-        info.setSort(sort);
+        int articleId = DPUtil.parseInt(param.get("articleId"));
+        int parentId = DPUtil.parseInt(param.get("parentId"));
+        Comment parentInfo = commentService.info(parentId);
+        Article articleInfo = articleService.info(articleId);
+        if(null == articleInfo || 1 != articleInfo.getStatus()) {
+            return ApiUtil.echoResult(1003, "文章异常", articleInfo);
+        }
+        info.setContent(content);
+        info.setCategoryId(articleInfo.getCategoryId());
+        info.setArticleId(articleInfo.getId());
+        if(null == parentInfo) {
+            info.setParentId(0);
+            info.setParentUid(0);
+            info.setTopId(0);
+        } else {
+            if(articleInfo.getId() != parentInfo.getArticleId()) {
+                return ApiUtil.echoResult(1004, "父级评论异常", articleInfo);
+            }
+            info.setParentId(parentInfo.getId());
+            info.setParentUid(parentInfo.getCreatedUid());
+            info.setTopId(parentInfo.getTopId() > 0 ? parentInfo.getTopId() : parentInfo.getId());
+        }
+        info.setSort(DPUtil.parseLong(param.get("sort")));
         info.setStatus(status);
         info.setPublishTime(DPUtil.parseLong(param.get("publishTime")));
-        info.setDescription(description);
-        info.setContent(DPUtil.parseString(param.get("content")));
-        info = articleService.save(info, uid(request));
+        info = commentService.save(info, uid(request));
         return ApiUtil.echoResult(null == info ? 500 : 0, null, info);
     }
 
@@ -106,15 +106,14 @@ public class ArticleController extends PermitController {
         } else {
             ids = Arrays.asList(DPUtil.parseInt(param.get("ids")));
         }
-        boolean result = articleService.delete(ids, uid(request));
+        boolean result = commentService.delete(ids, uid(request));
         return ApiUtil.echoResult(result ? 0 : 500, null, result);
     }
 
     @RequestMapping("/config")
     @Permission("")
     public String configAction(ModelMap model) {
-        model.put("status", articleService.status("default"));
-        model.put("categories", categoryService.tree());
+        model.put("status", commentService.status("default"));
         return ApiUtil.echoResult(0, null, model);
     }
 

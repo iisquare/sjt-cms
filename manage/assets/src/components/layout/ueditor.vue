@@ -41,7 +41,8 @@ export default {
         'horizontal', '|',
         'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts', '|',
         'print', 'preview', 'searchreplace', 'drafts'
-      ]]
+      ]],
+      scaleEnabled: true
     }, this.config))
     this.editor.addListener('ready', function () {
       _this.editor.setContent(_this.content) // 确保UE加载完成后，放入内容。

@@ -75,6 +75,7 @@ export default {
       formLoading: false,
       config: {
         ueditor: {
+          initialFrameWidth: 850,
           initialFrameHeight: 420
         },
         ready: false,
@@ -158,7 +159,6 @@ export default {
 
 <style scoped lang="scss">
 .editor {
-  width: 850px;
   line-height: normal;
 }
 </style>

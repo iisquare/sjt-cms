@@ -1,11 +1,10 @@
 package com.iisquare.sjt.api.service;
 
-import com.iisquare.sjt.api.dao.ArticleDao;
-import com.iisquare.sjt.api.domain.Article;
+import com.iisquare.sjt.api.dao.CommentDao;
+import com.iisquare.sjt.api.domain.Comment;
 import com.iisquare.sjt.api.mvc.ServiceBase;
 import com.iisquare.sjt.api.util.ServiceUtil;
 import com.iisquare.sjt.core.util.DPUtil;
-import com.iisquare.sjt.core.util.ReflectUtil;
 import com.iisquare.sjt.core.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,24 +18,29 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
-public class ArticleService extends ServiceBase {
+public class CommentService extends ServiceBase {
 
     @Autowired
-    private ArticleDao articleDao;
+    private CommentDao commentDao;
     @Autowired
     private UserService userService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private ArticleService articleService;
     @Value("${custom.cms.web}")
     private String cmsWeb;
 
     public Map<?, ?> status(String level) {
         Map<Integer, String> status = new LinkedHashMap<>();
-        status.put(1, "上架");
-        status.put(2, "下架");
+        status.put(1, "展示");
+        status.put(2, "隐藏");
         switch (level) {
             case "default":
                 break;
@@ -49,28 +53,12 @@ public class ArticleService extends ServiceBase {
         return status;
     }
 
-    public List<?> fillInfo(List<?> list, String ...properties) {
-        if(null == list || list.size() < 1 || properties.length < 1) return list;
-        Set<Integer> ids = ServiceUtil.getPropertyValues(list, Integer.class, properties);
-        if(ids.size() < 1) return list;
-        Map<Integer, Article> map = ServiceUtil.indexObjectList(articleDao.findAllById(ids), Integer.class, Article.class, "id");
-        if(map.size() < 1) return list;
-        for (Object item : list) {
-            for (String property : properties) {
-                Article info = map.get(ReflectUtil.getPropertyValue(item, property));
-                if(null == info) continue;
-                ReflectUtil.setPropertyValue(item, property + "Title", null, new Object[]{info.getTitle()});
-            }
-        }
-        return list;
-    }
-
-    public Article info(Integer id) {
+    public Comment info(Integer id) {
         if(null == id || id < 1) return null;
-        return articleDao.findById(id).get();
+        return commentDao.findById(id).get();
     }
 
-    public Article save(Article info, int uid) {
+    public Comment save(Comment info, int uid) {
         long time = System.currentTimeMillis();
         info.setUpdatedTime(time);
         info.setUpdatedUid(uid);
@@ -87,55 +75,64 @@ public class ArticleService extends ServiceBase {
             Long sort = info.getSort();
             if(null == sort || sort < 1) info.setSort(info.getPublishTime());
         }
-        return articleDao.save(info);
+        return commentDao.save(info);
     }
 
     public Map<?, ?> search(Map<?, ?> param, Map<?, ?> config) {
         Map<String, Object> result = new LinkedHashMap<>();
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);
         int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, 1, 500, 15);
-        Page<Article> data = articleDao.findAll(new Specification() {
+        Page<Comment> data = commentDao.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
                 List<Predicate> predicates = new ArrayList<>();
                 predicates.add(cb.notEqual(root.get("status"), -1));
-                String title = DPUtil.trim(DPUtil.parseString(param.get("title")));
-                if(!DPUtil.empty(title)) {
-                    predicates.add(cb.like(root.get("title"), "%" + title + "%"));
+                String content = DPUtil.trim(DPUtil.parseString(param.get("content")));
+                if(!DPUtil.empty(content)) {
+                    predicates.add(cb.like(root.get("content"), "%" + content + "%"));
                 }
                 int categoryId = DPUtil.parseInt(param.get("categoryId"));
                 if(!"".equals(DPUtil.parseString(param.get("categoryId")))) {
                     predicates.add(cb.equal(root.get("categoryId"), categoryId));
                 }
-                String fromName = DPUtil.trim(DPUtil.parseString(param.get("fromName")));
-                if(!DPUtil.empty(fromName)) {
-                    predicates.add(cb.equal(root.get("fromName"), fromName));
+                int articleId = DPUtil.parseInt(param.get("articleId"));
+                if(!"".equals(DPUtil.parseString(param.get("articleId")))) {
+                    predicates.add(cb.equal(root.get("articleId"), articleId));
                 }
-                String author = DPUtil.trim(DPUtil.parseString(param.get("author")));
-                if(!DPUtil.empty(author)) {
-                    predicates.add(cb.equal(root.get("author"), author));
+                int parentId = DPUtil.parseInt(param.get("parentId"));
+                if(!"".equals(DPUtil.parseString(param.get("parentId")))) {
+                    predicates.add(cb.equal(root.get("parentId"), parentId));
                 }
-                String description = DPUtil.trim(DPUtil.parseString(param.get("description")));
-                if(!DPUtil.empty(description)) {
-                    predicates.add(cb.like(root.get("description"), "%" + description + "%"));
+                int parentUid = DPUtil.parseInt(param.get("parentUid"));
+                if(!"".equals(DPUtil.parseString(param.get("parentUid")))) {
+                    predicates.add(cb.equal(root.get("parentUid"), parentUid));
+                }
+                int topId = DPUtil.parseInt(param.get("topId"));
+                if(!"".equals(DPUtil.parseString(param.get("topId")))) {
+                    predicates.add(cb.equal(root.get("topId"), topId));
+                }
+                String createdIp = DPUtil.trim(DPUtil.parseString(param.get("createdIp")));
+                if(!DPUtil.empty(createdIp)) {
+                    predicates.add(cb.equal(root.get("createdIp"), createdIp));
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }
-        }, PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.desc("sort"))));
-        List<Article> rows = data.getContent();
+        }, PageRequest.of(page - 1, pageSize, Sort.by(Sort.Order.asc("sort"))));
+        List<Comment> rows = data.getContent();
         if(!DPUtil.empty(config.get("withUserInfo"))) {
-            userService.fillInfo(rows, "createdUid", "updatedUid");
+            userService.fillInfo(rows, "createdUid", "updatedUid", "parentUid");
         }
         if(!DPUtil.empty(config.get("withStatusText"))) {
             ServiceUtil.fillProperties(rows, new String[]{"status"}, new String[]{"statusText"}, status("full"));
         }
         if(!DPUtil.empty(config.get("withParentInfo"))) {
             categoryService.fillInfo(rows, "categoryId");
+            articleService.fillInfo(rows, "articleId");
         }
-        for (Article info : rows) {
+        for (Comment info : rows) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/news-" + info.getCategoryId() + "-" + info.getId() + ".shtml";
+                url = cmsWeb + "/news-" + info.getCategoryId() + "-" + info.getArticleId() + ".shtml";
                 info.setUrl(url);
             }
         }
@@ -148,20 +145,20 @@ public class ArticleService extends ServiceBase {
 
     public boolean remove(List<Integer> ids) {
         if(null == ids || ids.size() < 1) return false;
-        articleDao.deleteInBatch(articleDao.findAllById(ids));
+        commentDao.deleteInBatch(commentDao.findAllById(ids));
         return true;
     }
 
     public boolean delete(List<Integer> ids, int uid) {
         if(null == ids || ids.size() < 1) return false;
-        List<Article> list = articleDao.findAllById(ids);
+        List<Comment> list = commentDao.findAllById(ids);
         long time = System.currentTimeMillis();
-        for (Article item : list) {
+        for (Comment item : list) {
             item.setStatus(-1);
             item.setUpdatedTime(time);
             item.setUpdatedUid(uid);
         }
-        articleDao.saveAll(list);
+        commentDao.saveAll(list);
         return true;
     }
 }

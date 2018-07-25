@@ -75,6 +75,10 @@ let routes = [{
     path: '/article/edit',
     name: '文章编辑',
     component: () => import(/* webpackChunkName: 'error' */ '@/components/article/edit')
+  }, {
+    path: '/comment/index',
+    name: '评论管理',
+    component: () => import(/* webpackChunkName: 'error' */ '@/components/comment/index')
   }]
 }, {
   path: '*',
