@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title th:text="'404 - ' + ${page.title}">页面访问提示 - Powered by iisquare.com</title>
+    <link rel="stylesheet" type="text/css" th:href="@{{url}/css/error.css(url=${staticUrl})}"/>
+    <script type="text/javascript" th:src="@{{url}/js/jquery-1.6.2.min.js(url=${staticUrl})}"></script>
+    <script type="text/javascript" th:src="@{{url}/js/error.js(url=${staticUrl})}"></script>
+    <script type="text/javascript">
+        $(function () {
+            lazyGoBack();
+        });
+    </script>
+</head>
+<body>
+<div class="main">
+    <div class="error">
+        <div class="logo"><img th:src="@{{url}/images/search_boy.gif(url=${staticUrl})}" width="120" height="136" alt="loading..." /></div>
+        <div class="tips">
+            <div class="title">对不起，您要访问页面不存在或出现了出错！</div>
+            <div class="time">将在<strong id="sec">10</strong>秒后自动返回上一页。</div>
+            <div class="content">
+                您也可以：
+                <input type="button" value="返回首页" class="GoHomeBtn" onclick="window.location.href='/';" />
+                <a class="back" href="javascript:void(0);" title="返回上一页" onclick="window.history.back();">返回上一页</a>
+            </div>
+        </div>
+    </div>
+    <div class="copy">Copyright &copy; 2010 - 2018 iisquare.com All Rights Reserved<br/> ☆灰鸦社区☆ 版权所有</div>
+</div>
+</body>
+</html>

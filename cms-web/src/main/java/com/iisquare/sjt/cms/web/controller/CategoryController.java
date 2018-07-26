@@ -3,6 +3,7 @@ package com.iisquare.sjt.cms.web.controller;
 import com.iisquare.sjt.api.domain.Article;
 import com.iisquare.sjt.api.service.ArticleService;
 import com.iisquare.sjt.api.service.CategoryService;
+import com.iisquare.sjt.api.service.MenuService;
 import com.iisquare.sjt.cms.web.mvc.WebController;
 import com.iisquare.sjt.core.util.ApiUtil;
 import com.iisquare.sjt.core.util.DPUtil;
@@ -26,9 +27,16 @@ public class CategoryController extends WebController {
     private CategoryService categoryService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private MenuService menuService;
 
     @GetMapping("/columns-{categoryId}-{page}.shtml")
-    public String indexAction(ModelMap model, HttpServletRequest request) {
+    public String indexAction(
+        @PathVariable("categoryId") Integer categoryId,
+        @PathVariable("page") Integer page, ModelMap model, HttpServletRequest request) {
+        model.put("sectionComm", settingService.get("cmsSectionComm"));
+        model.put("menu", menuService.tree(DPUtil.parseInt(settingService.get("system", "cmsMenuParentId"))));
+        model.put("category", categoryService.tree(0, false));
         return displayTemplate(model, request, "category", "index");
     }
 
