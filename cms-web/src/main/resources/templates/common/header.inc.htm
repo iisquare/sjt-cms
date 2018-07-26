@@ -1,0 +1,84 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-3.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <title th:text="${page.title}">一点业</title>
+    <meta name="keywords" th:content="${page.keywords}" />
+    <meta name="description" th:content="${page.description}" />
+    <link rel="icon" href="favicon.ico" mce_href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{{url}/css/font-awesome-4.7.0/css/font-awesome.min.css(url=${staticUrl})}"/>
+    <link rel="stylesheet" th:href="@{{url}/css/reset.css(url=${staticUrl})}">
+    <link rel="stylesheet" th:href="@{{url}/css/style.css(url=${staticUrl})}">
+    <link rel="stylesheet" th:href="@{{url}/css/jsmodern-1.1.1.min.css(url=${staticUrl})}">
+    <script th:src="@{{url}/js/jquery-2.1.1.js(url=${staticUrl})}"></script>
+    <script th:src="@{{url}/js/jsmodern-1.1.1.min.js(url=${staticUrl})}"></script>
+    <script type="text/javascript" th:src="@{{url}/js/jquery.min.js(url=${staticUrl})}"></script>
+    <!-- 首页幻灯片 -->
+    <script type="text/javascript" th:src="@{{url}/js/jquery.js(url=${staticUrl})}"></script>
+    <script type="text/javascript" th:src="@{{url}/js/lrtk.js(url=${staticUrl})}"></script>
+    <style type="text/css" th:inline="text">
+        .box {
+            height: 30px;
+        }
+        .box span{
+            font-size: 12px;
+            color: #999;
+            float: left;
+        }
+        .box > div {
+            width: 16px;
+            height: 16px;
+            float: left;
+            cursor: pointer;
+            border-radius: 4px;
+            background-size: contain;
+            margin: 0 3px;
+        }
+        #share-qrcode { background-image: url([[${staticUrl}]]/images/wechat.png); }
+        #share-douban { background-image: url([[${staticUrl}]]/images/db.png); }
+        #share-qzone { background-image: url([[${staticUrl}]]/images/qzone.png); }
+        #share-sina { background-image: url([[${staticUrl}]]/images/sina.png); }
+        #share-qq { background-image: url([[${staticUrl}]]/images/qq.png); }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="top1">
+        <div class="cont" th:utext="${sectionComm.topTips}">
+            <div class="welcome lf"><i class="fa fa-file-text"></i>康美生态圈、大健康共创共享平台！</div>
+            <ul class="topnav rt">
+                <li><a href="">品牌介绍</a></li>
+                <li><a href="">联系我们</a></li>
+                <li><a href="">合作加盟</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="top2">
+        <div class="cont">
+            <div class="logo lf"><a href=""><img th:src="@{{url}/images/logo.png(url=${staticUrl})}"></a></div>
+            <ul class="menu lf" th:each="collect,iterStat : ${menu}">
+                <li><a th:href="${collect.url}" th:target="${collect.target}" th:text="${collect.name}">导航菜单</a></li>
+                <!-- <li class="showSubmenu"><a href="javascript:void(0)"><img th:src="@{{url}/images/bot.png(url=${staticUrl})}"></a></li> -->
+            </ul>
+            <div class="kjbtn">
+                <div class="arra"><i class="fa fa-angle-down"></i></div>
+                <div class="index_search lf"><i class="fa fa-search"></i></div>
+                <div class="search">
+                    <input type="text" placeholder="输入关键字" name="">
+                    <i class="fa fa-search"></i>
+                </div>
+                <div class="shopping lf" th:utext="${sectionComm.link}"><a href="">一点商城</a></div>
+                <div class="loginbtn lf"><a href="">登录</a></div>
+            </div>
+        </div>
+        <div class="subMenu">
+            <div class="cont">
+                <ul class="" th:each="collect,iterStat : ${category}">
+                    <li><a th:href="${collect.url}" th:target="${collect.target}" th:text="${collect.name}">栏目名称</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
