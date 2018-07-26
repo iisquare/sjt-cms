@@ -27,7 +27,7 @@ public class CategoryController extends WebController {
     @Autowired
     private ArticleService articleService;
 
-    @GetMapping("/news-{categoryId}-{page}.shtml")
+    @GetMapping("/columns-{categoryId}-{page}.shtml")
     public String indexAction(ModelMap model, HttpServletRequest request) {
         return displayTemplate(model, request, "category", "index");
     }
