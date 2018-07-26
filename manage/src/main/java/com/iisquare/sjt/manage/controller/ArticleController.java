@@ -83,7 +83,7 @@ public class ArticleController extends PermitController {
         info.setThumbUrl(DPUtil.trim(DPUtil.parseString(param.get("thumbUrl"))));
         info.setUrl(DPUtil.trim(DPUtil.parseString(param.get("url"))));
         info.setTarget(DPUtil.trim(DPUtil.parseString(param.get("target"))));
-        info.setCommentEnable(DPUtil.parseInt(param.get("commentEnable")));
+        info.setCommentEnable(DPUtil.parseBoolean(param.get("commentEnable")) ? 1 : 0);
         info.setSort(DPUtil.parseLong(param.get("sort")));
         info.setStatus(status);
         info.setPublishTime(DPUtil.parseLong(param.get("publishTime")));

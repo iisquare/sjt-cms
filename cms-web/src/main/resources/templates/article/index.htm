@@ -1,0 +1,118 @@
+<div th:replace="common/header.inc.htm"></div>
+<div class="content">
+    <div class="cont">
+        <!-- 左侧 -->
+        <div class="cont_l lf">
+            <!-- 面包屑 -->
+            <div class="bread"><a href="">首页</a>&nbsp;&nbsp;>&nbsp;&nbsp;<a href="">服务</a>&nbsp;&nbsp;>&nbsp;&nbsp;正文</div>
+            <div class="news_title" th:text="${info.title}">标题</div>
+            <div class="news_in">
+                <div class="lf time"><span th:text="${#dates.format(info.publishTime, 'yyyy-MM-dd HH:mm:ss')}">2018-04-19</span><span th:if="${info.fromName != ''}" th:text="'来源：' + ${info.fromName}">来源：丽莎国际</span></div>
+                <!--<div class="rt fontSize"><input type="button" value="大字" name=""><input type="button" value="中字" name=""><input type="button" value="小字" name=""></div>-->
+            </div>
+            <div class="news_detail" th:utext="${info.content}">
+            </div>
+            <div class="copyright">
+                <div class="author"><span class="lf"th:if="${info.author != ''}" th:text="'责任编辑：' + ${info.author}">责任编辑：刘恋</span><div class="box rt">
+                    <span>分享到：</span>
+                    <div id="share-douban" title="豆瓣分享"></div>
+                    <div id="share-qzone" title="QQ空间分享"></div>
+                    <div id="share-sina" title="新浪微博分享"></div>
+                    <div id="share-qq" title="QQ好友分享"></div>
+                </div></div>
+                <div class="copy" th:utext="${sectionArticle.detailTips}">
+                    <span class="cpcomm lf">一点业产品报料：18614090994　　　一点业资讯，未经授权不得转载。</span>
+                    <div class="coll rt"><span><i class="fa fa-thumbs-o-up"></i>点赞</span><span><i class="fa fa-heart-o"></i>收藏</span></div>
+                </div>
+            </div>
+            <!-- 相关推荐 -->
+            <div class="recommend" th:if="${#lists.size(recommand) > 0}">
+                <div class="recommend_til"><span>相关推荐</span></div>
+                <ul th:each="collect,iterStat : ${recommand}">
+                    <li><a th:href="${collect.url}" target="_blank"><img width="200" height="150" th:src="${collect.thumbUrl}"><br><span th:text="${collect.title}"></span></a></li>
+                </ul>
+            </div>
+            <!-- 评论 -->
+            <div class="comment" th:if="${info.commentEnable == 1}">
+                <div class="comment_til"><span th:text="'评论(' + ${comment.total} + ')'">评论(59)</span></div>
+                <div class="comment_info">
+                    <div class="userFace lf"><img th:src="@{{url}/images/userface.png(url=${staticUrl})}"></div>
+                    <div class="comment_cont rt">
+                        <textarea></textarea>
+                        <input type="button" value="发表" name="">
+                    </div>
+                </div>
+            </div>
+            <!-- 最新评论 -->
+            <div class="new_comment" th:if="${info.commentEnable == 1}">
+                <div class="new_comment_til"><span>最新评论</span></div>
+                <ul>
+                    <li th:each="collect,iterStat : ${comment.rows}">
+                        <div class="new_comm_usface lf"><img th:src="@{{url}/images/userface.png(url=${staticUrl})}"></div>
+                        <div class="new_comm_detail rt">
+                            <div class="userinfo">
+                                <div class="lf"><span class="userName" th:text="${collect.createdUidName}">U172464981</span><span class="data_time" th:text="${#dates.format(collect.publishTime, 'yyyy-MM-dd HH:mm:ss')}">昨天</span></div>
+                                <div class="rt"><!--<span class="dianz"><i class="fa fa-thumbs-o-up"></i>点赞(56)</span>--><span class="replys">回复</span></div>
+                            </div>
+                            <div class="comment_detail" th:text="${collect.content}">我体验，确实很好的，效果很明显我体验，确实很好的，效果很明显效果很明显我体验确实很好的，效果很明显</div>
+                            <ul class="replyList" th:if="${collect.children}" th:each="clcollect,cliterStat : ${collect.children}">
+                                <li><span class="usersin" th:text="${clcollect.createdUidName}+'：'">U46953756：</span><span class="reply_detail" th:text="${clcollect.content}">>嗯，是的。</span></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 右侧 -->
+        <div th:replace="common/side.inc.htm"></div>
+    </div>
+</div>
+<div th:replace="common/footer.inc.htm"></div>
+</body>
+<!-- 菜单高亮 -->
+<script type="text/javascript" th:src="@{{url}/js/menu.js(url=${staticUrl})}"></script>
+<!-- 幻灯片2 -->
+<script type="text/javascript" th:src="@{{url}/js/slide2.js(url=${staticUrl})}"></script>
+<!-- 回到顶部 -->
+<script type="text/javascript" th:src="@{{url}/js/backTop.js(url=${staticUrl})}"></script>
+<!-- 导航跟随 -->
+<script type="text/javascript" th:src="@{{url}/js/nav.js(url=${staticUrl})}"></script>
+<script>
+    // 分享到
+    jsModern.share({
+        qrcode: "#share-qrcode",
+        douban: "#share-douban",
+        qzone: "#share-qzone",
+        sina: "#share-sina",
+        qq: "#share-qq"
+    });
+
+    // 回复
+    $('.replys').unbind('click').click(function() {
+        var rp = $(this).parent().parent().parent().find(".reply");
+        if(rp.length > 0){
+
+        }else{
+            var reply = $("<div></div>");
+            reply.addClass("reply");
+            var reply_content = $("<div></div>");
+            reply_content.addClass("reply_content");
+            var text = $("<textarea></textarea>");
+            var usname = $(this).parent().prev().find(".userName").text();
+            text.attr("placeholder","回复："+usname);
+            var reply_btn = "<div class='reply_btn'><input type='button' value='提交' name=><input type='button' value='取消' name=''></div>";
+            reply_content.append(text);
+            reply.append(reply_content);
+            reply.append(reply_btn);
+            $(this).parent().parent().parent().append(reply);
+            reply.slideDown(300);
+            replySubmit();
+        }
+    });
+    function replySubmit(){
+        $('.reply_btn  input').unbind('click').click(function() {
+            $(this).parent().parent().remove();
+        });
+    }
+</script>
+</html>

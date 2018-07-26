@@ -16,10 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/")
@@ -42,6 +39,11 @@ public class CategoryController extends WebController {
         model.put("sectionComm", settingService.get("cmsSectionComm"));
         model.put("menu", menuService.tree(DPUtil.parseInt(settingService.get("system", "cmsMenuParentId"))));
         model.put("category", categoryService.tree(0, false));
+        Map<String, String> seo = new HashMap<>();
+        seo.put("title", info.getName() + " - " + settingService.get("cms", "siteName"));
+        seo.put("keywords", info.getKeywords());
+        seo.put("description", info.getDescription());
+        model.put("page", seo);
         return displayTemplate(model, request, "category", "index");
     }
 
@@ -52,6 +54,9 @@ public class CategoryController extends WebController {
         model.put("sectionComm", settingService.get("cmsSectionComm"));
         model.put("menu", menuService.tree(DPUtil.parseInt(settingService.get("system", "cmsMenuParentId"))));
         model.put("category", categoryService.tree(0, false));
+        Map<String, String> seo = new HashMap<>();
+        seo.put("title", "搜索结果 - " + settingService.get("cms", "siteName"));
+        model.put("page", seo);
         return displayTemplate(model, request, "category", "index");
     }
 

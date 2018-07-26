@@ -84,17 +84,17 @@ public class ServiceUtil {
 	/**
 	 * 将List数据格式化为以对应字段值为下标的Map
 	 */
-	public static Map<?, ?> indexesObjectList(List<?> list, String property) {
-		Map<Object, List<Object>> map = new HashMap<>();
+	public static <K, V> Map<K, List<V>> indexesObjectList(List<?> list, Class<K> kType, Class<V> vType, String property) {
+		Map<K, List<V>> map = new HashMap<>();
 		for (Object item : list) {
 			Object key = ReflectUtil.getPropertyValue(item, property);
 			if(null == key) continue;
-			List<Object> subList = map.get(key);
+			List<V> subList = map.get(key);
 			if(null == subList) {
 				subList = new ArrayList<>();
 			}
-			subList.add(item);
-			map.put(key, subList);
+			subList.add((V) item);
+			map.put((K) key, subList);
 		}
 		return map;
 	}

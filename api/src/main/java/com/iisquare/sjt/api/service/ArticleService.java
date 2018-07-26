@@ -33,6 +33,28 @@ public class ArticleService extends ServiceBase {
     @Value("${custom.cms.web}")
     private String cmsWeb;
 
+    public List<Article> recommand(Collection<Integer> notIds) {
+        Page<Article> data = articleDao.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.equal(root.get("status"), 1));
+                predicates.add(cb.not(root.get("id").in(notIds)));
+                predicates.add(cb.notEqual(root.get("thumbUrl"), ""));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, PageRequest.of(0, 3, Sort.by(Sort.Order.desc("sort"))));
+        List<Article> rows = data.getContent();
+        for (Article info : rows) {
+            String url = info.getUrl();
+            if(DPUtil.empty(url)) {
+                url = cmsWeb + "/news-" + info.getCategoryId() + "-" + info.getId() + ".shtml";
+                info.setUrl(url);
+            }
+        }
+        return rows;
+    }
+
     public Map<?, ?> status(String level) {
         Map<Integer, String> status = new LinkedHashMap<>();
         status.put(1, "上架");

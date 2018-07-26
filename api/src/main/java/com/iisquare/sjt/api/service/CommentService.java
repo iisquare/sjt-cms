@@ -34,10 +34,47 @@ public class CommentService extends ServiceBase {
     @Value("${custom.cms.web}")
     private String cmsWeb;
 
+    public Map<?, ?> simple(Integer articleId) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        Page<Comment> data = commentDao.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.equal(root.get("status"), 1));
+                predicates.add(cb.equal(root.get("articleId"), articleId));
+                predicates.add(cb.equal(root.get("topId"), 0));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, PageRequest.of(0, 100, Sort.by(Sort.Order.asc("sort"))));
+        List<Comment> rows = data.getContent();
+        userService.fillInfo(rows, "createdUid", "parentUid");
+        result.put("total", data.getTotalElements());
+        result.put("rows", rows);
+        Set<Integer> ids = ServiceUtil.getPropertyValues(rows, Integer.class, "id");
+        if(ids.size() < 1) return result;
+        data = commentDao.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.equal(root.get("status"), 1));
+                predicates.add(cb.equal(root.get("articleId"), articleId));
+                predicates.add(root.get("topId").in(ids));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, PageRequest.of(0, ids.size() * 100, Sort.by(Sort.Order.asc("sort"))));
+        Map<Integer, List<Comment>> children = ServiceUtil.indexesObjectList(
+            userService.fillInfo(data.getContent(), "createdUid", "parentUid"), Integer.class, Comment.class, "topId");
+        for (Comment info : rows) {
+            info.setChildren(children.get(info.getId()));
+        }
+        return result;
+    }
+
     public Map<?, ?> status(String level) {
         Map<Integer, String> status = new LinkedHashMap<>();
         status.put(1, "展示");
-        status.put(2, "隐藏");
+        status.put(2, "待审");
+        status.put(3, "隐藏");
         switch (level) {
             case "default":
                 break;

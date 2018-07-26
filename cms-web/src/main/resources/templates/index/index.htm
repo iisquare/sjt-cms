@@ -82,10 +82,10 @@
     <% for (var i in rows) { var info = rows[i]; %>
     <li>
         <% if(info.thumbUrl != '') { %>
-        <div class="lf news_pic"><a href="<%=info.url%>" target="<%=info.target%>"><img src="<%=info.thumbUrl%>"></a></div>
+        <div class="lf news_pic"><a href="<%=info.url%>" target="_blank"><img src="<%=info.thumbUrl%>"></a></div>
         <% } %>
         <div class="<%=info.thumbUrl != '' ? 'rt news_intro' : 'news_intro_full'%>">
-            <div class="news_til"><a href="<%=info.url%>" target="<%=info.target%>"><%=info.title%></a></div>
+            <div class="news_til"><a href="<%=info.url%>" target="_blank"><%=info.title%></a></div>
             <% if(info.description != '') { %>
             <div class="news_comm"><%=info.description%></div>
             <% } %>
