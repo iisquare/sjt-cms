@@ -36,6 +36,20 @@ public class CommentService extends ServiceBase {
 
     public Map<?, ?> simple(Integer articleId) {
         Map<String, Object> result = new LinkedHashMap<>();
+        long total = commentDao.count(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.equal(root.get("status"), 1));
+                predicates.add(cb.equal(root.get("articleId"), articleId));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        });
+        if(total < 1) {
+            result.put("total", 0);
+            result.put("rows", new ArrayList<>());
+            return result;
+        }
         Page<Comment> data = commentDao.findAll(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
@@ -48,7 +62,7 @@ public class CommentService extends ServiceBase {
         }, PageRequest.of(0, 100, Sort.by(Sort.Order.asc("sort"))));
         List<Comment> rows = data.getContent();
         userService.fillInfo(rows, "createdUid", "parentUid");
-        result.put("total", data.getTotalElements());
+        result.put("total", total);
         result.put("rows", rows);
         Set<Integer> ids = ServiceUtil.getPropertyValues(rows, Integer.class, "id");
         if(ids.size() < 1) return result;
