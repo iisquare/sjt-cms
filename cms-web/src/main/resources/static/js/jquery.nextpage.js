@@ -173,9 +173,7 @@
             nextpage.processPreLoad(item, page + 1);
         },
         isEmptyData : function (data) { // 判断数据是否为空
-            if(!data || ($.isArray(data) && 0 == data.length) || $.isEmptyObject(data)) {
-                return true;
-            }
+            if(!data || !data.rows || ($.isArray(data.rows) && 0 == data.length) || $.isEmptyObject(data.rows)) return true;
             return false;
         },
         processData : function (item, data, bJustCheck) { // 数据处理子程序
@@ -230,7 +228,7 @@
             return url;
         },
         dataFormater : function (data) { // 格式化返回数据
-            return data.rows;
+            return data.data;
         },
         htmlFormater : function (data) { // 渲染模板
             return baidu.template(this.templateId, data);
@@ -238,7 +236,7 @@
         htmlTip : '向上滑动加载更多', // 操作提示
         htmlLoad : '正在加载更多信息...', // 加载提示
         htmlDone : '下面没有更多内容了， 换个条件试试吧：）', // 处理完成提示
-        bLoadOnInit : false, // 初始化完成后立即加载数据
+        bLoadOnInit : true, // 初始化完成后立即加载数据
         bPreLoad : true, // 预加载下一页
         onInit : function (obj, options) { // 初始化完成
             obj.html(this.htmlTip);

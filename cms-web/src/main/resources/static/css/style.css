@@ -214,6 +214,10 @@ ul.news_tab li.news_act{
 	box-sizing: border-box;
 	padding: 0 26px 0 0;
 }
+.news_intro_full{
+	box-sizing: border-box;
+	padding: 0 26px 0 0;
+}
 .news_til a{
 	color: #000;
 	font-size: 20px;

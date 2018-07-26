@@ -5,7 +5,7 @@ $(function(){
             $(this).addClass(on).siblings().removeClass(on);
             //var index = $(tabTit).children().index(this);
            	//$(tabCon).children().eq(index).show().siblings().hide();
-            $('#js-nextpage-containe').html('');
+            $('#js-nextpage-container').html('');
             $('.news_more').nextpage({
                 url: '/category/list',
                 paramters: function(page) {
@@ -16,7 +16,7 @@ $(function(){
                 }
             });
     	});
-        $(tabTit).children().eq(0).trigger('click')
+        $(tabTit).children().eq(0).trigger('click');
 	};
     tabs(".news_tab","news_act",".news_info");//首页新闻选项卡
 });

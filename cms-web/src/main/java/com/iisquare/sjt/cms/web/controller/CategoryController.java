@@ -51,6 +51,7 @@ public class CategoryController extends WebController {
             item.put("title", info.getTitle());
             item.put("categoryId", info.getCategoryId());
             item.put("categoryIdName", info.getCategoryIdName());
+            item.put("thumbUrl", info.getThumbUrl());
             item.put("url", info.getUrl());
             item.put("target", info.getTarget());
             item.put("description", info.getDescription());
