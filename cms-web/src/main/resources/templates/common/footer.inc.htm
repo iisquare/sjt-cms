@@ -45,4 +45,12 @@
         var dateObj = new Date(dateVal);
         return dateObj.format('yyyy-MM-dd hh:mm:ss');
     }
+    $('.search').children('input').on('keyup', function (e) {
+        if(e.keyCode ==13){
+            window.location.href = '/search?keyword=' + $(this).val();
+        }
+    });
+    $('.search').children('.fa-search').on('click', function (e) {
+        window.location.href = '/search?keyword=' + $(this).parent().children('input').val();
+    });
 </script>

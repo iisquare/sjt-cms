@@ -57,7 +57,7 @@
     </div>
     <div class="top2">
         <div class="cont">
-            <div class="logo lf"><a href=""><img th:src="@{{url}/images/logo.png(url=${staticUrl})}"></a></div>
+            <div class="logo lf"><a href="/"><img th:src="@{{url}/images/logo.png(url=${staticUrl})}"></a></div>
             <ul class="menu lf" th:each="collect,iterStat : ${menu}">
                 <li><a th:href="${collect.url}" th:target="${collect.target}" th:text="${collect.name}">导航菜单</a></li>
                 <!-- <li class="showSubmenu"><a href="javascript:void(0)"><img th:src="@{{url}/images/bot.png(url=${staticUrl})}"></a></li> -->

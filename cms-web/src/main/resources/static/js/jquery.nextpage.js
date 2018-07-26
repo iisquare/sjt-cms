@@ -235,7 +235,7 @@
         },
         htmlTip : '向上滑动加载更多', // 操作提示
         htmlLoad : '正在加载更多信息...', // 加载提示
-        htmlDone : '下面没有更多内容了， 换个条件试试吧：）', // 处理完成提示
+        htmlDone : '没有更多内容了：）', // 处理完成提示
         bLoadOnInit : true, // 初始化完成后立即加载数据
         bPreLoad : true, // 预加载下一页
         onInit : function (obj, options) { // 初始化完成

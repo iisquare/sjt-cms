@@ -18,10 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class CommentService extends ServiceBase {
@@ -55,7 +52,8 @@ public class CommentService extends ServiceBase {
 
     public Comment info(Integer id) {
         if(null == id || id < 1) return null;
-        return commentDao.findById(id).get();
+        Optional<Comment> info = commentDao.findById(id);
+        return info.isPresent() ? info.get() : null;
     }
 
     public Comment save(Comment info, int uid) {

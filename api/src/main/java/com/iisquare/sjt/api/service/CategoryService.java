@@ -49,7 +49,8 @@ public class CategoryService extends ServiceBase {
 
     public Category info(Integer id) {
         if(null == id || id < 1) return null;
-        return categoryDao.findById(id).get();
+        Optional<Category> info = categoryDao.findById(id);
+        return info.isPresent() ? info.get() : null;
     }
 
     public Category save(Category info, int uid) {

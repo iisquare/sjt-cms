@@ -67,7 +67,8 @@ public class ArticleService extends ServiceBase {
 
     public Article info(Integer id) {
         if(null == id || id < 1) return null;
-        return articleDao.findById(id).get();
+        Optional<Article> info = articleDao.findById(id);
+        return info.isPresent() ? info.get() : null;
     }
 
     public Article save(Article info, int uid) {
@@ -125,6 +126,13 @@ public class ArticleService extends ServiceBase {
                 String description = DPUtil.trim(DPUtil.parseString(param.get("description")));
                 if(!DPUtil.empty(description)) {
                     predicates.add(cb.like(root.get("description"), "%" + description + "%"));
+                }
+                String keyword = DPUtil.trim(DPUtil.parseString(param.get("keyword")));
+                if(!DPUtil.empty(keyword)) {
+                    predicates.add(cb.or(
+                        cb.like(root.get("title"), "%" + keyword + "%"),
+                        cb.like(root.get("description"), "%" + keyword + "%")
+                    ));
                 }
                 return cb.and(predicates.toArray(new Predicate[predicates.size()]));
             }

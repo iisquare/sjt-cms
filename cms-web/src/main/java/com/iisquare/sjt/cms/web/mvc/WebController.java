@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,11 @@ public class WebController extends ControllerBase {
         model.put("staticUrl", "/static");
         if(DPUtil.empty(controller)) return action;
         return controller + "/" + action;
+    }
+
+    protected String error(ModelMap model, HttpServletRequest request, HttpServletResponse response, Integer code) {
+        response.setStatus(code);
+        return "forward:/error-"+ code + ".shtml";
     }
 
 }

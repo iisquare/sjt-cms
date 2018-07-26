@@ -1,6 +1,7 @@
 package com.iisquare.sjt.cms.web.controller;
 
 import com.iisquare.sjt.api.domain.Article;
+import com.iisquare.sjt.api.domain.Category;
 import com.iisquare.sjt.api.service.ArticleService;
 import com.iisquare.sjt.api.service.CategoryService;
 import com.iisquare.sjt.api.service.MenuService;
@@ -14,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -33,7 +35,20 @@ public class CategoryController extends WebController {
     @GetMapping("/columns-{categoryId}-{page}.shtml")
     public String indexAction(
         @PathVariable("categoryId") Integer categoryId,
-        @PathVariable("page") Integer page, ModelMap model, HttpServletRequest request) {
+        @PathVariable("page") Integer page, ModelMap model, HttpServletRequest request, HttpServletResponse response) {
+        Category info = categoryService.info(categoryId);
+        if(null == info || 1 != info.getStatus()) return error(model, request, response, 404);
+        model.put("info", info);
+        model.put("sectionComm", settingService.get("cmsSectionComm"));
+        model.put("menu", menuService.tree(DPUtil.parseInt(settingService.get("system", "cmsMenuParentId"))));
+        model.put("category", categoryService.tree(0, false));
+        return displayTemplate(model, request, "category", "index");
+    }
+
+    @GetMapping("/search")
+    public String searchAction(@RequestParam Map<?, ?> param, ModelMap model, HttpServletRequest request, HttpServletResponse response) {
+        String keyword = DPUtil.trim(DPUtil.parseString(param.get("keyword")));
+        model.put("keyword", keyword);
         model.put("sectionComm", settingService.get("cmsSectionComm"));
         model.put("menu", menuService.tree(DPUtil.parseInt(settingService.get("system", "cmsMenuParentId"))));
         model.put("category", categoryService.tree(0, false));
@@ -46,11 +61,13 @@ public class CategoryController extends WebController {
         Integer categoryId = ValidateUtil.filterInteger(param.get("id"), true, 1, null, null);
         int page = ValidateUtil.filterInteger(param.get("page"), true, 1, null, 1);
         int pageSize = ValidateUtil.filterInteger(param.get("pageSize"), true, 1, 100, 20);
+        String keyword = DPUtil.trim(DPUtil.parseString(param.get("keyword")));
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("categoryId", categoryId);
         args.put("page", page);
         args.put("pageSize", pageSize);
         args.put("status", 1);
+        args.put("keyword", keyword);
         Map<String, Object> result = articleService.search(args, DPUtil.buildMap("withParentInfo", true));
         List<Map<String, Object>> data = new ArrayList<>();
         for (Article info : (List<Article>) result.get("rows")) {
