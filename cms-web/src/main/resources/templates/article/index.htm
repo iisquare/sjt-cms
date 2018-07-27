@@ -38,8 +38,9 @@
                 <div class="comment_info">
                     <div class="userFace lf"><img th:src="@{{url}/images/userface.png(url=${staticUrl})}"></div>
                     <div class="comment_cont rt">
-                        <textarea></textarea>
-                        <input type="button" value="发表" name="">
+                        <textarea data-parent="0" placeholder="文明发言，从我做起" th:if="${userInfo}"></textarea>
+                        <textarea placeholder="登录后方可发表评论" disabled th:unless="${userInfo}"></textarea>
+                        <input type="button" value="发表" name="" class='comment_submit'>
                     </div>
                 </div>
             </div>
@@ -51,12 +52,12 @@
                         <div class="new_comm_usface lf"><img th:src="@{{url}/images/userface.png(url=${staticUrl})}"></div>
                         <div class="new_comm_detail rt">
                             <div class="userinfo">
-                                <div class="lf"><span class="userName" th:text="${collect.createdUidName}">U172464981</span><span class="data_time" th:text="${#dates.format(collect.publishTime, 'yyyy-MM-dd HH:mm:ss')}">昨天</span></div>
-                                <div class="rt"><!--<span class="dianz"><i class="fa fa-thumbs-o-up"></i>点赞(56)</span>--><span class="replys">回复</span></div>
+                                <div class="lf"><span th:data-id="${collect.id}" th:data-name="${collect.createdUidName}" class="userName" th:text="${collect.createdUidName}">U172464981</span><span class="data_time" th:text="${#dates.format(collect.publishTime, 'yyyy-MM-dd HH:mm:ss')}">昨天</span></div>
+                                <div class="rt"><!--<span class="dianz"><i class="fa fa-thumbs-o-up"></i>点赞(56)</span>--><span class="replys" th:if="${userInfo}">回复</span></div>
                             </div>
                             <div class="comment_detail" th:text="${collect.content}">我体验，确实很好的，效果很明显我体验，确实很好的，效果很明显效果很明显我体验确实很好的，效果很明显</div>
                             <ul class="replyList" th:if="${collect.children}" th:each="clcollect,cliterStat : ${collect.children}">
-                                <li><span class="usersin" th:text="${clcollect.createdUidName}+'：'">U46953756：</span><span class="reply_detail" th:text="${clcollect.content}">>嗯，是的。</span></li>
+                                <li><span th:data-id="${collect.id}" th:data-name="${collect.createdUidName}" class="usersin" th:text="${clcollect.createdUidName}+'：'">U46953756：</span><span class="reply_detail" th:text="${clcollect.content}">>嗯，是的。</span></li>
                             </ul>
                         </div>
                     </li>
@@ -77,6 +78,9 @@
 <script type="text/javascript" th:src="@{{url}/js/backTop.js(url=${staticUrl})}"></script>
 <!-- 导航跟随 -->
 <script type="text/javascript" th:src="@{{url}/js/nav.js(url=${staticUrl})}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var articleId = '[[${info.id}]]';
+</script>
 <script>
     // 分享到
     jsModern.share({
@@ -85,6 +89,39 @@
         qzone: "#share-qzone",
         sina: "#share-sina",
         qq: "#share-qq"
+    });
+
+    $(document).on('click', '.comment_cancel', function () {
+        $(this).parent().parent().remove();
+    });
+
+    $(document).on('click', '.comment_submit', function () {
+        var $obj = $(this);
+        $tx = $obj.parent().parent().find('textarea');
+        $.ajax({
+            url: '/comment/add',
+            data: {
+                articleId: articleId,
+                parentId: $tx.data('parent'),
+                content: $tx.val()
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function (response) {
+                if(response) {
+                    alert(response.message);
+                    if(0 == response.code) {
+                        if('提交' == $obj.val()) {
+                            $obj.parent().parent().remove();
+                        } else {
+                            $tx.val('')
+                        }
+                    }
+                } else {
+                    alert('服务异常');
+                }
+            }
+        });
     });
 
     // 回复
@@ -98,21 +135,17 @@
             var reply_content = $("<div></div>");
             reply_content.addClass("reply_content");
             var text = $("<textarea></textarea>");
-            var usname = $(this).parent().prev().find(".userName").text();
+            var usname = $(this).parent().prev().find(".userName").data('name');
             text.attr("placeholder","回复："+usname);
-            var reply_btn = "<div class='reply_btn'><input type='button' value='提交' name=><input type='button' value='取消' name=''></div>";
+            var parent = $(this).parent().prev().find(".userName").data('id');
+            text.data('parent', parent);
+            var reply_btn = "<div class='reply_btn'><input class='comment_submit' type='button' value='提交' name=><input class='comment_cancel' type='button' value='取消' name=''></div>";
             reply_content.append(text);
             reply.append(reply_content);
             reply.append(reply_btn);
             $(this).parent().parent().parent().append(reply);
             reply.slideDown(300);
-            replySubmit();
         }
     });
-    function replySubmit(){
-        $('.reply_btn  input').unbind('click').click(function() {
-            $(this).parent().parent().remove();
-        });
-    }
 </script>
 </html>

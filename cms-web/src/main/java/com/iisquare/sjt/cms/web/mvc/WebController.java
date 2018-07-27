@@ -3,6 +3,7 @@ package com.iisquare.sjt.cms.web.mvc;
 import com.iisquare.sjt.api.mvc.ControllerBase;
 import com.iisquare.sjt.api.service.SessionService;
 import com.iisquare.sjt.api.service.SettingService;
+import com.iisquare.sjt.api.service.UserService;
 import com.iisquare.sjt.core.util.DPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -18,6 +19,8 @@ public class WebController extends ControllerBase {
     protected SessionService sessionService;
     @Autowired
     protected SettingService settingService;
+    @Autowired
+    protected UserService userService;
 
     public int uid(HttpServletRequest request) {
         return DPUtil.parseInt(sessionService.currentInfo(request, null).get("uid"));
@@ -30,6 +33,7 @@ public class WebController extends ControllerBase {
         if(DPUtil.empty(page.get("keywords"))) page.put("keywords", settingService.get("cms", "siteKeywords"));
         if(DPUtil.empty(page.get("description"))) page.put("description", settingService.get("cms", "siteDescription"));
         model.put("staticUrl", "/static");
+        model.put("userInfo", userService.info(DPUtil.parseInt(sessionService.currentInfo(request, null).get("uid"))));
         if(DPUtil.empty(controller)) return action;
         return controller + "/" + action;
     }

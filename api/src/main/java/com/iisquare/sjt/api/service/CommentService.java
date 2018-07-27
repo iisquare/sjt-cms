@@ -34,6 +34,19 @@ public class CommentService extends ServiceBase {
     @Value("${custom.cms.web}")
     private String cmsWeb;
 
+    public long lastTime(int uid) {
+        Page<Comment> data = commentDao.findAll(new Specification() {
+            @Override
+            public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder cb) {
+                List<Predicate> predicates = new ArrayList<>();
+                predicates.add(cb.equal(root.get("createdUid"), uid));
+                return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+            }
+        }, PageRequest.of(0, 1, Sort.by(Sort.Order.desc("createdTime"))));
+        if(data.getTotalElements() < 1) return 0;
+        return data.getContent().get(0).getCreatedTime();
+    }
+
     public Map<?, ?> simple(Integer articleId) {
         Map<String, Object> result = new LinkedHashMap<>();
         long total = commentDao.count(new Specification() {

@@ -15,7 +15,7 @@
 <ul class="login">
     <li class="logo"><img th:src="@{{url}/images/logo.png(url=${staticUrl})}"></li>
     <li class="username"><input type="text" placeholder="手机号" name="username"></li>
-    <li class="yzm"><input class="yzmtext lf" placeholder="验证码" type="text" name="code"><div class="rt yzmcg"><img class="usercode" data-src="/user/code.jpg" src=""></div></li>
+    <li class="yzm"><input class="yzmtext lf" placeholder="验证码" type="text" name="code"><div class="rt yzmcg"><img class="usercode" data-src="/user/code.jpg" src="/user/code.jpg"></div></li>
     <li class="phoneyzm"><input class="lf phoneyzmtext" type="text" placeholder="手机验证码"  name="password"><a class="rt sendmsg" data-time="0">发送验证码</a></li>
     <li class="shengm"><input type="checkbox" checked name="agreement" value="1">我已阅读并同意 <span th:utext="${sectionLogin.agreement}"><a href="">用户协议</a></span></li>
     <li class="subm"><input type="button" value="登录" name="submit"></li>
@@ -24,7 +24,7 @@
     $(function () {
         $('.usercode').on('click', function () {
             $(this).attr('src', $(this).data('src') + '?_t=' + new Date().getTime());
-        }).trigger('click');
+        });
         $('.sendmsg').on('click', function () {
             var $obj = $(this);
             var time = $obj.data('time');
@@ -42,7 +42,6 @@
                 dataType: 'json',
                 success: function (response) {
                     if(response) {
-                        alert(response.message);
                         if(0 == response.code) {
                             $obj.data('time', response.data);
                             (function timeout() {
@@ -57,6 +56,8 @@
                                     $obj.text('发送验证码');
                                 }
                             })()
+                        } else {
+                            alert(response.message);
                         }
                     } else {
                         alert('服务异常');
@@ -66,6 +67,10 @@
             return false;
         });
         $('input[name="submit"]').on('click', function () {
+            if(1 != $('input[name="agreement"]:checked').val()) {
+                alert('请仔细阅读用户协议，同意后方可登录');
+                return false;
+            }
             var $obj = $(this);
             if('登录' != $obj.val()) return false;
             $obj.val('登录中...')

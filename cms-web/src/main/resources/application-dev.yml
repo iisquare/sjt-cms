@@ -1,5 +1,10 @@
 server:
   port: 8001
+  servlet:
+    session:
+      timeout: 2592000
+      cookie:
+        max-age: 2592000
 
 spring:
   datasource:

@@ -1,10 +1,7 @@
 package com.iisquare.sjt.cms.web.controller;
 
 import com.iisquare.sjt.api.domain.User;
-import com.iisquare.sjt.api.service.CategoryService;
-import com.iisquare.sjt.api.service.MenuService;
 import com.iisquare.sjt.api.service.MessageService;
-import com.iisquare.sjt.api.service.UserService;
 import com.iisquare.sjt.api.util.ServletUtil;
 import com.iisquare.sjt.api.util.VerifyCodeUtil;
 import com.iisquare.sjt.cms.web.mvc.WebController;
@@ -25,8 +22,6 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController extends WebController {
 
-    @Autowired
-    private UserService userService;
     @Autowired
     private MessageService messageService;
 

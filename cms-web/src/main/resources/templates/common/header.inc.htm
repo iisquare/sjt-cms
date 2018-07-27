@@ -70,7 +70,7 @@
                     <i class="fa fa-search"></i>
                 </div>
                 <div class="shopping lf" th:utext="${sectionComm.link}"><a href="">一点商城</a></div>
-                <div class="loginbtn lf"><a href="">登录</a></div>
+                <div class="loginbtn lf"><a href="/user/logout" th:if="${userInfo}">退出</a><a href="/user/login.shtml" th:unless="${userInfo}">登录</a></div>
             </div>
         </div>
         <div class="subMenu">
