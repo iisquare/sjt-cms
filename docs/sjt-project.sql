@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-07-26 18:25:49
+Date: 2018-07-27 18:15:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -334,7 +334,7 @@ CREATE TABLE `sjt_setting` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_setting
@@ -354,6 +354,7 @@ INSERT INTO `sjt_setting` VALUES ('12', 'footer', 'cmsSectionComm', '<ul class=\
 INSERT INTO `sjt_setting` VALUES ('13', 'cmsMenuParentId', 'system', '13', '0', '新闻站页面菜单根节点', '1532512133859', '1');
 INSERT INTO `sjt_setting` VALUES ('14', 'link', 'cmsSectionComm', '<a href=\"\">一点商城</a>', '0', '顶部导航外链', '1532513245469', '1');
 INSERT INTO `sjt_setting` VALUES ('15', 'detailTips', 'cmsSectionArticle', '<span class=\"cpcomm lf\">一点业产品报料：18614090994　　　一点业资讯，未经授权不得转载。</span>', '0', '详情页转载提示', '1532595727021', '1');
+INSERT INTO `sjt_setting` VALUES ('16', 'agreement', 'cmsSectionLogin', '<a href=\"\">用户协议</a>', '0', '用户协议', '1532680298140', '1');
 
 -- ----------------------------
 -- Table structure for sjt_upload
@@ -419,5 +420,5 @@ CREATE TABLE `sjt_user` (
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
-INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532599014516', '127.0.0.1', '0');
+INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532679777509', '127.0.0.1', '0');
 INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', '0', '1', '', '1528081567988', '127.0.0.1', '1', '1528081567988', '1', '1528267171953', '127.0.0.1', '0');

@@ -94,10 +94,20 @@ public class ServletUtil {
 	public static void setSession(HttpServletRequest request, Map<String, Object> map) {
 		HttpSession session = request.getSession();
 		for(Map.Entry<String, Object> item : map.entrySet()) {
-			session.setAttribute(item.getKey(), item.getValue());
+			Object value = item;
+			if(null == value) {
+				session.removeAttribute(item.getKey());
+			} else {
+				session.setAttribute(item.getKey(), item.getValue());
+			}
 		}
 	}
-	
+
+	public static void removeSession(HttpServletRequest request, String key) {
+		HttpSession session = request.getSession();
+		session.removeAttribute(key);
+	}
+
 	public static void setSession(HttpServletRequest request, String key, Object value) {
 		HttpSession session = request.getSession();
 		session.setAttribute(key, value);

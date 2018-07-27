@@ -841,3 +841,131 @@ ul.rightFloat li i{
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 }
+
+/*登录*/
+
+ul.login{
+	width: 600px;
+	overflow: hidden;
+	box-sizing: border-box;
+	padding: 2rem;
+	margin: 0 auto;
+}
+ul.login li{
+	width: 100%;
+	overflow: hidden;
+}
+li.logo{
+	text-align: center;
+}
+li.logo img{
+	width: 35%;
+}
+li.username{
+	margin: 1rem 0;
+}
+li.username input{
+	width: 99%;
+	height: 2.6rem;
+	border:1px solid #ddd;
+	box-sizing: border-box;
+	padding: 0 0.6rem;
+	outline: none;
+}
+li.yzm{
+	margin: 1rem 0;
+}
+li.yzm .yzmtext{
+	width: 60%;
+	height: 2.6rem;
+	border:1px solid #ddd;
+	box-sizing: border-box;
+	padding: 0 0.6rem;
+	outline: none;
+}
+li.yzm .yzmcg{
+	width: 35%;
+	height: 2.6rem;
+	line-height: 2.6rem;
+	font-weight: bold;
+	color: #0d0aef;
+}
+li.yzm .yzmcg .usercode{
+	vertical-align: middle;
+	cursor: pointer;
+}
+li.phoneyzm{
+	height: 2.6rem;
+	border:1px solid #ddd;
+	box-sizing: border-box;
+	padding: 0 0.6rem;
+	margin: 1rem 0;
+}
+.phoneyzmtext{
+	width: 50%;
+	outline: none;
+	margin-top: 0.4rem;
+	border: 0;
+	background: none
+}
+li.phoneyzm a{
+	display: block;
+	margin-top: 0.4rem;
+	padding: 0 1rem;
+	color: #333;
+	font-size: 1.4rem;
+	border-left: 1px solid #ddd;
+}
+li.shengm{
+	margin: 1rem 0;
+	font-size: 1.4rem;
+	color: #333;
+}
+li.shengm input{
+	margin-right: 0.6rem;
+}
+li.shengm a{
+	font-size: 1.4rem;
+	color: #333;
+}
+li.subm{
+	margin: 1rem 0;
+}
+li.subm input{
+	width: 100%;
+	height: 2.6rem;
+	line-height: 2.6rem;
+	background: #ff5b5f;
+	color: #fff;
+	font-size: 1.4rem;
+	border: 0;
+}
+li.qiehuan{
+
+}
+li.qiehuan a{
+	font-size: 1.4rem;
+	color: #999;
+}
+li.dsf{
+	margin: 1rem 0;
+	text-align: center;
+	font-size: 1.6rem;
+	color: #999;
+}
+li.dsf_login{
+	margin: 1rem 0;
+}
+ul.dsflogin_btn{
+	display: -webkit-flex;
+	display: flex;
+	-webkit-justify-content: space-between;
+	justify-content: space-between;
+}
+ul.dsflogin_btn li{
+	text-align: center;
+}
+ul.dsflogin_btn li a i{
+	font-size: 2rem;
+	color: #999;
+}
