@@ -170,7 +170,7 @@ public class UserController extends PermitController {
             if(!info.getPassword().equals(userService.password(DPUtil.parseString(param.get("password")), info.getSalt()))) {
                 return ApiUtil.echoResult(1002, "密码错误", null);
             }
-            if(info.getLockedTime() > System.currentTimeMillis()) {
+            if(1 != info.getStatus() || info.getLockedTime() > System.currentTimeMillis()) {
                 return ApiUtil.echoResult(1003, "账号已锁定，请联系管理人员", null);
             }
             info.setLoginedTime(System.currentTimeMillis());

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50505
 File Encoding         : 65001
 
-Date: 2018-07-27 18:15:15
+Date: 2018-07-27 18:30:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -415,10 +415,11 @@ CREATE TABLE `sjt_user` (
   PRIMARY KEY (`id`),
   KEY `unq_serial` (`serial`),
   KEY `unq_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
 INSERT INTO `sjt_user` VALUES ('1', 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', '0', '1', '', '1528081552985', '127.0.0.1', '1', '1528081552985', '1', '1532679777509', '127.0.0.1', '0');
 INSERT INTO `sjt_user` VALUES ('2', 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', '0', '1', '', '1528081567988', '127.0.0.1', '1', '1528081567988', '1', '1528267171953', '127.0.0.1', '0');
+INSERT INTO `sjt_user` VALUES ('3', '11111111111', '网友_1532687002385709708', '', '', '0', '1', 'CMSWeb登录自动注册', '1532687002386', '127.0.0.1', '0', '0', '0', '1532687173792', '127.0.0.1', '0');

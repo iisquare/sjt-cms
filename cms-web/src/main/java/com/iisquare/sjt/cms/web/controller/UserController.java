@@ -58,7 +58,7 @@ public class UserController extends WebController {
             info = userService.save(info, 0);
             return ApiUtil.echoResult(null == info ? 500 : 0, null, null);
         }
-        if(info.getLockedTime() > System.currentTimeMillis()) {
+        if(1 != info.getStatus() || info.getLockedTime() > System.currentTimeMillis()) {
             return ApiUtil.echoResult(1103, "账号已锁定，请联系客服人员", null);
         }
         info.setLoginedTime(time);
