@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 28/07/2018 11:31:06
+ Date: 28/07/2018 13:15:40
 */
 
 SET NAMES utf8mb4;
@@ -354,7 +354,7 @@ CREATE TABLE `sjt_setting` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_setting
@@ -376,6 +376,10 @@ INSERT INTO `sjt_setting` VALUES (13, 'cmsMenuParentId', 'system', '13', 0, '新
 INSERT INTO `sjt_setting` VALUES (14, 'link', 'cmsSectionComm', '<a href=\"\">一点商城</a>', 0, '顶部导航外链', 1532513245469, 1);
 INSERT INTO `sjt_setting` VALUES (15, 'detailTips', 'cmsSectionArticle', '<span class=\"cpcomm lf\">一点业产品报料：18614090994　　　一点业资讯，未经授权不得转载。</span>', 0, '详情页转载提示', 1532595727021, 1);
 INSERT INTO `sjt_setting` VALUES (16, 'agreement', 'cmsSectionLogin', '<a href=\"\">用户协议</a>', 0, '用户协议', 1532680298140, 1);
+INSERT INTO `sjt_setting` VALUES (17, 'apiUrl', 'sms', 'http://utf8.api.smschinese.cn', 0, '短信网关地址', 1532754092553, 1);
+INSERT INTO `sjt_setting` VALUES (18, 'apiUser', 'sms', '', 0, '短信网关用户', 1532754871448, 1);
+INSERT INTO `sjt_setting` VALUES (19, 'apiKey', 'sms', '', 0, '短信网关认证Key', 1532754876987, 1);
+INSERT INTO `sjt_setting` VALUES (20, 'sendCode', 'sms', '验证码{code}三十分钟内有效', 0, '短信验证码内容', 1532754481936, 1);
 COMMIT;
 
 -- ----------------------------
@@ -439,15 +443,20 @@ CREATE TABLE `sjt_user` (
   PRIMARY KEY (`id`),
   KEY `unq_serial` (`serial`),
   KEY `unq_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1532709914276, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1532754868420, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (2, 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', 0, 1, '', 1528081567988, '127.0.0.1', 1, 1528081567988, 1, 1528267171953, '127.0.0.1', 0);
-INSERT INTO `sjt_user` VALUES (3, '11111111111', '网友_1532687002385709708', '', '', 0, 1, 'CMSWeb登录自动注册', 1532687002386, '127.0.0.1', 0, 0, 0, 1532709745791, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (3, '11111111111', '网友_1532687002385709708', '', '', 0, 1, 'CMSWeb登录自动注册', 1532687002386, '127.0.0.1', 0, 0, 0, 1532754929371, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (4, '11111111112', '网友_f37d91de60694e148b5d69a24f67a7e0', '', '', 0, 1, 'CMSWeb登录自动注册', 1532748836829, '127.0.0.1', 0, 0, 0, 1532748894173, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (5, '11111111113', '网友_0ebfe158f01d4c3ea521c492f26298f4', '', '', 0, 1, 'CMSWeb登录自动注册', 1532749022284, '127.0.0.1', 0, 0, 0, 1532749022283, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (6, '11111111114', '网友_11158683fad24611af652acec9a803b6', '', '', 0, 1, 'CMSWeb登录自动注册', 1532749476950, '127.0.0.1', 0, 0, 0, 1532749476949, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (7, '11111111119', '网友_9260377fe8ef4dafbb09223ff2be8707', '', '', 0, 1, 'CMSWeb登录自动注册', 1532749877180, '127.0.0.1', 0, 0, 0, 1532749877180, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (8, '66666', '网友_dfdb9cb31d7e4489a95ae3af64543dd8', '', '', 0, 1, 'CMSWeb登录自动注册', 1532754803329, '127.0.0.1', 0, 0, 0, 1532754803327, '127.0.0.1', 0);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
