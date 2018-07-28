@@ -89,7 +89,7 @@
             <% if(info.description != '') { %>
             <div class="news_comm"><%=info.description%></div>
             <% } %>
-            <div class="news_time"><span class="lf"><a href=""><%=info.categoryIdName%>   |  <%=Web_formatDateTime(info.publishTime)%></a></span>
+            <div class="news_time"><span class="lf"><a href="<%=info.url%>" target="_blank"><%=info.categoryIdName%>   |  <%=Web_formatDateTime(info.publishTime)%></a></span>
                 <% if(false) { %>
                 <div class="box rt">
                     <span>分享到：</span>
