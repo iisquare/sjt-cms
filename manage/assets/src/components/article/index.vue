@@ -100,7 +100,7 @@ export default {
       }).catch(() => {})
     },
     preview (id, row) {
-      window.open(row.url)
+      window.open(process.env.apiURL + row.url)
     }
   },
   mounted () {

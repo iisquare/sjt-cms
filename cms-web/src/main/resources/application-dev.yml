@@ -42,6 +42,3 @@ custom:
   uploads:
     path: docs/uploads
     uri: http://127.0.0.1:8080/files
-  cms:
-    web: http://127.0.0.1:8001
-    wap: http://127.0.0.1:8002

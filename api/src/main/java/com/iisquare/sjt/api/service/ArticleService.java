@@ -8,7 +8,6 @@ import com.iisquare.sjt.core.util.DPUtil;
 import com.iisquare.sjt.core.util.ReflectUtil;
 import com.iisquare.sjt.core.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,8 +29,6 @@ public class ArticleService extends ServiceBase {
     private UserService userService;
     @Autowired
     private CategoryService categoryService;
-    @Value("${custom.cms.web}")
-    private String cmsWeb;
 
     public List<Article> recommand(Collection<Integer> notIds) {
         Page<Article> data = articleDao.findAll(new Specification() {
@@ -48,7 +45,7 @@ public class ArticleService extends ServiceBase {
         for (Article info : rows) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/news-" + info.getCategoryId() + "-" + info.getId() + ".shtml";
+                url = "/news-" + info.getCategoryId() + "-" + info.getId() + ".shtml";
                 info.setUrl(url);
             }
         }
@@ -172,7 +169,7 @@ public class ArticleService extends ServiceBase {
         for (Article info : rows) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/news-" + info.getCategoryId() + "-" + info.getId() + ".shtml";
+                url = "/news-" + info.getCategoryId() + "-" + info.getId() + ".shtml";
                 info.setUrl(url);
             }
         }

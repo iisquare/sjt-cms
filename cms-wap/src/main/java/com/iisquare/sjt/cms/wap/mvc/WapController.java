@@ -6,7 +6,6 @@ import com.iisquare.sjt.api.service.SettingService;
 import com.iisquare.sjt.api.service.UserService;
 import com.iisquare.sjt.core.util.DPUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.ModelMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,8 +21,6 @@ public class WapController extends ControllerBase {
     protected SettingService settingService;
     @Autowired
     protected UserService userService;
-    @Value("${custom.cms.web}")
-    private String webUrl;
 
     public int uid(HttpServletRequest request) {
         return DPUtil.parseInt(sessionService.currentInfo(request, null).get("uid"));
@@ -37,7 +34,6 @@ public class WapController extends ControllerBase {
         if(DPUtil.empty(page.get("description"))) page.put("description", settingService.get("cms", "siteDescription"));
         model.put("staticUrl", "/static");
         model.put("userInfo", userService.info(DPUtil.parseInt(sessionService.currentInfo(request, null).get("uid"))));
-        model.put("webUrl", webUrl);
         if(DPUtil.empty(controller)) return action;
         return controller + "/" + action;
     }

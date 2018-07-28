@@ -7,7 +7,6 @@ import com.iisquare.sjt.api.util.ServiceUtil;
 import com.iisquare.sjt.core.util.DPUtil;
 import com.iisquare.sjt.core.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -31,8 +30,6 @@ public class CommentService extends ServiceBase {
     private CategoryService categoryService;
     @Autowired
     private ArticleService articleService;
-    @Value("${custom.cms.web}")
-    private String cmsWeb;
 
     public long lastTime(int uid) {
         Page<Comment> data = commentDao.findAll(new Specification() {
@@ -194,7 +191,7 @@ public class CommentService extends ServiceBase {
         for (Comment info : rows) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/news-" + info.getCategoryId() + "-" + info.getArticleId() + ".shtml";
+                url = "/news-" + info.getCategoryId() + "-" + info.getArticleId() + ".shtml";
                 info.setUrl(url);
             }
         }

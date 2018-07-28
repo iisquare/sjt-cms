@@ -8,7 +8,6 @@ import com.iisquare.sjt.core.util.DPUtil;
 import com.iisquare.sjt.core.util.ReflectUtil;
 import com.iisquare.sjt.core.util.ValidateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -28,8 +27,6 @@ public class CategoryService extends ServiceBase {
     private CategoryDao categoryDao;
     @Autowired
     private UserService userService;
-    @Value("${custom.cms.web}")
-    private String cmsWeb;
 
     public Map<?, ?> status(String level) {
         Map<Integer, String> status = new LinkedHashMap<>();
@@ -92,7 +89,7 @@ public class CategoryService extends ServiceBase {
         for (Category info : data) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/columns-" + info.getId() + "-1.shtml";
+                url = "/columns-" + info.getId() + "-1.shtml";
                 info.setUrl(url);
             }
         }
@@ -145,7 +142,7 @@ public class CategoryService extends ServiceBase {
         for (Category info : rows) {
             String url = info.getUrl();
             if(DPUtil.empty(url)) {
-                url = cmsWeb + "/columns-" + info.getId() + "-1.shtml";
+                url = "/columns-" + info.getId() + "-1.shtml";
                 info.setUrl(url);
             }
         }

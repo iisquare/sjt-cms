@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 28/07/2018 15:44:14
+ Date: 28/07/2018 16:42:52
 */
 
 SET NAMES utf8mb4;
@@ -107,7 +107,7 @@ CREATE TABLE `sjt_comment` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_comment
@@ -124,6 +124,7 @@ INSERT INTO `sjt_comment` VALUES (8, 'asasf', 2, 5, 0, 0, 0, 1532709498319, 2, 1
 INSERT INTO `sjt_comment` VALUES (9, 'asasf', 2, 5, 0, 0, 0, 1532709618950, 2, 1532709618950, 1532709618950, '127.0.0.1', 3, 1532709618950, 3);
 INSERT INTO `sjt_comment` VALUES (10, 'ssss', 2, 5, 0, 0, 0, 1532709751872, 1, 1532709751872, 1532709751872, '127.0.0.1', 3, 1532709964280, 1);
 INSERT INTO `sjt_comment` VALUES (11, 'ccccccc', 2, 5, 5, 1, 5, 1532709895993, 1, 1532709895993, 1532709895993, '127.0.0.1', 3, 1532709971988, 1);
+INSERT INTO `sjt_comment` VALUES (12, 'dddddd', 2, 5, 0, 0, 0, 1532766178507, 1, 1532766178507, 1532766178507, '127.0.0.1', 9, 1532766200608, 1);
 COMMIT;
 
 -- ----------------------------
@@ -444,20 +445,21 @@ CREATE TABLE `sjt_user` (
   PRIMARY KEY (`id`),
   KEY `unq_serial` (`serial`),
   KEY `unq_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1532762956107, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1532766822205, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (2, 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', 0, 1, '', 1528081567988, '127.0.0.1', 1, 1528081567988, 1, 1528267171953, '127.0.0.1', 0);
-INSERT INTO `sjt_user` VALUES (3, '11111111111', '网友_1532687002385709708', '', '', 0, 1, 'CMSWeb登录自动注册', 1532687002386, '127.0.0.1', 0, 0, 0, 1532754929371, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (3, '11111111111', '网友_1532687002385709708', '', '', 0, 1, 'CMSWeb登录自动注册', 1532687002386, '127.0.0.1', 0, 0, 0, 1532764421028, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (4, '11111111112', '网友_f37d91de60694e148b5d69a24f67a7e0', '', '', 0, 1, 'CMSWeb登录自动注册', 1532748836829, '127.0.0.1', 0, 0, 0, 1532748894173, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (5, '11111111113', '网友_0ebfe158f01d4c3ea521c492f26298f4', '', '', 0, 1, 'CMSWeb登录自动注册', 1532749022284, '127.0.0.1', 0, 0, 0, 1532749022283, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (6, '11111111114', '网友_11158683fad24611af652acec9a803b6', '', '', 0, 1, 'CMSWeb登录自动注册', 1532749476950, '127.0.0.1', 0, 0, 0, 1532749476949, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (7, '11111111119', '网友_9260377fe8ef4dafbb09223ff2be8707', '', '', 0, 1, 'CMSWeb登录自动注册', 1532749877180, '127.0.0.1', 0, 0, 0, 1532749877180, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (8, '66666', '网友_dfdb9cb31d7e4489a95ae3af64543dd8', '', '', 0, 1, 'CMSWeb登录自动注册', 1532754803329, '127.0.0.1', 0, 0, 0, 1532754803327, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (9, '11111111115', '网友_e9ea63649136468f8dad45a808de75f6', '', '', 0, 1, 'CMSWeb登录自动注册', 1532766120975, '127.0.0.1', 0, 0, 0, 1532766120974, '127.0.0.1', 0);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
