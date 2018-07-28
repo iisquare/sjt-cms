@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <title th:text="'用户登录 - ' + ${page.title}">一点业</title>
+    <!-- 图标 -->
+    <link rel="stylesheet" th:href="@{{url}/css/font-awesome-4.7.0/css/font-awesome.min.css(url=${staticUrl})}"/>
+    <link rel="stylesheet" th:href="@{{url}/css/reset.css(url=${staticUrl})}">
+    <link rel="stylesheet" th:href="@{{url}/css/style.css(url=${staticUrl})}">
+    <script th:src="@{{url}/js/jquery.min.js(url=${staticUrl})}"></script>
+</head>
+<body>
+<ul class="login">
+    <li class="logo"><img th:src="@{{url}/images/logo.png(url=${staticUrl})}"></li>
+    <li class="username"><input type="text" placeholder="手机号" name="username"></li>
+    <li class="yzm"><input class="yzmtext lf" placeholder="验证码" type="text" name="code"><div class="rt yzmcg"><img class="usercode" data-src="/user/code.jpg" src="/user/code.jpg"></div></li>
+    <li class="phoneyzm"><input class="lf phoneyzmtext" type="text" placeholder="手机验证码"  name="password"><a class="rt sendmsg" data-time="0">发送验证码</a></li>
+    <li class="shengm"><input type="checkbox" checked name="agreement" value="1">我已阅读并同意 <span th:utext="${sectionLogin.agreement}"><a href="">用户协议</a></span></li>
+    <li class="subm"><input type="button" value="登录" name="submit"><input type="hidden" name="forward" th:value="${forward}"></li>
+</ul>
+<script type="text/javascript">
+    $(function () {
+        $('.usercode').on('click', function () {
+            $(this).attr('src', $(this).data('src') + '?_t=' + new Date().getTime());
+        });
+        $('.sendmsg').on('click', function () {
+            var $obj = $(this);
+            var time = $obj.data('time');
+            if(time > 0) {
+                // alert('操作频繁，请' + time + '秒后再试');
+                return false;
+            }
+            $.ajax({
+                url: '/user/sendmsg',
+                data: {
+                    username: $('input[name="username"]').val(),
+                    code: $('input[name="code"]').val()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (response) {
+                    if(response) {
+                        if(0 == response.code) {
+                            $obj.data('time', response.data);
+                            (function timeout() {
+                                var time = $obj.data('time');
+                                if(time > 0) {
+                                    time--;
+                                    $obj.data('time', time);
+                                    $obj.text(time + '秒后重新发送');
+                                    window.setTimeout(timeout, 1000)
+                                } else {
+                                    $obj.data('time', 0);
+                                    $obj.text('发送验证码');
+                                }
+                            })()
+                        } else {
+                            alert(response.message);
+                        }
+                    } else {
+                        alert('服务异常');
+                    }
+                }
+            });
+            return false;
+        });
+        $('input[name="submit"]').on('click', function () {
+            if(1 != $('input[name="agreement"]:checked').val()) {
+                alert('请仔细阅读用户协议，同意后方可登录');
+                return false;
+            }
+            var $obj = $(this);
+            if('登录' != $obj.val()) return false;
+            $obj.val('登录中...')
+            $.ajax({
+                url: '/user/login',
+                data: {
+                    username: $('input[name="username"]').val(),
+                    code: $('input[name="code"]').val(),
+                    password: $('input[name="password"]').val(),
+                    forward: $('input[name="forward"]').val()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (response) {
+                    $obj.val('登录');
+                    if(response) {
+                        if(0 == response.code) {
+                            $obj.val('登录成功');
+                            window.location.href = response.data;
+                        } else {
+                            alert(response.message);
+                        }
+                    } else {
+                        alert('服务异常');
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

@@ -34,7 +34,10 @@
     </div>
 </div>
 <div class="wapheader">
-    <div class="lf myCenter"><a href=""><i class="fa fa-user-circle-o"></i></a></div>
+    <div class="lf myCenter">
+        <a href="/user/logout" class="logout" th:if="${userInfo}"><i class="fa fa-user-circle-o"></i></a>
+        <a href="/user/login.shtml" th:unless="${userInfo}"><i class="fa fa-user-circle-o"></i></a>
+    </div>
     <div class="rt wapSearch"><a href="javascript:showSearch();"><i class="fa fa-search"></i></a></div>
 </div>
 <ul class="wapMenu">
@@ -93,6 +96,9 @@
         var dateObj = new Date(dateVal);
         return dateObj.format('yyyy-MM-dd hh:mm:ss');
     }
+    $('.logout').on('click', function () {
+        return window.confirm('确定退出吗？');
+    });
     $('.search_item').on('click', function () {
         $('.search_text').val($(this).text());
         $('.searchBt').trigger('click');
