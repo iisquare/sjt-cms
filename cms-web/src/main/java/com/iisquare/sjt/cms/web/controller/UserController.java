@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/user")
@@ -40,28 +41,32 @@ public class UserController extends WebController {
             return ApiUtil.echoResult(1003, "验证码不正确或已过期", code);
         }
         long msgcodetime = DPUtil.parseLong(session.get("msgcodetime"));
-        if(System.currentTimeMillis() - msgcodetime > 1800000 || !msgcode.equals(session.get("msgcode"))) {
+        if(System.currentTimeMillis() - msgcodetime > 1800000
+                || !mobile.equals(session.get("msgmobile")) || !msgcode.equals(session.get("msgcode"))) {
             return ApiUtil.echoResult(1004, "短信验证码不正确或已过期", msgcode);
         }
         User info = userService.infoBySerial(mobile);
         long time = System.currentTimeMillis();
         String ip = ServletUtil.getRemoteAddr(request);
         if(null == info) {
-            String name = "网友_" + time + DPUtil.random(6);
+            String name = "网友_" + UUID.randomUUID().toString().replaceAll("\\-", "").toLowerCase();
             info = User.builder().createdIp(ip).createdTime(time).loginedIp(ip).loginedTime(time)
                 .name(name).serial(mobile).status(1).description("CMSWeb登录自动注册").build();
             info = userService.save(info, 0);
-            return ApiUtil.echoResult(null == info ? 500 : 0, null, null);
+        } else {
+            if(1 != info.getStatus() || info.getLockedTime() > System.currentTimeMillis()) {
+                return ApiUtil.echoResult(1103, "账号已锁定，请联系客服人员", null);
+            }
+            info.setLoginedTime(time);
+            info.setLoginedIp(ip);
+            info = userService.save(info, 0);
         }
-        if(1 != info.getStatus() || info.getLockedTime() > System.currentTimeMillis()) {
-            return ApiUtil.echoResult(1103, "账号已锁定，请联系客服人员", null);
-        }
-        info.setLoginedTime(time);
-        info.setLoginedIp(ip);
-        userService.save(info, 0);
+        if(null == info) return ApiUtil.echoResult(500, null, null);
         sessionService.currentInfo(request, DPUtil.buildMap(
-            "uid", info.getId(), "code", null, "codetime", null, "msgcode", null, "msgcodetime", null));
-        return ApiUtil.echoResult(0, null, null);
+            "uid", info.getId(), "code", null, "codetime", null, "msgmobile", null, "msgcode", null, "msgcodetime", null));
+        String url = DPUtil.trim(DPUtil.parseString(param.get("forward")));
+        if(DPUtil.empty(url) || url.indexOf("login.shtml") != -1 || url.indexOf("logout") != -1) url = "/";
+        return ApiUtil.echoResult(0, null, url);
     }
 
     @PostMapping("/sendmsg")
@@ -81,13 +86,17 @@ public class UserController extends WebController {
             return ApiUtil.echoResult(1004, "操作太频繁", msgcodetime);
         }
         String msgcode = DPUtil.random(4);
-        sessionService.currentInfo(request, DPUtil.buildMap("msgcode", msgcode, "msgcodetime", System.currentTimeMillis()));
+        sessionService.currentInfo(request, DPUtil.buildMap(
+                "msgmobile", mobile, "msgcode", msgcode, "msgcodetime", System.currentTimeMillis()));
         return ApiUtil.echoResult(messageService.sendCode(mobile, msgcode, 120));
     }
 
     @GetMapping("/login.shtml")
-    public String indexAction(ModelMap model, HttpServletRequest request) {
+    public String indexAction(@RequestParam Map<?, ?> param, ModelMap model, HttpServletRequest request) {
         model.put("sectionLogin", settingService.get("cmsSectionLogin"));
+        String url = DPUtil.trim(DPUtil.parseString(param.get("forward")));
+        if(DPUtil.empty(url)) url = request.getHeader("referer");
+        model.put("forward", url);
         return displayTemplate(model, request, "user", "login");
     }
 

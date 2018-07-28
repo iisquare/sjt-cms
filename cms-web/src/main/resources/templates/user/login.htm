@@ -18,7 +18,7 @@
     <li class="yzm"><input class="yzmtext lf" placeholder="验证码" type="text" name="code"><div class="rt yzmcg"><img class="usercode" data-src="/user/code.jpg" src="/user/code.jpg"></div></li>
     <li class="phoneyzm"><input class="lf phoneyzmtext" type="text" placeholder="手机验证码"  name="password"><a class="rt sendmsg" data-time="0">发送验证码</a></li>
     <li class="shengm"><input type="checkbox" checked name="agreement" value="1">我已阅读并同意 <span th:utext="${sectionLogin.agreement}"><a href="">用户协议</a></span></li>
-    <li class="subm"><input type="button" value="登录" name="submit"></li>
+    <li class="subm"><input type="button" value="登录" name="submit"><input type="hidden" name="forward" th:value="${forward}"></li>
 </ul>
 <script type="text/javascript">
     $(function () {
@@ -79,7 +79,8 @@
                 data: {
                     username: $('input[name="username"]').val(),
                     code: $('input[name="code"]').val(),
-                    password: $('input[name="password"]').val()
+                    password: $('input[name="password"]').val(),
+                    forward: $('input[name="forward"]').val()
                 },
                 type: 'post',
                 dataType: 'json',
@@ -88,7 +89,7 @@
                     if(response) {
                         if(0 == response.code) {
                             $obj.val('登录成功');
-                            window.history.go(-1);
+                            window.location.href = response.data;
                         } else {
                             alert(response.message);
                         }
