@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
+    <title th:text="${page.title}">一点业</title>
+    <meta name="keywords" th:content="${page.keywords}" />
+    <meta name="description" th:content="${page.description}" />
+    <!-- 图标 -->
+    <link rel="stylesheet" th:href="@{{url}/css/font-awesome-4.7.0/css/font-awesome.min.css(url=${staticUrl})}"/>
+    <link rel="stylesheet" th:href="@{{url}/css/reset.css(url=${staticUrl})}">
+    <link rel="stylesheet" th:href="@{{url}/css/style.css(url=${staticUrl})}">
+    <script th:src="@{{url}/js/jquery.min.js(url=${staticUrl})}"></script>
+</head>
+<body class="detail-body">
+<div class="news_detail">
+    <div class="detail_tit" th:text="${info.title}">未来互联网大健康产业将会超越阿里巴巴将会超越阿里巴巴</div>
+    <div class="detail_source"><span th:if="${info.fromName != ''}" th:text="${info.fromName}">来源</span><span th:text="${#dates.format(info.publishTime, 'yyyy-MM-dd HH:mm:ss')}">2天前</span></div>
+    <div class="detail_cont" th:utext="${info.content}"></div>
+</div>
+<div class="comment_tit" th:if="${info.commentEnable == 1}" th:text="'热门评论(' + ${#lists.size(comment.rows)} + ')'">热门评论(5)</div>
+<div class="news_comment" th:if="${info.commentEnable == 1}">
+    <ul class="comment_list">
+        <li th:each="collect,iterStat : ${comment.rows}">
+            <div class="lf userface"><img th:src="@{{url}/images/userface.png(url=${staticUrl})}"></div>
+            <div class="rt uesrComDt">
+                <div class="username" th:text="${collect.createdUidName}"><a href="">球蛋蛋</a></div>
+                <div class="usercomment" th:text="${collect.content}">火箭走上了一条不归路</div>
+                <div class="usercom">
+                    <span class="commtime" th:text="${#dates.format(collect.publishTime, 'yyyy-MM-dd HH:mm:ss')}">07-11　08:29　·</span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="reply" th:if="${info.commentEnable == 1}">
+    <div class="rpCont lf">
+        <input class="lf" type="text" placeholder="文明发言，从我做起" name="commentText" th:if="${userInfo}">
+        <input class="lf" type="text" placeholder="登录后方可发表评论" name="commentText" disabled th:unless="${userInfo}">
+        <a class="rt commentText" href="" th:data-id="${info.id}"><i class="fa fa-arrow-circle-up"></i></a>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('.commentText').on('click', function () {
+            var $obj = $(this);
+            $.ajax({
+                url: '/comment/add',
+                data: {
+                    articleId: $obj.data('id'),
+                    content: $('input[name="commentText"]').val()
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (response) {
+                    if(response) {
+                        alert(response.message);
+                        if(0 == response.code) {
+                            $('input[name="commentText"]').val('')
+                        }
+                    } else {
+                        alert('服务异常');
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>
