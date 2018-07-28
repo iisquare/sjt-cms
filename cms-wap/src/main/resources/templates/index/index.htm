@@ -16,20 +16,20 @@
 </head>
 <body>
 <div class="search">
-    <div class="search1"><div class="scCont lf"><i class="lf fa fa-search"></i><input class="lf" type="text" placeholder="搜索您感兴趣的词" name=""></div><a class="rt searchBt" href="">搜索</a></div>
-    <div class="search2">
-        <div class="sch2Tit">搜索历史</div>
+    <div class="search1"><div class="scCont lf"><i class="lf fa fa-search"></i><input class="lf search_text" type="text" placeholder="搜索您感兴趣的词" name=""></div><a class="rt searchBt">搜索</a></div>
+    <div class="search2" th:utext="${sectionWap.search}">
+        <div class="sch2Tit">大家都在搜</div>
         <ul>
-            <li><a href=""><i class="scnum one">1</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum two">2</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum three">3</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum">4</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum">5</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum">6</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum">7</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum">8</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum">9</i>法国队夺冠</a></li>
-            <li><a href=""><i class="scnum">10</i>法国队夺冠</a></li>
+            <li><a href=""><i class="scnum one">1</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum two">2</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum three">3</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum">4</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum">5</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum">6</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum">7</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum">8</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum">9</i><span class="search_item">法国队夺冠</span></a></li>
+            <li><a href=""><i class="scnum">10</i><span class="search_item">法国队夺冠</span></a></li>
         </ul>
     </div>
 </div>
@@ -37,12 +37,12 @@
     <div class="lf myCenter"><a href=""><i class="fa fa-user-circle-o"></i></a></div>
     <div class="rt wapSearch"><a href="javascript:showSearch();"><i class="fa fa-search"></i></a></div>
 </div>
-<ul class="wapMenu" th:each="collect,iterStat : ${menu}">
-    <li><a th:href="${collect.url}" th:target="${collect.target}" th:text="${collect.name}">导航菜单</a></li>
+<ul class="wapMenu">
+    <li class="category_item" th:each="collect,iterStat : ${menu}"><a th:href="${collect.url}" th:text="${collect.name}" th:data-id="${collect.id}">导航菜单</a></li>
     <li><i class="fa fa-angle-down"></i></li>
 </ul>
-<ul class="allMenu" th:each="collect,iterStat : ${category}">
-    <li><a th:href="${collect.url}" th:target="${collect.target}" th:text="${collect.name}">栏目名称</a></li>
+<ul class="allMenu">
+    <li class="category_item" th:each="collect,iterStat : ${category}"><a th:href="${collect.url}" th:text="${collect.name}" th:data-id="${collect.id}">导航菜单</a></li>
 </ul>
 <div id="wrapper">
     <div class="scroller">
@@ -93,18 +93,40 @@
         var dateObj = new Date(dateVal);
         return dateObj.format('yyyy-MM-dd hh:mm:ss');
     }
-    var nextId = '';
-    var nextKeyword = '';
-    $('.news_more').nextpage({
-        url: '/category/list',
-        paramters: function(page) {
-            return {
-                id: nextId,
-                page: page,
-                keyword: nextKeyword
-            };
-        }
+    $('.search_item').on('click', function () {
+        $('.search_text').val($(this).text());
+        $('.searchBt').trigger('click');
+        return false;
     });
+    $('.searchBt').on('click', function () {
+        $('#js-nextpage-container').html('');
+        $('.news_more').nextpage({
+            url: '/category/list',
+            paramters: function(page) {
+                return {
+                    keyword: $('.search_text').val(),
+                    page: page
+                };
+            }
+        });
+        $(".search").hide();
+        return false;
+    });
+    $('.category_item').on('click', function () {
+        var $obj = $(this);
+        $('#js-nextpage-container').html('');
+        $('.news_more').nextpage({
+            url: '/category/list',
+            paramters: function(page) {
+                return {
+                    id: $obj.children('a').data('id'),
+                    page: page
+                };
+            }
+        });
+        if($obj.parent().hasClass('allMenu')) $(".allMenu").slideUp(300);
+        return false;
+    }).eq(0).trigger('click');
     var myscroll = new iScroll("wrapper");
 
     $(".wapMenu li i").click(function(){

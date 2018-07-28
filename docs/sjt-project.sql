@@ -11,7 +11,7 @@
  Target Server Version : 50721
  File Encoding         : 65001
 
- Date: 28/07/2018 13:15:40
+ Date: 28/07/2018 15:44:14
 */
 
 SET NAMES utf8mb4;
@@ -354,7 +354,7 @@ CREATE TABLE `sjt_setting` (
   `updated_time` bigint(20) NOT NULL DEFAULT '0',
   `updated_uid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sjt_setting
@@ -380,6 +380,7 @@ INSERT INTO `sjt_setting` VALUES (17, 'apiUrl', 'sms', 'http://utf8.api.smschine
 INSERT INTO `sjt_setting` VALUES (18, 'apiUser', 'sms', '', 0, '短信网关用户', 1532754871448, 1);
 INSERT INTO `sjt_setting` VALUES (19, 'apiKey', 'sms', '', 0, '短信网关认证Key', 1532754876987, 1);
 INSERT INTO `sjt_setting` VALUES (20, 'sendCode', 'sms', '验证码{code}三十分钟内有效', 0, '短信验证码内容', 1532754481936, 1);
+INSERT INTO `sjt_setting` VALUES (21, 'search', 'cmsSectionWap', '<div class=\"sch2Tit\">大家都在搜</div>\n        <ul>\n            <li><a href=\"\"><i class=\"scnum one\">1</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum two\">2</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum three\">3</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum\">4</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum\">5</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum\">6</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum\">7</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum\">8</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum\">9</i><span class=\"search_item\">法国队夺冠</span></a></li>\n            <li><a href=\"\"><i class=\"scnum\">10</i><span class=\"search_item\">法国队夺冠</span></a></li>\n        </ul>', 0, 'CMS移动端预置搜索', 1532763518103, 1);
 COMMIT;
 
 -- ----------------------------
@@ -449,7 +450,7 @@ CREATE TABLE `sjt_user` (
 -- Records of sjt_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1532754868420, '127.0.0.1', 0);
+INSERT INTO `sjt_user` VALUES (1, 'admin', '管理员', '3c6d390f90495e033c2bec60d9827aa8', '9508', 0, 1, '', 1528081552985, '127.0.0.1', 1, 1528081552985, 1, 1532762956107, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (2, 'test', '测试', '4b361be828611add84453a24f39772a5', '0905', 0, 1, '', 1528081567988, '127.0.0.1', 1, 1528081567988, 1, 1528267171953, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (3, '11111111111', '网友_1532687002385709708', '', '', 0, 1, 'CMSWeb登录自动注册', 1532687002386, '127.0.0.1', 0, 0, 0, 1532754929371, '127.0.0.1', 0);
 INSERT INTO `sjt_user` VALUES (4, '11111111112', '网友_f37d91de60694e148b5d69a24f67a7e0', '', '', 0, 1, 'CMSWeb登录自动注册', 1532748836829, '127.0.0.1', 0, 0, 0, 1532748894173, '127.0.0.1', 0);
