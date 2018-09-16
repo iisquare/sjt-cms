@@ -29,6 +29,14 @@ subprojects {
 
     archivesBaseName = 'sjt-' + name
 
+    bootJar {
+        enabled = true
+    }
+
+    jar {
+        enabled = true
+    }
+
     task jars(type: Copy) {
         from configurations.runtime
         into 'build/opt' // 目标依赖位置
