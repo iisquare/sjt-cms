@@ -13,3 +13,8 @@
 /cms-web/out
 /cms-wap/out
 /docs/uploads/image
+/manage/build
+/api/build
+/core/build
+/cms-web/build
+/cms-wap/build
