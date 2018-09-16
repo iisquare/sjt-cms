@@ -1,9 +1,7 @@
 #!/bin/bash
 source $(dirname $0)/env.sh
-cd $PROJECT_ROOT
-gradle clea
 for pjt in ${PROJECT_APP[@]}
 do
-gradle :${pjt}:bootJar
+ps aux|grep 'sjt-${pjt}.jar'|awk '{print $2}'|xargs kill -s TERM
 done
-cd -
+
