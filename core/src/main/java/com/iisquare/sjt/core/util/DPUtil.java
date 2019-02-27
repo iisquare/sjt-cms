@@ -10,26 +10,17 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 
+ *
  * DataProcess数据处理类
  *
  */
 public class DPUtil {
-	
+
 	public static final String regexDouble = "^-?\\d+(\\.\\d)*";
 	public static final String regexSafeImplode = "^[\\w_]+$";
 	public static final ObjectMapper mapper = new ObjectMapper();
@@ -60,7 +51,7 @@ public class DPUtil {
 		if("true".equals(str)) return true;
 		return false;
 	}
-	
+
 	/**
 	 * 获取随机整数字符串，最长为16位
 	 */
@@ -69,7 +60,7 @@ public class DPUtil {
 		String str = Math.random() + "";
 		return str.substring(str.length() - length);
 	}
-	
+
 	/**
 	 * 毫秒转换为格式化日期
 	 */
@@ -78,7 +69,7 @@ public class DPUtil {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
 		return dateFormat.format(new Date(millis));
 	}
-	
+
 	/**
 	 * 格式化日期转换为毫秒
 	 */
@@ -90,14 +81,31 @@ public class DPUtil {
 			return -1;
 		}
 	}
-	
+
+	/**
+	 * 格式化日期转换为毫秒
+	 * @param dateTime 日期
+	 * @param format 日期格式
+	 * @param defaultDays 默认值，距当前时间天数
+	 * @return 毫秒时间戳
+	 */
+	public static long dateTimeToMillis(Object dateTime, String format, int defaultDays) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+		try {
+			return dateFormat.parse(parseString(dateTime)).getTime();
+		} catch (ParseException e) {
+			format = "yyyy-MM-dd";
+			return dateTimeToMillis(getCurrentDateTime(format), format) + 86400000L * defaultDays;
+		}
+	}
+
 	/**
 	 * 获取当前日期
 	 */
 	public static String getCurrentDateTime(String format) {
 		return millisToDateTime(System.currentTimeMillis(), format);
 	}
-	
+
 	/**
 	 * 获取当前秒数
 	 */
@@ -106,7 +114,7 @@ public class DPUtil {
 		str = str.substring(0, 10);
 		return parseInt(str);
 	}
-	
+
 	/**
 	 * 转换为int类型
 	 */
@@ -114,7 +122,7 @@ public class DPUtil {
 		return (int) parseDouble(object);
 	}
 
-	public static List<Integer> parseIntList(Collection<?> list) {
+	public static List<Integer> parseIntList(List<?> list) {
 		List<Integer> result = new ArrayList<>();
 		if(null == list) return result;
 		for (Object item : list) {
@@ -123,22 +131,22 @@ public class DPUtil {
 		return result;
 	}
 
-	public static Set<Integer> parseIntSet(Collection<?> list) {
-		Set<Integer> result = new HashSet<>();
+	public static List<String> parseStringList(List<?> list) {
+		List<String> result = new ArrayList<>();
 		if(null == list) return result;
 		for (Object item : list) {
-			result.add(parseInt(item));
+			result.add(parseString(item));
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 转换为long类型
 	 */
 	public static long parseLong(Object object) {
 		return (long) parseDouble(object);
 	}
-	
+
 	/**
 	 * 转换为double类型
 	 */
@@ -150,7 +158,7 @@ public class DPUtil {
 		if(null == str) return 0.0;
 		return Double.parseDouble(str);
 	}
-	
+
 	/**
 	 * 转换为float类型
 	 */
@@ -162,7 +170,7 @@ public class DPUtil {
 		if(null == str) return 0.0f;
 		return Float.parseFloat(str);
 	}
-	
+
 	/**
 	 * 转换为String类型
 	 */
@@ -170,7 +178,7 @@ public class DPUtil {
 		if(null == object) return "";
 		return String.valueOf(object);
 	}
-	
+
 	/**
 	 * 比较两个对象是否相等
 	 */
@@ -182,7 +190,7 @@ public class DPUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 获取正则匹配字符串
 	 * @param regex 正则表达式
@@ -206,7 +214,7 @@ public class DPUtil {
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 获取第一个匹配的字符串
 	 */
@@ -218,7 +226,7 @@ public class DPUtil {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * 判断字符串是否与表达式匹配
 	 */
@@ -227,11 +235,11 @@ public class DPUtil {
 		Matcher matcher = pattern.matcher(str);
 		return matcher.find();
 	}
-	
+
 	public static String trim(String str) {
 		return trim(str, " ");
 	}
-	
+
 	/**
 	 * 去除字符串两边的指定字符
 	 * @param str 源字符串
@@ -246,11 +254,11 @@ public class DPUtil {
 		str = str.replaceFirst(regexRight, "");
 		return str;
 	}
-	
+
 	public static String trimLeft(String str) {
 		return trimLeft(str, "");
 	}
-	
+
 	/**
 	 * 去除字符串左边的指定字符
 	 * @param str
@@ -263,11 +271,11 @@ public class DPUtil {
 		str = str.replaceFirst(regexLeft, "");
 		return str;
 	}
-	
+
 	public static String trimRight(String str) {
 		return trimRight(str, "");
 	}
-	
+
 	/**
 	 * 去除字符串右边的指定字符
 	 * @param str
@@ -280,7 +288,7 @@ public class DPUtil {
 		str = str.replaceFirst(regexRight, "");
 		return str;
 	}
-	
+
 	/**
 	 * 采用指定表达式分隔字符串
 	 * @param string 带分割字符串
@@ -304,7 +312,7 @@ public class DPUtil {
 		}
 		return DPUtil.collectionToStringArray(list);
 	}
-	
+
 	public static String implode(String split, Object[] array) {
 		if(null == array) return "";
 		int size = array.length;
@@ -348,14 +356,25 @@ public class DPUtil {
 	 * @param stringArray
 	 * @return
 	 */
+	@Deprecated
 	public static ArrayList<String> stringArrayToList(String[] stringArray) {
 		if(null == stringArray) return new ArrayList<String>(0);
 		return new ArrayList<String>(Arrays.asList(stringArray));
 	}
 
 	/**
-	 * 将Collection转换为String数组
+	 * @use Arrays.asList()
 	 */
+	public static <T> ArrayList<T> arrayToList(Class<T> classType, T[] array) {
+		if(null == array) return new ArrayList<T>(0);
+		return new ArrayList<T>(Arrays.asList(array));
+	}
+
+	/**
+	 * 将Collection转换为String数组
+	 * @use collection.toArray(new String[collection.size()])
+	 */
+	@Deprecated
 	public static String[] collectionToStringArray(Collection<?> collection) {
 		if(null == collection) {
 			return new String[]{};
@@ -368,6 +387,7 @@ public class DPUtil {
 	/**
 	 * 将Collection转换为Object数组
 	 */
+	@Deprecated
 	public static Object[] collectionToArray(Collection<?> collection) {
 		if(null == collection) {
 			return new Object[]{};
@@ -392,11 +412,11 @@ public class DPUtil {
 	 * 将List转换为Set
 	 */
 	public static <T> Set<T> listToSet(List<T> list) {
-		Set<T> set = new HashSet<T>(0);
+		Set<T> set = new LinkedHashSet<>(0);
 		set.addAll(list);
 		return set;
 	}
-	
+
 	/**
 	 * 将Set转换为List
 	 */
@@ -405,14 +425,14 @@ public class DPUtil {
 		list.addAll(set);
 		return list;
 	}
-	
+
 	/**
 	 * 将字符串首字母小写
 	 */
 	public static String lowerCaseFirst(String str) {
 		return str.substring(0, 1).toLowerCase() + str.substring(1);
 	}
-	
+
 	/**
 	 * 将大写字母转换为下划线加小写字母的形式
 	 */
@@ -421,15 +441,15 @@ public class DPUtil {
 		for (int i = 1; i < buf.length() - 1; i++) { // 此处需要实时获取长度
 			if (
 				Character.isLowerCase( buf.charAt(i-1) ) &&
-				Character.isUpperCase( buf.charAt(i) ) &&
-				Character.isLowerCase( buf.charAt(i+1) )
-			) {
+					Character.isUpperCase( buf.charAt(i) ) &&
+					Character.isLowerCase( buf.charAt(i+1) )
+				) {
 				buf.insert(i++, '_');
 			}
 		}
 		return buf.toString().toLowerCase();
 	}
-	
+
 	/**
 	 * 将下划线加小写字母转换为驼峰形式
 	 */
@@ -443,7 +463,7 @@ public class DPUtil {
 		}
 		return buf.toString().replaceAll("_", "");
 	}
-	
+
 	/**
 	 * 判断下标是否在数组范围内
 	 */
@@ -452,7 +472,7 @@ public class DPUtil {
 		if(index < 0) return false;
 		return array.length > index;
 	}
-	
+
 	/**
 	 * 判断下标是否在集合范围内
 	 */
@@ -461,7 +481,7 @@ public class DPUtil {
 		if(index < 0) return false;
 		return collection.size() > index;
 	}
-	
+
 	/**
 	 * 判断元素是否包含在数组中
 	 */
@@ -472,7 +492,7 @@ public class DPUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 判断元素是否包含在集合中
 	 */
@@ -485,7 +505,7 @@ public class DPUtil {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * 安全获取数组中对应下标的值
 	 */
@@ -493,7 +513,7 @@ public class DPUtil {
 		if(isIndexExist(array, index)) return array[index];
 		return null;
 	}
-	
+
 	/**
 	 * 安全获取集合中对应下标的值
 	 */
@@ -511,8 +531,9 @@ public class DPUtil {
 	/**
 	 * 合并多个数组
 	 */
+	@Deprecated
 	public static Object[] arrayMerge(Object[]... arrays) {
-		List<Object> list = new ArrayList<Object>();
+		List<Object> list = new ArrayList<>();
 		for (Object[] array : arrays) {
 			if(null == array) continue ;
 			list.addAll(Arrays.asList(array));
@@ -582,7 +603,7 @@ public class DPUtil {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 安全截取字符串，正向从下标0开始，逆向从-1开始
 	 */
@@ -594,7 +615,7 @@ public class DPUtil {
 		if(start > length - 1) return ""; // 处理开始下标正向最大范围溢出
 		return new String(str.substring(start));
 	}
-	
+
 	/**
 	 * 安全截取字符串，正向从下标0开始，逆向从-1开始
 	 */
@@ -615,7 +636,7 @@ public class DPUtil {
 		/* beginIndex - 起始索引（包括），endIndex - 结束索引（不包括） */
 		return new String(str.substring(start, end));
 	}
-	
+
 	/**
 	 * 获取初始化填充数组
 	 */
@@ -624,13 +645,25 @@ public class DPUtil {
 		Arrays.fill(array, object);
 		return array;
 	}
-	
+
 	/**
 	 * 创建HashMap
 	 */
 	public static Map<Object, Object> buildMap(Object[] keyArray, Object[] valueArray) {
 		int length = keyArray.length;
-		Map<Object, Object> map = new HashMap<Object, Object>();
+		Map<Object, Object> map = new LinkedHashMap<Object, Object>();
+		for (int i = 0; i < length; i++) {
+			map.put(keyArray[i], valueArray[i]);
+		}
+		return map;
+	}
+
+	/**
+	 * 创建HashMap
+	 */
+	public static <K, V> Map<K, V> buildMap(K[] keyArray, V[] valueArray, Class<K> kType, Class<V> vType) {
+		int length = keyArray.length;
+		Map<K, V> map = new LinkedHashMap<>();
 		for (int i = 0; i < length; i++) {
 			map.put(keyArray[i], valueArray[i]);
 		}
@@ -638,15 +671,22 @@ public class DPUtil {
 	}
 
 	public static Map<Object, Object> buildMap(Object ...kvs) {
-		Map<Object, Object> map = new HashMap<>();
+		Map<Object, Object> map = new LinkedHashMap<>();
 		for(int i = 0; i < kvs.length; i += 2) {
 			map.put(kvs[i], kvs[i + 1]);
 		}
 		return map;
 	}
 
+	public static <K, V> Map<K, V> buildMap(Class<K> kType, Class<V> vType, Object ...kvs) {
+		Map<K, V> map = new LinkedHashMap<>();
+		for(int i = 0; i < kvs.length; i += 2) {
+			map.put((K)kvs[i], (V)kvs[i + 1]);
+		}
+		return map;
+	}
+
 	public static String stringify(Object object) {
-		if(null == object) return null;
 		try {
 			return mapper.writeValueAsString(object);
 		} catch (JsonProcessingException e) {
@@ -666,11 +706,41 @@ public class DPUtil {
 	 * 解析JSON字符串
 	 */
 	public static JsonNode parseJSON(String json) {
-		if(null == json) return null;
 		try {
 			return mapper.readTree(json);
 		} catch (IOException e) {
 			return null;
 		}
 	}
+
+	public static <T> T convertJSON(JsonNode json, Class<T> classType) {
+		return mapper.convertValue(json, classType);
+	}
+
+	public static JsonNode convertJSON(Object obj) {
+		return mapper.convertValue(obj, JsonNode.class);
+	}
+
+	/**
+	 * 截取List
+	 * @param list 待截取List
+	 * @param start 开始位置
+	 * @param length 截取长度
+	 * @return 截取List
+	 */
+	public static List<Object> subList(List<?> list, int start, int length) {
+		List<Object> subList = new ArrayList<>();
+		if (list.isEmpty()) {
+			return subList;
+		}
+		int count = 0;
+		int end = start + length;
+		for (Object item : list) {
+			if (count++ >= start && count <= end) {
+				subList.add(item);
+			}
+		}
+		return subList;
+	}
 }
+
