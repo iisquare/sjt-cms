@@ -24,7 +24,7 @@
       <aside :class="collapsed?'menu-collapsed':'menu-expanded'">
         <el-menu :default-active="$router.path" :collapse="collapsed" router style="overflow:auto">
           <template v-for="item in $store.state.user.data.menu">
-            <el-submenu :key="item.id" :index="item.url" v-if="item.children.length > 0">
+            <el-submenu :key="item.id" :index="item.url ? item.url : item.id" v-if="item.children.length > 0">
               <template slot="title">
                 <i :class="item.icon"></i><span slot="title">{{item.name}}</span>
               </template>
@@ -32,7 +32,7 @@
                 <i :class="children.icon"></i><span slot="title">{{children.name}}</span>
               </el-menu-item>
             </el-submenu>
-            <el-menu-item :key="item.id" :index="item.url" v-else>
+            <el-menu-item :key="item.id" :index="item.url ? item.url : item.id" v-else>
               <i :class="item.icon"></i><span slot="title">{{item.name}}</span>
             </el-menu-item>
           </template>
