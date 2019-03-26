@@ -2,6 +2,8 @@ package com.iisquare.sjt.api.mvc;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.iisquare.sjt.core.util.DPUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -10,25 +12,34 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DruidConfiguration {
 
+    @Value("${custom.druid.registration:/druid/*}")
+    private String registration;
+    @Value("${custom.druid.allow:127.0.0.1}")
+    private String allow;
+    @Value("${custom.druid.deny:}")
+    private String deny;
+    @Value("${custom.druid.loginUsername:admin}")
+    private String loginUsername;
+    @Value("${custom.druid.loginPassword:admin888}")
+    private String loginPassword;
+    @Value("${custom.druid.resetEnable:false}")
+    private String resetEnable;
+
     /**
      * 注册一个StatViewServlet
      */
     @Bean
     public ServletRegistrationBean DruidStatViewServle2(){
         // org.springframework.boot.context.embedded.ServletRegistrationBean提供类的进行注册.
-        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(),"/druid/*");
-
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), registration);
         // 添加初始化参数：initParams
-
-        // 白名单：
-        servletRegistrationBean.addInitParameter("allow","127.0.0.1");
-        // IP黑名单 (存在共同时，deny优先于allow) : 如果满足deny的话提示:Sorry, you are not permitted to view this page.
-//        servletRegistrationBean.addInitParameter("deny","192.168.1.73");
+        if (!DPUtil.empty(allow)) servletRegistrationBean.addInitParameter("allow", allow); // 白名单
+        if (!DPUtil.empty(deny)) servletRegistrationBean.addInitParameter("deny", deny); // IP黑名单 (存在共同时，deny优先于allow)
         // 登录查看信息的账号密码.
-        servletRegistrationBean.addInitParameter("loginUsername","admin");
-        servletRegistrationBean.addInitParameter("loginPassword","admin888");
+        servletRegistrationBean.addInitParameter("loginUsername", loginUsername);
+        servletRegistrationBean.addInitParameter("loginPassword", loginPassword);
         // 是否能够重置数据.
-        servletRegistrationBean.addInitParameter("resetEnable","false");
+        servletRegistrationBean.addInitParameter("resetEnable", resetEnable);
         return servletRegistrationBean;
     }
 
@@ -44,7 +55,7 @@ public class DruidConfiguration {
         filterRegistrationBean.addUrlPatterns("/*");
 
         // 添加不需要忽略的格式信息.
-        filterRegistrationBean.addInitParameter("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.addInitParameter("exclusions","*.js,*.gif,*.jpg,*.png,*.css,*.ico," + registration);
         return filterRegistrationBean;
     }
 
