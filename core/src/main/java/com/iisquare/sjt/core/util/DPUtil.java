@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
  */
 public class DPUtil {
 
+	public static final String regexLong = "^-?\\d+*";
 	public static final String regexDouble = "^-?\\d+(\\.\\d)*";
 	public static final String regexSafeImplode = "^[\\w_]+$";
 	public static final ObjectMapper mapper = new ObjectMapper();
@@ -119,7 +120,12 @@ public class DPUtil {
 	 * 转换为int类型
 	 */
 	public static int parseInt(Object object) {
-		return (int) parseDouble(object);
+		if(null == object) return 0;
+		String str = object.toString();
+		if("".equals(str)) return 0;
+		str = getFirstMatcher(regexLong, str);
+		if(null == str) return 0;
+		return Integer.parseInt(str);
 	}
 
 	public static List<Integer> parseIntList(List<?> list) {
@@ -144,7 +150,12 @@ public class DPUtil {
 	 * 转换为long类型
 	 */
 	public static long parseLong(Object object) {
-		return (long) parseDouble(object);
+		if(null == object) return 0L;
+		String str = object.toString();
+		if("".equals(str)) return 0L;
+		str = getFirstMatcher(regexLong, str);
+		if(null == str) return 0L;
+		return Long.parseLong(str);
 	}
 
 	/**
@@ -743,4 +754,3 @@ public class DPUtil {
 		return subList;
 	}
 }
-
