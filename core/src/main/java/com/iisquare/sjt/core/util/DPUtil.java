@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
 public class DPUtil {
 
 	public static final String regexLong = "^-?\\d+";
-	public static final String regexDouble = "^-?\\d+(\\.\\d)*";
+	public static final String regexDouble = "^-?\\d+(\\.\\d+)*";
 	public static final String regexSafeImplode = "^[\\w_]+$";
 	public static final ObjectMapper mapper = new ObjectMapper();
 
